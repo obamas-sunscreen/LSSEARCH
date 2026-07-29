@@ -22,9 +22,12 @@ To stop the server, press `Ctrl+C` in the terminal.
 
 Everything lives in plain JSON you can edit in any text editor:
 
-- **`data/states.json`** — the 12 states with affordability, quality-of-life (safety + healthcare + livability + community/youthful-active-lifestyle, anchored to each state's main law-school city), and legal-industry figures, plus 1–5 scores. Scores are normalized *relative to these 12 states only*.
+- **`data/states.json`** — the 12 states with affordability, quality-of-life (safety + healthcare + livability/climate), and legal-industry figures, plus 1–5 scores. Scores are normalized *relative to these 12 states only*. The youthful-active-lifestyle factor is **not** here — it lives at the city level (see below), because it varies too much within a state to be one number.
+- **`data/cities.json`** — the 64 law-school cities, each scored on youthful-active-lifestyle: a `social` scene signal (weighted heaviest), `outdoors`, and `walkability`, blended into a `lifestyleScore`, plus a blurb. Shown on each school's detail page for the city you'd actually live in.
 - **`data/schools.json`** — 92 ABA-accredited schools across those states: median GPA, median LSAT, in-state / out-of-state tuition, a tier, an approximate rank, and a write-up.
 - **`data/us-states.json`** — the map geometry. You shouldn't need to touch this.
+
+The GPA/LSAT/tuition figures were cross-checked against public aggregate data (LSD.law, 7Sage, and ABA 509 reports) for the most recent widely-reported cycle. The T14 and flagship state schools are verified against multiple agreeing sources; a handful of low-tier regionals remain best estimates.
 
 **These numbers are an approximate, point-in-time snapshot** compiled from public sources (ABA Standard 509 disclosures for the school data, cost-of-living / BLS / Census figures for the states). Spot-check any school against its official 509 report before making a real decision. Every value is editable — change the JSON and reload.
 

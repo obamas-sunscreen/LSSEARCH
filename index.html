@@ -171,6 +171,17 @@
   .writeup-h { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); font-weight: 600; margin: 4px 0 8px; }
   .writeup { font-size: 15.5px; line-height: 1.62; color: var(--ink); max-width: 660px; }
 
+  .lifestyle { margin-top: 22px; padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; max-width: 560px; }
+  .life-head { display: flex; align-items: center; justify-content: space-between; }
+  .life-score { font-size: 26px; font-weight: 700; letter-spacing: -.02em; color: var(--accent-deep, #0f333a); font-variant-numeric: tabular-nums; }
+  .life-score span { font-size: 14px; font-weight: 500; color: var(--ink-faint); }
+  .life-sub { font-size: 12.5px; color: var(--ink-faint); margin: 2px 0 14px; }
+  .life-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--ink-soft); margin: 7px 0; }
+  .life-row > span:first-child { width: 92px; flex: none; }
+  .life-row b { width: 30px; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .life-track { flex: 1; height: 7px; background: #d7e0e2; border-radius: 4px; overflow: hidden; }
+  .life-fill { display: block; height: 100%; background: linear-gradient(90deg, #4a7f8a, #0f333a); border-radius: 4px; }
+
   .addbtn {
     margin-top: 24px; display: inline-flex; align-items: center; gap: 8px;
     padding: 13px 24px; font-size: 15px; font-weight: 600;
@@ -261,6 +272,7 @@
   let stateByName = {};        // name -> state record
   let schoolsByState = {};     // name -> [schools]
   let schoolByName = {};       // school name -> school
+  let cityByKey = {};          // "city|state" -> city lifestyle record
   let saved = loadSaved();
 
   // ---------- persistence ----------
@@ -474,8 +486,7 @@
     const qolRows =
       `<div class="drow"><span>Safety</span><b>${qol.safety}/5</b></div>` +
       `<div class="drow"><span>Healthcare</span><b>${qol.healthcare}/5</b></div>` +
-      `<div class="drow"><span>Livability</span><b>${qol.livability}/5</b></div>` +
-      `<div class="drow"><span>Community</span><b>${qol.community}/5</b></div>`;
+      `<div class="drow"><span>Livability / climate</span><b>${qol.livability}/5</b></div>`;
     const legRows =
       `<div class="drow"><span>Lawyer jobs / 1k</span><b>${leg.lawyerJobsPer1k}</b></div>` +
       `<div class="drow"><span>Avg legal salary</span><b>${money(leg.avgLegalSalary)}</b></div>`;
@@ -498,7 +509,7 @@
       <p style="margin:0 0 4px;color:var(--ink-soft);font-size:14px">Overall fit <b style="color:var(--ink)">${s.overall.toFixed(2)}/5</b> · anchored to ${esc(s.anchorCity)}</p>
       <div class="factor-grid">
         ${factorCard("Affordability", aff.score, affRows)}
-        ${factorCard("Quality of Life", qol.score, qolRows, `<div class="anchor-note">Community anchored to ${esc(s.anchorCity)}.</div>`)}
+        ${factorCard("Quality of Life", qol.score, qolRows, `<div class="anchor-note">Youthful-active-lifestyle varies by city — shown on each school below.</div>`)}
         ${factorCard("Legal Industry", leg.score, legRows)}
       </div>
       <div class="section-h">Law schools in ${esc(name)} <span style="color:var(--ink-faint);font-weight:500">(${schools.length})</span></div>
@@ -515,6 +526,24 @@
     if (!sc) { renderMap(); return; }
     const st = stateByName[sc.state];
     const added = isSaved(sc.name);
+    const city = cityByKey[sc.city + "|" + sc.state];
+
+    const lifeBar = (label, v) =>
+      `<div class="life-row"><span>${label}</span>
+         <span class="life-track"><span class="life-fill" style="width:${(v/5)*100}%"></span></span>
+         <b>${v}/5</b></div>`;
+    const lifestyleBlock = city ? `
+      <div class="lifestyle">
+        <div class="life-head">
+          <div class="writeup-h" style="margin:0">Lifestyle in ${esc(sc.city)}</div>
+          <div class="life-score">${city.lifestyleScore.toFixed(1)}<span>/5</span></div>
+        </div>
+        <div class="life-sub">Youthful, active-lifestyle fit for where you'd actually live</div>
+        ${lifeBar("Social scene", city.social)}
+        ${lifeBar("Outdoors", city.outdoors)}
+        ${lifeBar("Walkability", city.walkability)}
+        <p class="writeup" style="margin-top:12px">${esc(city.blurb)}</p>
+      </div>` : "";
 
     const html = `
       <div class="crumb">
@@ -540,6 +569,7 @@
         </div>
         <div class="writeup-h">How it stacks up</div>
         <p class="writeup">${esc(sc.writeup)}</p>
+        ${lifestyleBlock}
         <button class="addbtn ${added ? "added" : ""}" id="toggleBtn">
           ${added ? "✓ Added — remove" : "Add to my target list"}
         </button>
@@ -674,12 +704,19 @@
   // ---------- boot ----------
   async function boot() {
     try {
-      const [geo, states, schools] = await Promise.all([
+      const [geo, states, schools, cities] = await Promise.all([
         fetch("data/us-states.json").then((r) => { if (!r.ok) throw new Error("us-states.json"); return r.json(); }),
         fetch("data/states.json").then((r) => { if (!r.ok) throw new Error("states.json"); return r.json(); }),
         fetch("data/schools.json").then((r) => { if (!r.ok) throw new Error("schools.json"); return r.json(); }),
+        fetch("data/cities.json").then((r) => { if (!r.ok) throw new Error("cities.json"); return r.json(); }),
       ]);
       DATA.geo = geo;
+
+      // index cities (key by city + state)
+      (cities.cities || []).forEach((c) => {
+        if (typeof c.city !== "string" || c.city[0] === "_") return;
+        cityByKey[c.city + "|" + c.state] = c;
+      });
 
       // index states (ignore _-prefixed keys)
       (states.states || []).forEach((s) => {
