@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Law School Shortlist Builder</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --panel: #ffffff;
+    --ink: #1c2530;
+    --ink-soft: #5a6672;
+    --ink-faint: #8a95a1;
+    --line: #e3e7ec;
+    --line-strong: #cdd4dc;
+    --accent: #2d5f6b;
+    --accent-deep: #1a4048;
+    --gray-state: #e4e8ec;
+    --gray-state-stroke: #cfd6dc;
+    --shadow: 0 1px 3px rgba(20,30,40,.06), 0 8px 24px rgba(20,30,40,.06);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  button { font-family: inherit; }
+
+  header.topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 16px 28px;
+    background: rgba(247,248,250,.9);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; flex-direction: column; }
+  .brand h1 {
+    margin: 0; font-size: 19px; font-weight: 650; letter-spacing: -.01em;
+  }
+  .brand .sub { font-size: 12.5px; color: var(--ink-faint); }
+
+  .listbtn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px;
+    background: var(--ink);
+    color: #fff;
+    border: none; border-radius: 999px;
+    font-size: 13.5px; font-weight: 550;
+    cursor: pointer;
+    transition: background .15s ease, transform .1s ease;
+  }
+  .listbtn:hover { background: #33414f; }
+  .listbtn:active { transform: translateY(1px); }
+  .listbtn .cnt {
+    background: rgba(255,255,255,.2);
+    border-radius: 999px; padding: 1px 8px; font-size: 12px;
+    min-width: 20px; text-align: center;
+  }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 28px 80px; }
+
+  .view { animation: fade .2s ease; }
+  @keyframes fade { from { opacity: .55; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* breadcrumb */
+  .crumb { font-size: 13.5px; color: var(--ink-faint); margin-bottom: 20px; }
+  .crumb .link { color: var(--accent); cursor: pointer; font-weight: 500; }
+  .crumb .link:hover { text-decoration: underline; }
+  .crumb .sep { margin: 0 8px; color: var(--line-strong); }
+  .crumb .cur { color: var(--ink); font-weight: 550; }
+
+  /* map view */
+  .maphead { margin-bottom: 8px; }
+  .maphead h2 { margin: 0 0 6px; font-size: 22px; letter-spacing: -.015em; }
+  .maphead p { margin: 0; color: var(--ink-soft); font-size: 14px; max-width: 640px; }
+
+  .mapwrap {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 8px; margin-top: 18px;
+  }
+  svg.usmap { width: 100%; height: auto; display: block; }
+  svg.usmap path.live { cursor: pointer; transition: fill .12s ease, stroke .12s ease; stroke: #fff; stroke-width: .9; }
+  svg.usmap path.live:hover { stroke: var(--ink); stroke-width: 1.6; }
+  svg.usmap path.dead { fill: var(--gray-state); stroke: var(--gray-state-stroke); stroke-width: .8; pointer-events: none; }
+
+  .maplegend {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+    margin-top: 16px; font-size: 12.5px; color: var(--ink-soft);
+  }
+  .ramp { display: flex; align-items: center; gap: 8px; }
+  .rampbar { width: 160px; height: 12px; border-radius: 6px; border: 1px solid var(--line); }
+  .ramp .lo, .ramp .hi { font-size: 11.5px; color: var(--ink-faint); }
+  .legend-gray { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 14px; height: 14px; border-radius: 3px; background: var(--gray-state); border: 1px solid var(--gray-state-stroke); }
+
+  /* tooltip */
+  #tooltip {
+    position: fixed; z-index: 100; pointer-events: none;
+    background: var(--ink); color: #fff;
+    padding: 10px 12px; border-radius: 8px; font-size: 12.5px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    opacity: 0; transition: opacity .1s ease; max-width: 240px;
+  }
+  #tooltip.on { opacity: 1; }
+  #tooltip .tt-name { font-weight: 650; margin-bottom: 5px; font-size: 13.5px; }
+  #tooltip .tt-row { display: flex; justify-content: space-between; gap: 16px; color: #cfd6dc; }
+  #tooltip .tt-row b { color: #fff; font-variant-numeric: tabular-nums; }
+
+  /* state detail */
+  .factor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0 28px; }
+  .fcard { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+  .fcard h3 { margin: 0 0 4px; font-size: 14px; letter-spacing: .01em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+  .fscore { font-size: 30px; font-weight: 680; letter-spacing: -.02em; line-height: 1; }
+  .fscore span { font-size: 15px; font-weight: 500; color: var(--ink-faint); }
+  .fbar { height: 7px; background: var(--line); border-radius: 4px; margin: 12px 0 14px; overflow: hidden; }
+  .fbar > i { display: block; height: 100%; background: var(--accent); border-radius: 4px; }
+  .fdetail { font-size: 13px; color: var(--ink-soft); }
+  .fdetail .drow { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+  .fdetail .drow:last-child { border-bottom: none; }
+  .fdetail .drow b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 550; }
+  .anchor-note { font-size: 12px; color: var(--ink-faint); margin-top: 10px; }
+
+  .section-h { font-size: 16px; font-weight: 620; margin: 8px 0 14px; letter-spacing: -.01em; }
+
+  /* school list rows */
+  .school-list { display: flex; flex-direction: column; gap: 8px; }
+  .srow {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px 16px; cursor: pointer; box-shadow: var(--shadow);
+    transition: border-color .12s ease, transform .08s ease;
+  }
+  .srow:hover { border-color: var(--line-strong); transform: translateX(2px); }
+  .srow .sname { flex: 1 1 auto; min-width: 0; }
+  .srow .sname .n { font-weight: 600; font-size: 15px; }
+  .srow .sname .c { font-size: 12.5px; color: var(--ink-faint); }
+  .srow .stats { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .srow .stats b { color: var(--ink); font-weight: 600; }
+  .saved-flag { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+  /* tier badges */
+  .tier {
+    display: inline-block; font-size: 11px; font-weight: 650; letter-spacing: .02em;
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .tier-1 { background: #1a4048; color: #fff; }              /* T14 */
+  .tier-2 { background: #2d5f6b; color: #fff; }              /* T20 */
+  .tier-3 { background: #4a7f8a; color: #fff; }              /* T30 */
+  .tier-4 { background: #cfe0e3; color: #204049; }          /* T50 */
+  .tier-5 { background: #dde8ea; color: #35555c; }           /* T60-100 */
+  .tier-6 { background: #eef1f2; color: #5a6672; border-color: var(--line); } /* Regional */
+
+  /* school detail */
+  .school-hero { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px; }
+  .school-hero .h-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .school-hero h2 { margin: 0 0 4px; font-size: 24px; letter-spacing: -.02em; }
+  .school-hero .loc { color: var(--ink-soft); font-size: 14px; }
+  .statblock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: 24px 0; }
+  .stat { background: var(--panel); padding: 16px 18px; }
+  .stat .lbl { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); font-weight: 600; }
+  .stat .val { font-size: 21px; font-weight: 650; margin-top: 4px; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .writeup-h { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); font-weight: 600; margin: 4px 0 8px; }
+  .writeup { font-size: 15.5px; line-height: 1.62; color: var(--ink); max-width: 660px; }
+
+  .addbtn {
+    margin-top: 24px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 24px; font-size: 15px; font-weight: 600;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px; cursor: pointer;
+    transition: background .15s ease, transform .08s ease;
+  }
+  .addbtn:hover { background: var(--accent-deep); }
+  .addbtn:active { transform: translateY(1px); }
+  .addbtn.added { background: var(--panel); color: var(--accent); border: 1.5px solid var(--accent); }
+
+  /* list panel */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(20,28,36,.4); z-index: 200;
+    opacity: 0; pointer-events: none; transition: opacity .22s ease;
+  }
+  .overlay.on { opacity: 1; pointer-events: auto; }
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 440px; max-width: 92vw; z-index: 210;
+    background: var(--panel); box-shadow: -8px 0 30px rgba(20,30,40,.16);
+    transform: translateX(100%); transition: transform .28s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column;
+  }
+  .panel.on { transform: none; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+  .panel-head h2 { margin: 0; font-size: 18px; letter-spacing: -.01em; }
+  .panel-close { background: none; border: none; font-size: 22px; color: var(--ink-faint); cursor: pointer; line-height: 1; padding: 4px 8px; border-radius: 6px; }
+  .panel-close:hover { background: var(--bg); color: var(--ink); }
+  .panel-body { flex: 1 1 auto; overflow-y: auto; padding: 18px 22px; }
+  .panel-actions { padding: 16px 22px; border-top: 1px solid var(--line); display: flex; gap: 10px; }
+  .exportbtn { flex: 1; padding: 11px; font-size: 13.5px; font-weight: 550; background: var(--bg); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 8px; cursor: pointer; }
+  .exportbtn:hover { background: #eef1f4; }
+  .exportbtn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .pl-state { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); font-weight: 700; margin: 18px 0 8px; }
+  .pl-state:first-child { margin-top: 0; }
+  .pl-entry { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .pl-entry .pe-main { flex: 1 1 auto; cursor: pointer; min-width: 0; }
+  .pl-entry .pe-main .n { font-weight: 600; font-size: 14px; }
+  .pl-entry .pe-main .n:hover { color: var(--accent); }
+  .pl-entry .pe-main .m { font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .pl-remove { background: none; border: 1px solid var(--line); color: var(--ink-faint); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 15px; line-height: 1; flex: 0 0 auto; }
+  .pl-remove:hover { background: #fbeced; border-color: #e5b6ba; color: #b23a44; }
+  .empty { text-align: center; color: var(--ink-faint); padding: 48px 20px; font-size: 14px; }
+
+  .errbox { background: #fdecec; border: 1px solid #f3bcbc; color: #9c2a2a; padding: 16px 18px; border-radius: 10px; font-size: 14px; }
+
+  @media (max-width: 720px) {
+    .factor-grid, .statblock { grid-template-columns: 1fr; }
+    main { padding: 18px 16px 60px; }
+    header.topbar { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Law School Shortlist Builder</h1>
+      <span class="sub">Explore 12 states, 92 ABA-accredited schools, and build your target list.</span>
+    </div>
+    <button class="listbtn" id="openListBtn">My List <span class="cnt" id="listCount">0</span></button>
+  </header>
+
+  <main id="app"><div class="view"><p style="color:var(--ink-faint)">Loading data…</p></div></main>
+
+  <div id="tooltip"></div>
+
+  <div class="overlay" id="overlay"></div>
+  <aside class="panel" id="panel" aria-label="My target list">
+    <div class="panel-head">
+      <h2>My Target List</h2>
+      <button class="panel-close" id="closeListBtn" aria-label="Close">&times;</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+    <div class="panel-actions">
+      <button class="exportbtn" id="exportMd">Export Markdown</button>
+      <button class="exportbtn" id="exportCsv">Export CSV</button>
+    </div>
+  </aside>
+
+<script>
+"use strict";
+(function () {
+  const LS_KEY = "lawSchoolShortlist";
+  const app = document.getElementById("app");
+  const tooltip = document.getElementById("tooltip");
+
+  let DATA = { geo: null, states: null, schools: null };
+  let stateByName = {};        // name -> state record
+  let schoolsByState = {};     // name -> [schools]
+  let schoolByName = {};       // school name -> school
+  let saved = loadSaved();
+
+  // ---------- persistence ----------
+  function loadSaved() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+  function persist() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(saved)); } catch (e) {}
+    document.getElementById("listCount").textContent = saved.length;
+  }
+  function isSaved(name) { return saved.indexOf(name) !== -1; }
+  function toggleSaved(name) {
+    const i = saved.indexOf(name);
+    if (i === -1) saved.push(name); else saved.splice(i, 1);
+    persist();
+  }
+
+  // ---------- helpers ----------
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const money = (n) => (n == null ? "—" : "$" + Number(n).toLocaleString("en-US"));
+  const rankLabel = (s) => (s.rank == null ? (s.tier || "—") : "#" + s.rank);
+
+  function tierClass(tier) {
+    if (tier === "T14") return "tier-1";
+    if (tier === "T20") return "tier-2";
+    if (tier === "T30") return "tier-3";
+    if (tier === "T50") return "tier-4";
+    if (tier === "Regional") return "tier-6";
+    return "tier-5"; // T60/T70/T80/T90/T100
+  }
+  function tierBadge(tier) {
+    return `<span class="tier ${tierClass(tier)}">${esc(tier || "—")}</span>`;
+  }
+
+  // Tier ordering for sort (lower = better)
+  function tierRank(t) {
+    const order = ["T14","T20","T30","T50","T60","T70","T80","T90","T100","Regional"];
+    const i = order.indexOf(t);
+    return i === -1 ? 999 : i;
+  }
+  function sortSchools(list) {
+    return list.slice().sort((a, b) => {
+      const ar = a.rank == null ? Infinity : a.rank;
+      const br = b.rank == null ? Infinity : b.rank;
+      if (ar !== br) return ar - br;
+      const at = tierRank(a.tier), bt = tierRank(b.tier);
+      if (at !== bt) return at - bt;
+      return a.name.localeCompare(b.name);
+    });
+  }
+
+  // ---------- color ramp (sequential teal/slate) ----------
+  // pale -> mid -> deep as overall score rises. Multi-stop so the
+  // lightness range is far wider than a single linear 2-stop blend.
+  const RAMP_STOPS = [
+    [0.0, [237, 245, 246]], // #edf5f6  very pale tint
+    [0.5, [ 74, 127, 138]], // #4a7f8a  mid teal
+    [1.0, [ 15, 51, 58]],   // #0f333a  deep saturated teal
+  ];
+  function rampColor(t) {
+    t = Math.max(0, Math.min(1, t));
+    // find the segment t falls in
+    let i = 0;
+    while (i < RAMP_STOPS.length - 2 && t > RAMP_STOPS[i + 1][0]) i++;
+    const [t0, c0] = RAMP_STOPS[i], [t1, c1] = RAMP_STOPS[i + 1];
+    const f = (t - t0) / (t1 - t0 || 1);
+    const c = c0.map((v, k) => Math.round(v + (c1[k] - v) * f));
+    return `rgb(${c[0]},${c[1]},${c[2]})`;
+  }
+  let overallMin = Infinity, overallMax = -Infinity;
+  function overallColor(overall) {
+    const span = overallMax - overallMin || 1;
+    const norm = (overall - overallMin) / span; // 0..1 across the 12 live states
+    // floor at 0.22 so even the lowest live state reads as clearly teal, not gray;
+    // gamma curve widens the spread across the rest of the range
+    const eased = 0.22 + 0.78 * Math.pow(norm, 0.6);
+    return rampColor(eased);
+  }
+
+  // ---------- projection + map build ----------
+  function buildMapSVG() {
+    const geo = DATA.geo;
+    // bounding box of ALL coords
+    let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
+    for (const name in geo) {
+      for (const ring of geo[name]) {
+        for (const p of ring) {
+          if (p[0] < minLon) minLon = p[0];
+          if (p[0] > maxLon) maxLon = p[0];
+          if (p[1] < minLat) minLat = p[1];
+          if (p[1] > maxLat) maxLat = p[1];
+        }
+      }
+    }
+    const midLat = (minLat + maxLat) / 2;
+    const kx = Math.cos(midLat * Math.PI / 180); // x correction
+    const VBW = 960, VBH = 600, PAD = 24;
+
+    const rawW = (maxLon - minLon) * kx;
+    const rawH = (maxLat - minLat);
+    const scale = Math.min((VBW - 2 * PAD) / rawW, (VBH - 2 * PAD) / rawH);
+    const drawW = rawW * scale, drawH = rawH * scale;
+    const offX = (VBW - drawW) / 2;
+    const offY = (VBH - drawH) / 2;
+
+    const project = (lon, lat) => {
+      const x = offX + (lon - minLon) * kx * scale;
+      const y = offY + (maxLat - lat) * scale; // flip: north up
+      return [x, y];
+    };
+
+    let paths = "";
+    const liveNames = new Set(Object.keys(stateByName));
+    for (const name in geo) {
+      let d = "";
+      for (const ring of geo[name]) {
+        if (!ring.length) continue;
+        d += ring.map((p, i) => {
+          const [x, y] = project(p[0], p[1]);
+          return (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1);
+        }).join(" ") + " Z ";
+      }
+      const live = liveNames.has(name);
+      if (live) {
+        const rec = stateByName[name];
+        paths += `<path class="live" data-state="${esc(name)}" fill="${overallColor(rec.overall)}" d="${d.trim()}"></path>`;
+      } else {
+        paths += `<path class="dead" d="${d.trim()}"></path>`;
+      }
+    }
+    return `<svg class="usmap" viewBox="0 0 ${VBW} ${VBH}" role="img" aria-label="US map of shortlisted states">${paths}</svg>`;
+  }
+
+  // ---------- views ----------
+  function setView(html) {
+    app.innerHTML = `<div class="view">${html}</div>`;
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  function renderMap() {
+    const lo = rampColor(0.22), mid = rampColor(0.6), hi = rampColor(1);
+    const html = `
+      <div class="maphead">
+        <h2>Where should you go to law school?</h2>
+        <p>Twelve states are scored on affordability, quality of life, and legal-industry strength. Click a colored state to dig into its factors and schools. Gray states aren't part of your shortlist.</p>
+      </div>
+      <div class="mapwrap">${buildMapSVG()}</div>
+      <div class="maplegend">
+        <div class="ramp">
+          <span class="lo">Lower</span>
+          <div class="rampbar" style="background:linear-gradient(90deg, ${lo}, ${mid}, ${hi})"></div>
+          <span class="hi">Higher</span>
+          <span style="margin-left:6px">Overall fit — higher is better among your 12 states</span>
+        </div>
+        <span class="legend-gray"><span class="legend-swatch"></span> Gray states aren't scored</span>
+      </div>`;
+    setView(html);
+
+    app.querySelectorAll("svg path.live").forEach((el) => {
+      el.addEventListener("click", () => renderState(el.getAttribute("data-state")));
+      el.addEventListener("mousemove", (e) => showTooltip(e, el.getAttribute("data-state")));
+      el.addEventListener("mouseleave", hideTooltip);
+    });
+  }
+
+  function showTooltip(e, name) {
+    const s = stateByName[name];
+    if (!s) return;
+    tooltip.innerHTML = `
+      <div class="tt-name">${esc(name)}</div>
+      <div class="tt-row"><span>Affordability</span><b>${s.affordability.score.toFixed(1)}/5</b></div>
+      <div class="tt-row"><span>Quality of Life</span><b>${s.qualityOfLife.score.toFixed(1)}/5</b></div>
+      <div class="tt-row"><span>Legal Industry</span><b>${s.legalIndustry.score.toFixed(1)}/5</b></div>`;
+    tooltip.classList.add("on");
+    const pad = 14;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    const r = tooltip.getBoundingClientRect();
+    if (x + r.width > window.innerWidth - 8) x = e.clientX - r.width - pad;
+    if (y + r.height > window.innerHeight - 8) y = e.clientY - r.height - pad;
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+  }
+  function hideTooltip() { tooltip.classList.remove("on"); }
+
+  function factorCard(title, score, detailRows, extra) {
+    const pct = Math.round((score / 5) * 100);
+    return `
+      <div class="fcard">
+        <h3>${title}</h3>
+        <div class="fscore">${score.toFixed(1)}<span> / 5</span></div>
+        <div class="fbar"><i style="width:${pct}%"></i></div>
+        <div class="fdetail">${detailRows}</div>
+        ${extra || ""}
+      </div>`;
+  }
+
+  function renderState(name) {
+    hideTooltip();
+    const s = stateByName[name];
+    if (!s) { renderMap(); return; }
+    const aff = s.affordability, qol = s.qualityOfLife, leg = s.legalIndustry;
+
+    const affRows =
+      `<div class="drow"><span>Cost-of-living index</span><b>${aff.costOfLivingIndex}</b></div>` +
+      `<div class="drow"><span>Median rent</span><b>${money(aff.medianRent)}/mo</b></div>`;
+    const qolRows =
+      `<div class="drow"><span>Safety</span><b>${qol.safety}/5</b></div>` +
+      `<div class="drow"><span>Healthcare</span><b>${qol.healthcare}/5</b></div>` +
+      `<div class="drow"><span>Livability</span><b>${qol.livability}/5</b></div>` +
+      `<div class="drow"><span>Community</span><b>${qol.community}/5</b></div>`;
+    const legRows =
+      `<div class="drow"><span>Lawyer jobs / 1k</span><b>${leg.lawyerJobsPer1k}</b></div>` +
+      `<div class="drow"><span>Avg legal salary</span><b>${money(leg.avgLegalSalary)}</b></div>`;
+
+    const schools = sortSchools(schoolsByState[name] || []);
+    const rows = schools.map((sc) => `
+      <div class="srow" data-school="${esc(sc.name)}">
+        <div class="sname">
+          <div class="n">${esc(sc.name)}</div>
+          <div class="c">${esc(sc.city)}, ${esc(s.abbr)}</div>
+        </div>
+        ${tierBadge(sc.tier)}
+        <div class="stats">LSAT <b>${sc.medianLSAT}</b> &nbsp;·&nbsp; GPA <b>${sc.medianGPA.toFixed(2)}</b></div>
+        ${isSaved(sc.name) ? '<span class="saved-flag">✓ on my list</span>' : ""}
+      </div>`).join("");
+
+    const html = `
+      <div class="crumb"><span class="link" data-nav="map">Map</span><span class="sep">▸</span><span class="cur">${esc(name)}</span></div>
+      <h2 style="margin:0 0 4px;font-size:24px;letter-spacing:-.02em">${esc(name)}</h2>
+      <p style="margin:0 0 4px;color:var(--ink-soft);font-size:14px">Overall fit <b style="color:var(--ink)">${s.overall.toFixed(2)}/5</b> · anchored to ${esc(s.anchorCity)}</p>
+      <div class="factor-grid">
+        ${factorCard("Affordability", aff.score, affRows)}
+        ${factorCard("Quality of Life", qol.score, qolRows, `<div class="anchor-note">Community anchored to ${esc(s.anchorCity)}.</div>`)}
+        ${factorCard("Legal Industry", leg.score, legRows)}
+      </div>
+      <div class="section-h">Law schools in ${esc(name)} <span style="color:var(--ink-faint);font-weight:500">(${schools.length})</span></div>
+      <div class="school-list">${rows || '<p style="color:var(--ink-faint)">No schools listed.</p>'}</div>`;
+    setView(html);
+
+    app.querySelector('[data-nav="map"]').addEventListener("click", renderMap);
+    app.querySelectorAll(".srow").forEach((el) =>
+      el.addEventListener("click", () => renderSchool(el.getAttribute("data-school"))));
+  }
+
+  function renderSchool(schoolName) {
+    const sc = schoolByName[schoolName];
+    if (!sc) { renderMap(); return; }
+    const st = stateByName[sc.state];
+    const added = isSaved(sc.name);
+
+    const html = `
+      <div class="crumb">
+        <span class="link" data-nav="map">Map</span><span class="sep">▸</span>
+        <span class="link" data-nav="state">${esc(sc.state)}</span><span class="sep">▸</span>
+        <span class="cur">${esc(sc.name)}</span>
+      </div>
+      <div class="school-hero">
+        <div class="h-top">
+          <div>
+            <h2>${esc(sc.name)}</h2>
+            <div class="loc">${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)}</div>
+          </div>
+          ${tierBadge(sc.tier)}
+        </div>
+        <div class="statblock">
+          <div class="stat"><div class="lbl">Median GPA</div><div class="val">${sc.medianGPA.toFixed(2)}</div></div>
+          <div class="stat"><div class="lbl">Median LSAT</div><div class="val">${sc.medianLSAT}</div></div>
+          <div class="stat"><div class="lbl">Rank</div><div class="val">${sc.rank == null ? "—" : "#" + sc.rank}</div></div>
+          <div class="stat"><div class="lbl">In-State Tuition</div><div class="val">${money(sc.tuitionInState)}</div></div>
+          <div class="stat"><div class="lbl">Out-of-State Tuition</div><div class="val">${money(sc.tuitionOutState)}</div></div>
+          <div class="stat"><div class="lbl">Tier</div><div class="val">${esc(sc.tier || "—")}</div></div>
+        </div>
+        <div class="writeup-h">How it stacks up</div>
+        <p class="writeup">${esc(sc.writeup)}</p>
+        <button class="addbtn ${added ? "added" : ""}" id="toggleBtn">
+          ${added ? "✓ Added — remove" : "Add to my target list"}
+        </button>
+      </div>`;
+    setView(html);
+
+    app.querySelector('[data-nav="map"]').addEventListener("click", renderMap);
+    app.querySelector('[data-nav="state"]').addEventListener("click", () => renderState(sc.state));
+    app.querySelector("#toggleBtn").addEventListener("click", () => {
+      toggleSaved(sc.name);
+      renderSchool(sc.name);      // re-render to update button
+      renderPanel();              // keep panel in sync
+    });
+  }
+
+  // ---------- list panel ----------
+  function renderPanel() {
+    const body = document.getElementById("panelBody");
+    const savedSchools = saved.map((n) => schoolByName[n]).filter(Boolean);
+    if (!savedSchools.length) {
+      body.innerHTML = `<div class="empty">Your list is empty.<br>Add schools from any school's detail page.</div>`;
+      document.getElementById("exportMd").disabled = true;
+      document.getElementById("exportCsv").disabled = true;
+      return;
+    }
+    document.getElementById("exportMd").disabled = false;
+    document.getElementById("exportCsv").disabled = false;
+
+    const groups = {};
+    savedSchools.forEach((s) => { (groups[s.state] = groups[s.state] || []).push(s); });
+    const stateNames = Object.keys(groups).sort();
+
+    let html = "";
+    stateNames.forEach((stn) => {
+      html += `<div class="pl-state">${esc(stn)}</div>`;
+      sortSchools(groups[stn]).forEach((s) => {
+        html += `
+          <div class="pl-entry">
+            <div class="pe-main" data-school="${esc(s.name)}">
+              <div class="n">${esc(s.name)}</div>
+              <div class="m">${esc(s.city)} · ${esc(s.tier || "—")} · LSAT ${s.medianLSAT} · GPA ${s.medianGPA.toFixed(2)} · ${money(s.tuitionInState)} in / ${money(s.tuitionOutState)} out</div>
+            </div>
+            <button class="pl-remove" data-remove="${esc(s.name)}" title="Remove">&times;</button>
+          </div>`;
+      });
+    });
+    body.innerHTML = html;
+
+    body.querySelectorAll(".pe-main").forEach((el) =>
+      el.addEventListener("click", () => {
+        closePanel();
+        renderSchool(el.getAttribute("data-school"));
+      }));
+    body.querySelectorAll(".pl-remove").forEach((el) =>
+      el.addEventListener("click", () => {
+        toggleSaved(el.getAttribute("data-remove"));
+        renderPanel();
+        refreshCurrentView();
+      }));
+  }
+
+  // Re-render whatever view is on screen so ✓ flags stay accurate.
+  function refreshCurrentView() {
+    const crumbCur = app.querySelector(".crumb .cur");
+    const schoolHero = app.querySelector(".school-hero");
+    const mapEl = app.querySelector("svg.usmap");
+    if (mapEl) return; // map has no per-school flags
+    if (schoolHero && crumbCur) {
+      renderSchool(crumbCur.textContent);
+    } else if (crumbCur) {
+      renderState(crumbCur.textContent);
+    }
+  }
+
+  function openPanel() { renderPanel(); document.getElementById("overlay").classList.add("on"); document.getElementById("panel").classList.add("on"); }
+  function closePanel() { document.getElementById("overlay").classList.remove("on"); document.getElementById("panel").classList.remove("on"); }
+
+  // ---------- exports ----------
+  function download(filename, text, mime) {
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 500);
+  }
+  function groupedSaved() {
+    const savedSchools = saved.map((n) => schoolByName[n]).filter(Boolean);
+    const groups = {};
+    savedSchools.forEach((s) => { (groups[s.state] = groups[s.state] || []).push(s); });
+    return groups;
+  }
+  function exportMarkdown() {
+    const groups = groupedSaved();
+    const names = Object.keys(groups).sort();
+    if (!names.length) return;
+    let md = "# My Law School Target List\n\n";
+    names.forEach((stn) => {
+      md += `## ${stn}\n\n`;
+      sortSchools(groups[stn]).forEach((s) => {
+        const rk = s.rank == null ? (s.tier || "unranked") : "#" + s.rank;
+        md += `- **${s.name}** — ${s.city}. GPA ${s.medianGPA.toFixed(2)}, LSAT ${s.medianLSAT}, ` +
+              `${money(s.tuitionInState)} in-state / ${money(s.tuitionOutState)} out-of-state, ${rk} (${s.tier || "—"})\n`;
+      });
+      md += "\n";
+    });
+    download("law-school-shortlist.md", md, "text/markdown");
+  }
+  function exportCsv() {
+    const groups = groupedSaved();
+    const names = Object.keys(groups).sort();
+    if (!names.length) return;
+    const cell = (v) => {
+      const s = v == null ? "" : String(v);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    let csv = "State,School,City,MedianGPA,MedianLSAT,InStateTuition,OutStateTuition,Rank,Tier\n";
+    names.forEach((stn) => {
+      sortSchools(groups[stn]).forEach((s) => {
+        csv += [
+          cell(s.state), cell(s.name), cell(s.city),
+          cell(s.medianGPA), cell(s.medianLSAT),
+          cell(s.tuitionInState), cell(s.tuitionOutState),
+          cell(s.rank == null ? "" : s.rank), cell(s.tier)
+        ].join(",") + "\n";
+      });
+    });
+    download("law-school-shortlist.csv", csv, "text/csv");
+  }
+
+  // ---------- boot ----------
+  async function boot() {
+    try {
+      const [geo, states, schools] = await Promise.all([
+        fetch("data/us-states.json").then((r) => { if (!r.ok) throw new Error("us-states.json"); return r.json(); }),
+        fetch("data/states.json").then((r) => { if (!r.ok) throw new Error("states.json"); return r.json(); }),
+        fetch("data/schools.json").then((r) => { if (!r.ok) throw new Error("schools.json"); return r.json(); }),
+      ]);
+      DATA.geo = geo;
+
+      // index states (ignore _-prefixed keys)
+      (states.states || []).forEach((s) => {
+        if (typeof s.state !== "string" || s.state[0] === "_") return;
+        stateByName[s.state] = s;
+        if (s.overall < overallMin) overallMin = s.overall;
+        if (s.overall > overallMax) overallMax = s.overall;
+      });
+      // index schools
+      (schools.schools || []).forEach((sc) => {
+        if (typeof sc.name !== "string" || sc.name[0] === "_") return;
+        schoolByName[sc.name] = sc;
+        (schoolsByState[sc.state] = schoolsByState[sc.state] || []).push(sc);
+      });
+
+      // drop any saved names no longer in data
+      saved = saved.filter((n) => schoolByName[n]);
+      persist();
+
+      renderMap();
+    } catch (err) {
+      app.innerHTML = `<div class="view"><div class="errbox">
+        <b>Couldn't load the data.</b><br>
+        Failed on <code>${esc(err.message || err)}</code>.
+        This app fetches local JSON, so it must be served over a local HTTP server
+        (e.g. <code>python3 -m http.server</code>) rather than opened via <code>file://</code>.
+      </div></div>`;
+    }
+  }
+
+  // wire persistent controls
+  document.getElementById("openListBtn").addEventListener("click", openPanel);
+  document.getElementById("closeListBtn").addEventListener("click", closePanel);
+  document.getElementById("overlay").addEventListener("click", closePanel);
+  document.getElementById("exportMd").addEventListener("click", exportMarkdown);
+  document.getElementById("exportCsv").addEventListener("click", exportCsv);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+  persist();
+  boot();
+})();
+</script>
+</body>
+</html>

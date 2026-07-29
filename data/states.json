@@ -1,0 +1,95 @@
+{
+  "_note": "State-level snapshot for a personal law-school shortlist. Scores are 1-5, normalized RELATIVE to these 12 states only. Raw figures are approximate public-source values (cost-of-living index US avg=100, BLS legal employment, Census/ACS rent). Point-in-time — spot-check before relying on any number. Every value here is editable.",
+  "_scoreLegend": {
+    "affordability": "higher = more affordable (inverse of cost of living)",
+    "qualityOfLife": "even blend of safety + healthcare + livability/climate + community (youthful active lifestyle, anchored to the state's main law-school city)",
+    "legalIndustry": "blend of lawyer job density + average legal salary",
+    "overall": "equal-weight average of the three factor scores; drives map color"
+  },
+  "states": [
+    {
+      "state": "California", "abbr": "CA", "anchorCity": "Los Angeles / Bay Area",
+      "affordability": { "costOfLivingIndex": 145, "medianRent": 1900, "score": 1.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 4, "livability": 5, "community": 5, "score": 4.25 },
+      "legalIndustry": { "lawyerJobsPer1k": 6.5, "avgLegalSalary": 190000, "score": 5.0 },
+      "overall": 3.42
+    },
+    {
+      "state": "Texas", "abbr": "TX", "anchorCity": "Austin",
+      "affordability": { "costOfLivingIndex": 93, "medianRent": 1300, "score": 4.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 2, "livability": 3, "community": 5, "score": 3.25 },
+      "legalIndustry": { "lawyerJobsPer1k": 5.5, "avgLegalSalary": 160000, "score": 4.0 },
+      "overall": 3.75
+    },
+    {
+      "state": "Illinois", "abbr": "IL", "anchorCity": "Chicago",
+      "affordability": { "costOfLivingIndex": 95, "medianRent": 1250, "score": 4.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 4, "livability": 3, "community": 4, "score": 3.5 },
+      "legalIndustry": { "lawyerJobsPer1k": 7.5, "avgLegalSalary": 155000, "score": 4.0 },
+      "overall": 3.83
+    },
+    {
+      "state": "Michigan", "abbr": "MI", "anchorCity": "Ann Arbor",
+      "affordability": { "costOfLivingIndex": 90, "medianRent": 1050, "score": 5.0 },
+      "qualityOfLife": { "safety": 2, "healthcare": 4, "livability": 3, "community": 4, "score": 3.25 },
+      "legalIndustry": { "lawyerJobsPer1k": 5.0, "avgLegalSalary": 130000, "score": 3.0 },
+      "overall": 3.75
+    },
+    {
+      "state": "Massachusetts", "abbr": "MA", "anchorCity": "Boston / Cambridge",
+      "affordability": { "costOfLivingIndex": 135, "medianRent": 1900, "score": 2.0 },
+      "qualityOfLife": { "safety": 5, "healthcare": 5, "livability": 4, "community": 5, "score": 4.75 },
+      "legalIndustry": { "lawyerJobsPer1k": 8.5, "avgLegalSalary": 165000, "score": 5.0 },
+      "overall": 3.92
+    },
+    {
+      "state": "Maryland", "abbr": "MD", "anchorCity": "Baltimore",
+      "affordability": { "costOfLivingIndex": 116, "medianRent": 1500, "score": 3.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 5, "livability": 4, "community": 3, "score": 3.75 },
+      "legalIndustry": { "lawyerJobsPer1k": 8.0, "avgLegalSalary": 145000, "score": 4.0 },
+      "overall": 3.58
+    },
+    {
+      "state": "North Carolina", "abbr": "NC", "anchorCity": "Durham / Chapel Hill",
+      "affordability": { "costOfLivingIndex": 96, "medianRent": 1300, "score": 4.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 4, "livability": 4, "community": 4, "score": 3.75 },
+      "legalIndustry": { "lawyerJobsPer1k": 4.5, "avgLegalSalary": 135000, "score": 3.0 },
+      "overall": 3.58
+    },
+    {
+      "state": "South Carolina", "abbr": "SC", "anchorCity": "Columbia",
+      "affordability": { "costOfLivingIndex": 96, "medianRent": 1250, "score": 4.0 },
+      "qualityOfLife": { "safety": 2, "healthcare": 3, "livability": 4, "community": 3, "score": 3.0 },
+      "legalIndustry": { "lawyerJobsPer1k": 4.0, "avgLegalSalary": 115000, "score": 2.0 },
+      "overall": 3.0
+    },
+    {
+      "state": "Tennessee", "abbr": "TN", "anchorCity": "Nashville",
+      "affordability": { "costOfLivingIndex": 90, "medianRent": 1300, "score": 5.0 },
+      "qualityOfLife": { "safety": 2, "healthcare": 3, "livability": 4, "community": 5, "score": 3.5 },
+      "legalIndustry": { "lawyerJobsPer1k": 4.5, "avgLegalSalary": 125000, "score": 2.0 },
+      "overall": 3.5
+    },
+    {
+      "state": "Georgia", "abbr": "GA", "anchorCity": "Atlanta",
+      "affordability": { "costOfLivingIndex": 92, "medianRent": 1400, "score": 4.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 3, "livability": 4, "community": 5, "score": 3.75 },
+      "legalIndustry": { "lawyerJobsPer1k": 6.0, "avgLegalSalary": 145000, "score": 4.0 },
+      "overall": 3.92
+    },
+    {
+      "state": "Florida", "abbr": "FL", "anchorCity": "Miami",
+      "affordability": { "costOfLivingIndex": 103, "medianRent": 1600, "score": 3.0 },
+      "qualityOfLife": { "safety": 3, "healthcare": 3, "livability": 5, "community": 5, "score": 4.0 },
+      "legalIndustry": { "lawyerJobsPer1k": 6.5, "avgLegalSalary": 145000, "score": 4.0 },
+      "overall": 3.67
+    },
+    {
+      "state": "New York", "abbr": "NY", "anchorCity": "New York City",
+      "affordability": { "costOfLivingIndex": 125, "medianRent": 1700, "score": 2.0 },
+      "qualityOfLife": { "safety": 4, "healthcare": 5, "livability": 3, "community": 5, "score": 4.25 },
+      "legalIndustry": { "lawyerJobsPer1k": 9.5, "avgLegalSalary": 200000, "score": 5.0 },
+      "overall": 3.75
+    }
+  ]
+}
