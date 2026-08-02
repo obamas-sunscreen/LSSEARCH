@@ -2,7 +2,30 @@
 
 A personal tool for building a shortlist of law schools, organized by state.
 
-**Flow:** enter your GPA, LSAT, career goals, and where you want to practice → get every ABA school ranked for you, grouped into Safety / Target / Reach / Far reach → click one for full stats, employment outcomes, and where your numbers land in its admitted range → add it to your target list. The US map is still there underneath: with a profile set it recolors by *your* fit, and clicking a state still drills into every school in it. Your list is grouped by state, persists in the browser, and exports to Markdown or CSV.
+**Flow:** the map is the front door. Hover any state and the rail beside it fills with that state's real strengths and weaknesses — the measures where it genuinely stands apart from the other 50, with the figure behind each one. Click through to every school there. Open the fit panel and enter your GPA, LSAT, career goals, and where you want to practice, and you get every ABA school ranked for you, grouped into Safety / Target / Reach / Far reach, each with a modelled admit / waitlist / deny split. Click one for full stats, employment outcomes, and where your numbers land in its admitted range → add it to your target list. Your list is grouped by state, persists in the browser, and exports to Markdown or CSV.
+
+Press `/` (or `⌘K`) anywhere to jump straight to any of the 193 schools or 51 jurisdictions by name.
+
+**Map layers.** The chips above the map recolor it:
+
+| Layer | What the colour means | Needs |
+|---|---|---|
+| Overall | The blended state score, ranked against all 51 | — |
+| Your reach | Modelled admit chance at that state's **highest-ranked** school | GPA + LSAT |
+| Your fit | How the best-fitting school there ranks for your whole profile | a goal or target state |
+| Affordability | Cost of living and housing, inverted | — |
+| Legal market | Lawyer job density and average legal pay | — |
+| Schools | Count of ABA-accredited schools | — |
+
+*Your reach* is measured at the flagship on purpose. "Best odds anywhere in the state" sounds more useful but is nearly worthless: almost every state has some school that admits broadly, so a strong applicant sees 98% everywhere and the map goes flat — 8 distinct values across 51 jurisdictions at GPA 3.2 / LSAT 174, against 25 when measured at the flagship.
+
+### State strengths and weaknesses
+
+Ten measures per jurisdiction, each percentile-ranked against the other 50, in `INSIGHT_METRICS` in `app.js`. Four come straight from `states.json` (legal market, legal pay, cost of living, quality of life); six are derived from the schools in that state (how many there are, its highest-ranked one, median out-of-state tuition, median employment rate, the best BigLaw share available, and the median share of a class that stays in state).
+
+The rail only shows a measure where the state genuinely stands apart — above the 62nd percentile for a strength, below the 38th for a weakness, at most three of each. A state that's mid-pack on everything says so rather than manufacturing a strength. Every line carries the raw figure and the state's place, so nothing is a bare adjective: "Legal pay · 2nd of 51 · $230k average salary."
+
+The denominators differ on purpose. Measures drawn from schools say "of 50" because Alaska has none; state-level measures say "of 51."
 
 ## How the matching works
 
@@ -16,7 +39,7 @@ Results are grouped by admission band and ranked within each band on career and 
 
 ### How the admission odds are built (and what they're worth)
 
-An ordered logit. Your numbers produce a latent "review score"; two thresholds cut it into admit, waitlist and deny, so the three always add to 100 and admit chances rise monotonically with both numbers. It lives in `admitOdds()` in `index.html`.
+An ordered logit. Your numbers produce a latent "review score"; two thresholds cut it into admit, waitlist and deny, so the three always add to 100 and admit chances rise monotonically with both numbers. It lives in `admitOdds()` in `app.js`.
 
 **Nothing in it is fitted to real admission results.** No law school publishes who it admitted at what numbers, and this repo has no individual outcome data of any kind. The curve is *constrained* by three figures every school does report, and everything else is an assumption you can read and change in the `ODDS` block right above the function:
 
@@ -38,6 +61,8 @@ What the model knows nothing about: your essays, letters, work history, résumé
 ## Running it
 
 The app loads its data from local JSON files, so it needs a tiny local web server (opening `index.html` directly with `file://` will fail on most browsers because of how they block local file reads).
+
+The front end is three plain files with no build step: `index.html` (the shell), `app.css` (all styling, organised tokens → base → components → views), and `app.js` (data loading, scoring, and every view).
 
 From this folder, run:
 
@@ -108,5 +133,5 @@ Each figure traces to a named public source, so you can re-check any of them:
 
 - **Add a school:** add an object to the `schools` array in `data/schools.json` with a `state` matching one in `states.json`. It'll show up automatically. If it's in a city not already in `cities.json`, add that too, or the lifestyle block won't render. To give it admissions and outcomes data, add an `ALIASES` entry in `tools/fetch_aba.py` mapping your name to the ABA's, then re-run the script.
 - **Change a score or fix a number:** edit the value and reload the page. Note that re-running `tools/fetch_aba.py` overwrites the `admissions`, `outcomes`, `topStates`, `medianGPA`, and `medianLSAT` fields — hand-edit those in the script, not the JSON, if you want the change to survive.
-- **Reweight the model:** `overall` in `states.json` is just the average of the three factor scores. Recompute it however you like — the map color and sort follow whatever you put there. The fit weights live in `index.html`: `LSAT_WEIGHT`/`GPA_WEIGHT` for how the two numbers blend into one index, the `0.55`/`0.45` split in `scoreAll` for career vs. place, and the `0.7`/`0.3` split in `locationFit` for named states vs. sliders. The admission model is the `ODDS` block — every constant in it is commented with what it controls, and `BAND_CUTS` sets the admit probabilities where Safety/Target/Reach/Far reach change over.
+- **Reweight the model:** `overall` in `states.json` is just the average of the three factor scores. Recompute it however you like — the map color and sort follow whatever you put there. The fit weights live in `app.js`: `LSAT_WEIGHT`/`GPA_WEIGHT` for how the two numbers blend into one index, the `0.55`/`0.45` split in `scoreAll` for career vs. place, and the `0.7`/`0.3` split in `locationFit` for named states vs. sliders. The admission model is the `ODDS` block — every constant in it is commented with what it controls, and `BAND_CUTS` sets the admit probabilities where Safety/Target/Reach/Far reach change over.
 - **Renaming a school** will drop it from any saved target list, since the list stores names. Edit `lawSchoolShortlist` in localStorage if you need to rename something you've saved. Your profile lives in `lawSchoolProfile`.
