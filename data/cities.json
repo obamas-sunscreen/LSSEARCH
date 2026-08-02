@@ -2,6 +2,105 @@
   "_note": "City-level youthful-active-lifestyle scores, one per law-school city. This replaces the old state-level 'community' score because lifestyle varies enormously within a state (Austin vs. Lubbock). Sub-signals are 1-5: social = nightlife/dining/music/young-professional density (weighted heaviest); outdoors = active outdoor recreation; walkability = walkable/transit vs. car-dependent. lifestyleScore = 0.5*social + 0.25*outdoors + 0.25*walkability, rounded to the nearest 0.5. Editable estimates, not survey data.",
   "cities": [
     {
+      "city": "Ada",
+      "state": "Ohio",
+      "social": 1,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "A village of about 5,000 built around the university. Essentially no independent social scene \u2014 this is a heads-down three years."
+    },
+    {
+      "city": "Akron",
+      "state": "Ohio",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 2.5,
+      "blurb": "Cheap rust-belt city with surprisingly good outdoors in Cuyahoga Valley National Park just north. Thin nightlife; Cleveland is 40 minutes."
+    },
+    {
+      "city": "Albany",
+      "state": "New York",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "State-capital town with a modest but real scene, a student presence, and easy access to the Adirondacks and Berkshires."
+    },
+    {
+      "city": "Albuquerque",
+      "state": "New Mexico",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Sandia Mountains on one side, the Rio Grande bosque on the other, and 300 days of sun. Cheap, gritty, and thoroughly car-dependent."
+    },
+    {
+      "city": "Ann Arbor",
+      "state": "Michigan",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Quintessential vibrant college town \u2014 walkable, foodie, young, and cultured around the University of Michigan. Small, but punches above its size."
+    },
+    {
+      "city": "Athens",
+      "state": "Georgia",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Legendary music-scene college town (UGA) \u2014 walkable, cheap, and young. Small, but a lot of fun for its size."
+    },
+    {
+      "city": "Atlanta",
+      "state": "Georgia",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "A major young-professional and cultural hub with nightlife, music, and diversity. Sprawl and traffic are the price of admission."
+    },
+    {
+      "city": "Austin",
+      "state": "Texas",
+      "social": 5,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 4.5,
+      "blurb": "The poster child for youthful and active \u2014 live music, lakes and greenbelts, food trucks, and a young, growing crowd. Traffic and rising costs are the downside."
+    },
+    {
+      "city": "Ave Maria",
+      "state": "Florida",
+      "social": 1,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "A purpose-built town of a few thousand in the Southwest Florida farmland. Nearly no independent social scene; Naples is 30 minutes away."
+    },
+    {
+      "city": "Baltimore",
+      "state": "Maryland",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "An underrated, affordable arts/music/food city with walkable rowhouse neighborhoods and harbor access. Crime and blight in pockets are real."
+    },
+    {
+      "city": "Baton Rouge",
+      "state": "Louisiana",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "LSU-driven and affordable, with New Orleans an hour away for anything the city can't supply. Hot, humid, and car-dependent."
+    },
+    {
       "city": "Berkeley",
       "state": "California",
       "social": 4,
@@ -9,6 +108,258 @@
       "walkability": 4,
       "lifestyleScore": 4.0,
       "blurb": "Bustling university town with Bay Area access, a walkable core, and hills/bay trails close by. Young and active, though pricey."
+    },
+    {
+      "city": "Birmingham",
+      "state": "Alabama",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Cheap, and the food-and-music scene punches above the metro's size. Sprawling and car-first once you leave Avondale or Five Points."
+    },
+    {
+      "city": "Bloomington",
+      "state": "Indiana",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Unusually good college town \u2014 live music, a compact walkable core, and Hoosier National Forest nearby. Cheap, and it empties in summer."
+    },
+    {
+      "city": "Boston",
+      "state": "Massachusetts",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.5,
+      "blurb": "One of the most student-dense cities in the country \u2014 walkable, transit-rich, packed with bars, sports, and young professionals. Expensive and cold."
+    },
+    {
+      "city": "Boulder",
+      "state": "Colorado",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "About as outdoors-forward as American cities get \u2014 trailheads at the edge of a compact, walkable, bike-mad downtown. Expensive and small."
+    },
+    {
+      "city": "Bristol",
+      "state": "Rhode Island",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Small waterfront town on Narragansett Bay with sailing and the East Bay Bike Path. Providence is 30 minutes for anything else."
+    },
+    {
+      "city": "Bronx",
+      "state": "New York",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.0,
+      "blurb": "Full subway access to all of New York City, with Van Cortlandt Park and the Botanical Garden nearby. Cheaper than Manhattan."
+    },
+    {
+      "city": "Brooklyn",
+      "state": "New York",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.5,
+      "blurb": "The epicenter of young, creative NYC \u2014 endless food, nightlife, and arts, all walkable and transit-connected. Very expensive."
+    },
+    {
+      "city": "Buffalo",
+      "state": "New York",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Affordable, revitalizing rust-belt city with a growing food scene and real neighborhood character. Long, snowy winters."
+    },
+    {
+      "city": "Cambridge",
+      "state": "Massachusetts",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.0,
+      "blurb": "Harvard/MIT energy: cafes, bookstores, and a young academic crowd on foot and transit. Pricey and small."
+    },
+    {
+      "city": "Camden",
+      "state": "New Jersey",
+      "social": 2,
+      "outdoors": 2,
+      "walkability": 3,
+      "lifestyleScore": 2.0,
+      "blurb": "Working waterfront city directly across from Philadelphia, which is where the social life is \u2014 PATCO gets you there in minutes."
+    },
+    {
+      "city": "Carbondale",
+      "state": "Illinois",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Small, remote southern-Illinois university town with nearby Shawnee forest but a thin nightlife scene."
+    },
+    {
+      "city": "Carlisle",
+      "state": "Pennsylvania",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Small, walkable historic borough in the Cumberland Valley with the Appalachian Trail close by. Cheap and very quiet."
+    },
+    {
+      "city": "Central Islip",
+      "state": "New York",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Suburban Long Island hamlet \u2014 commuter-oriented and car-dependent, with a limited youthful scene of its own."
+    },
+    {
+      "city": "Champaign",
+      "state": "Illinois",
+      "social": 3,
+      "outdoors": 2,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Lively UIUC college-town energy and a walkable campus core, but marooned in central-Illinois cornfields."
+    },
+    {
+      "city": "Chapel Hill",
+      "state": "North Carolina",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Classic Tar Heel college town \u2014 walkable Franklin Street, young, and lively, with Triangle amenities nearby."
+    },
+    {
+      "city": "Charleston",
+      "state": "South Carolina",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Historic, coastal, and genuinely fun \u2014 a celebrated food scene, beaches, and a walkable core. Tourist crowds and heat are the tradeoffs."
+    },
+    {
+      "city": "Charlottesville",
+      "state": "Virginia",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Blue Ridge and Shenandoah on the doorstep, a walkable downtown mall, and a strong wine-and-food scene. Small and not cheap."
+    },
+    {
+      "city": "Chicago",
+      "state": "Illinois",
+      "social": 5,
+      "outdoors": 4,
+      "walkability": 5,
+      "lifestyleScore": 5.0,
+      "blurb": "World-class dining, nightlife, and culture with a lakefront full of running paths and beaches, all on excellent transit. Winters are the tax."
+    },
+    {
+      "city": "Cincinnati",
+      "state": "Ohio",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Over-the-Rhine is one of the better walkable nightlife districts in the Midwest, and housing is cheap. Hilly, with good river access."
+    },
+    {
+      "city": "Cleveland",
+      "state": "Ohio",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Very cheap, with world-class cultural institutions, lakefront access, and the Metroparks 'Emerald Necklace.' Winters are grey and long."
+    },
+    {
+      "city": "Columbia",
+      "state": "Missouri",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Mid-Missouri college town with good trail access (the Katy Trail) and a walkable downtown. Cheap and comfortably scaled."
+    },
+    {
+      "city": "Columbia",
+      "state": "South Carolina",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "State-capital college town (USC) with steady student energy and affordability, but hot summers and a modest scene."
+    },
+    {
+      "city": "Columbus",
+      "state": "Ohio",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Young, growing, and cheap, with the Short North supplying most of the nightlife. Flat and bikeable; outdoors is unremarkable."
+    },
+    {
+      "city": "Concord",
+      "state": "New Hampshire",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Small, quiet capital with the White Mountains and Lakes Region within easy reach. Very little in the way of nightlife."
+    },
+    {
+      "city": "Coral Gables",
+      "state": "Florida",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Upscale, leafy Miami-area city with a walkable Miracle Mile and quick access to Miami's scene and beaches. Pricey."
+    },
+    {
+      "city": "Dallas",
+      "state": "Texas",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Big-city dining, nightlife, and sports with a large young-professional base, but sprawling and very car-dependent."
+    },
+    {
+      "city": "Dartmouth",
+      "state": "Massachusetts",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Coastal southeastern-Massachusetts town near New Bedford \u2014 quiet, with limited youthful nightlife."
+    },
+    {
+      "city": "Davie",
+      "state": "Florida",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 2.5,
+      "blurb": "Suburban, horse-country-adjacent Broward County. Beaches and the Everglades are close, but you will drive everywhere."
     },
     {
       "city": "Davis",
@@ -20,6 +371,222 @@
       "blurb": "Flat, bike-obsessed college town \u2014 great for an active outdoor routine, but a quiet nightlife scene and isolated from a big city."
     },
     {
+      "city": "Dayton",
+      "state": "Ohio",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 2.5,
+      "blurb": "Inexpensive, with an excellent regional bike-trail network and river access. Small social scene, largely car-dependent."
+    },
+    {
+      "city": "DeKalb",
+      "state": "Illinois",
+      "social": 2,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Quiet NIU college town west of Chicago \u2014 affordable and small, with a limited youthful scene."
+    },
+    {
+      "city": "Denver",
+      "state": "Colorado",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "Young, active, and beer-soaked, with the Front Range an hour west. Downtown walks well; the rest sprawls. No longer cheap."
+    },
+    {
+      "city": "Des Moines",
+      "state": "Iowa",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Underrated small capital \u2014 cheap, walkable downtown, strong trail network, and a real young-professional cohort in the East Village."
+    },
+    {
+      "city": "Detroit",
+      "state": "Michigan",
+      "social": 4,
+      "outdoors": 2,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "A revitalizing city with a real arts, music, and dining renaissance at low cost. Gritty in spots and light on outdoors."
+    },
+    {
+      "city": "Durham",
+      "state": "North Carolina",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Reinvented tobacco town turned foodie/arts hub with a young, creative Research Triangle crowd. Rising fast."
+    },
+    {
+      "city": "East Lansing",
+      "state": "Michigan",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Michigan State college-town energy with a walkable strip and decent outdoors, but modest beyond campus life."
+    },
+    {
+      "city": "Eugene",
+      "state": "Oregon",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Track Town \u2014 running, cycling, and river trails everywhere, with the Cascades and coast both an hour out. Small, wet, and cheap for Oregon."
+    },
+    {
+      "city": "Fairfax",
+      "state": "Virginia",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Northern Virginia suburb with Metro access into DC, which supplies the actual social life. Expensive for what it is."
+    },
+    {
+      "city": "Fayetteville",
+      "state": "Arkansas",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Ozarks trail town with a genuinely good mountain-biking network and a lively square. Cheap, growing, and much younger than the state average."
+    },
+    {
+      "city": "Fort Worth",
+      "state": "Texas",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Friendlier, more laid-back DFW alternative with a growing scene, but quieter nightlife than Dallas and car-dependent."
+    },
+    {
+      "city": "Gainesville",
+      "state": "Florida",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Energetic Gator college town with springs and trails nearby \u2014 young, affordable, and lively during the school year."
+    },
+    {
+      "city": "Grand Forks",
+      "state": "North Dakota",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 2.5,
+      "blurb": "Very small, very cheap, and very cold. A compact downtown and river greenway; the social scene is almost entirely campus."
+    },
+    {
+      "city": "Greensboro",
+      "state": "North Carolina",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Mid-size Piedmont city with a modest college scene and affordable living \u2014 pleasant but not buzzing."
+    },
+    {
+      "city": "Grundy",
+      "state": "Virginia",
+      "social": 1,
+      "outdoors": 5,
+      "walkability": 1,
+      "lifestyleScore": 2.0,
+      "blurb": "A town of about 1,000 deep in the Appalachian coalfields. Outstanding hiking and ATV trails; essentially no social infrastructure."
+    },
+    {
+      "city": "Gulfport",
+      "state": "Florida",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Small artsy Gulf-coast enclave near St. Pete/Tampa \u2014 beaches and a quirky scene, but modest nightlife of its own."
+    },
+    {
+      "city": "Harrisburg",
+      "state": "Pennsylvania",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 2.5,
+      "blurb": "Small capital on the Susquehanna with a compact riverfront core. Cheap, practical, and limited after hours."
+    },
+    {
+      "city": "Hartford",
+      "state": "Connecticut",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 2.5,
+      "blurb": "Insurance-industry capital that empties out on weekends. Cheap for the Northeast, with easy rail to Boston and New York when you need more."
+    },
+    {
+      "city": "Hempstead",
+      "state": "New York",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Long Island hub near Hofstra with LIRR access to NYC, but the immediate area is suburban and modest."
+    },
+    {
+      "city": "Highland Heights",
+      "state": "Kentucky",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Northern Kentucky campus suburb across the river from Cincinnati, which supplies most of the actual nightlife. Car-dependent and cheap."
+    },
+    {
+      "city": "Honolulu",
+      "state": "Hawaii",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "Unmatched outdoors \u2014 surf, reef, and ridge hikes inside the city limits. Small legal market, extreme cost of living, and a long flight from anywhere."
+    },
+    {
+      "city": "Houston",
+      "state": "Texas",
+      "social": 4,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Enormous, diverse dining and nightlife and a young workforce, offset by heat, humidity, sprawl, and limited outdoors."
+    },
+    {
+      "city": "Indianapolis",
+      "state": "Indiana",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Affordable, flat, and very bikeable along the Cultural Trail. Growing food scene; still a car city outside the Mile Square."
+    },
+    {
+      "city": "Iowa City",
+      "state": "Iowa",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "A literary college town with a genuinely walkable pedestrian mall and outsized bar and arts density for its size. Very cheap."
+    },
+    {
       "city": "Irvine",
       "state": "California",
       "social": 2,
@@ -27,6 +594,123 @@
       "walkability": 2,
       "lifestyleScore": 2.5,
       "blurb": "Master-planned, spotless, and safe with beaches and trails nearby, but sterile and car-dependent with little organic young-adult scene."
+    },
+    {
+      "city": "Ithaca",
+      "state": "New York",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Gorges, lakes, and trails everywhere around Cornell \u2014 a small, outdoorsy, youthful town, if an isolated and snowy one."
+    },
+    {
+      "city": "Jackson",
+      "state": "Mississippi",
+      "social": 2,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Small, very cheap capital with a limited social scene and real infrastructure problems. Car-dependent."
+    },
+    {
+      "city": "Jacksonville",
+      "state": "Florida",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Sprawling, cheap by Florida standards, with genuine beach and St. Johns River access. The urban core is thin and very car-dependent."
+    },
+    {
+      "city": "Kansas City",
+      "state": "Missouri",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Barbecue, jazz, and a legitimately good restaurant scene at a fraction of coastal cost. Sprawling, though the streetcar core is improving."
+    },
+    {
+      "city": "Knoxville",
+      "state": "Tennessee",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Vols college town at the gateway to the Smokies \u2014 strong outdoors, a reviving downtown, and low cost."
+    },
+    {
+      "city": "Lansing",
+      "state": "Michigan",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "State-capital town with a steady, low-key scene and affordable living \u2014 youthful energy is moderate."
+    },
+    {
+      "city": "Laramie",
+      "state": "Wyoming",
+      "social": 2,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "High-plains town at 7,200 feet with the Snowy Range and Vedauwoo minutes away. Tiny, windy, cheap, and cold."
+    },
+    {
+      "city": "Las Vegas",
+      "state": "Nevada",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 3.5,
+      "blurb": "Enormous nightlife if you want it, and Red Rock and Mount Charleston for when you don't. Extremely car-dependent and brutally hot."
+    },
+    {
+      "city": "Lawrence",
+      "state": "Kansas",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Massachusetts Street is one of the better small-city main drags in the Midwest \u2014 live music, bars, and everything walkable. Cheap and young."
+    },
+    {
+      "city": "Lexington",
+      "state": "Kentucky",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Horse country with a compact, improving downtown and good cycling on the surrounding rolling roads. Affordable and manageable."
+    },
+    {
+      "city": "Lexington",
+      "state": "Virginia",
+      "social": 2,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Tiny, handsome Shenandoah Valley town with immediate access to the Blue Ridge and the Maury River. Very quiet."
+    },
+    {
+      "city": "Lincoln",
+      "state": "Nebraska",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Affordable, safe, bike-friendly capital with a Husker-driven social calendar. Compact downtown; not much beyond it."
+    },
+    {
+      "city": "Little Rock",
+      "state": "Arkansas",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Affordable capital with a walkable River Market district and trail access along the Arkansas River. Limited beyond that, and car-dependent."
     },
     {
       "city": "Los Angeles",
@@ -38,6 +722,51 @@
       "blurb": "Endless dining, nightlife, beaches, and hiking, with a huge young population. The catch is sprawl \u2014 you live in your car."
     },
     {
+      "city": "Louisville",
+      "state": "Kentucky",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Cheap, distinctive, and genuinely fun \u2014 bourbon, the Highlands, and a strong independent-restaurant streak. Waterfront and park access is good."
+    },
+    {
+      "city": "Lubbock",
+      "state": "Texas",
+      "social": 2,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Isolated West Texas college town centered on Texas Tech \u2014 affordable, but a limited youthful/active scene."
+    },
+    {
+      "city": "Lynchburg",
+      "state": "Virginia",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 2.5,
+      "blurb": "Small Blue Ridge foothills city with river and trail access. Limited nightlife; conservative and car-dependent."
+    },
+    {
+      "city": "Macon",
+      "state": "Georgia",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Small Central Georgia city with historic charm and affordability, but a limited youthful/active scene."
+    },
+    {
+      "city": "Madison",
+      "state": "Wisconsin",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "An isthmus between two lakes, a walkable State Street, and an exceptional bike network. One of the best college-town lifestyles anywhere."
+    },
+    {
       "city": "Malibu",
       "state": "California",
       "social": 1,
@@ -47,6 +776,177 @@
       "blurb": "Stunning beaches and canyon trails, but isolated, wealthy, and older \u2014 essentially no walkable nightlife or young social scene."
     },
     {
+      "city": "Memphis",
+      "state": "Tennessee",
+      "social": 4,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Deep music and food culture at very low cost, with real grit \u2014 crime and limited outdoors are the downsides."
+    },
+    {
+      "city": "Miami",
+      "state": "Florida",
+      "social": 5,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 4.5,
+      "blurb": "Iconic nightlife, beaches, and an international young crowd with year-round outdoor life. Expensive, hot, and sprawling."
+    },
+    {
+      "city": "Miami Gardens",
+      "state": "Florida",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "North-county Miami suburb near Hard Rock Stadium \u2014 quiet and car-dependent, but with metro Miami within reach."
+    },
+    {
+      "city": "Milwaukee",
+      "state": "Wisconsin",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "Cheap, with a strong bar and festival culture and real Lake Michigan access. Winters are hard; the city is very segregated."
+    },
+    {
+      "city": "Minneapolis",
+      "state": "Minnesota",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Lakes, an elite bike network, and real theater and music \u2014 one of the best active-lifestyle cities in the country if you can take the winter."
+    },
+    {
+      "city": "Missoula",
+      "state": "Montana",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "River running through downtown, trailheads at the edge of town, and a small but real music scene. Isolated, and increasingly not cheap."
+    },
+    {
+      "city": "Montgomery",
+      "state": "Alabama",
+      "social": 2,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Small capital with a serious civil-rights heritage but a thin nightlife bench. Car-dependent, inexpensive, quiet after dark."
+    },
+    {
+      "city": "Morgantown",
+      "state": "West Virginia",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Mountaineer town on the Monongahela with whitewater, climbing, and the rail-trail network close. Cheap, hilly, and football-driven."
+    },
+    {
+      "city": "Moscow",
+      "state": "Idaho",
+      "social": 2,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Palouse college town with immediate access to hills, rivers, and the Idaho backcountry. Tiny, isolated, and very cheap."
+    },
+    {
+      "city": "Nashville",
+      "state": "Tennessee",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "A booming magnet for young people \u2014 music, nightlife, and food everywhere. Growth has brought traffic and rising rents."
+    },
+    {
+      "city": "New Haven",
+      "state": "Connecticut",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Dense, walkable, and far livelier than its reputation \u2014 a real pizza and music town. Long Island Sound and East Rock are close."
+    },
+    {
+      "city": "New Orleans",
+      "state": "Louisiana",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Nowhere else has this much social life per dollar. Walkable, musical, and cheap; also hot, hurricane-exposed, and hard on a study schedule."
+    },
+    {
+      "city": "New York",
+      "state": "New York",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.5,
+      "blurb": "The ultimate walkable, transit-rich, always-on city \u2014 unmatched dining, nightlife, and young energy. Cost of living is the obstacle."
+    },
+    {
+      "city": "Newark",
+      "state": "New Jersey",
+      "social": 3,
+      "outdoors": 2,
+      "walkability": 4,
+      "lifestyleScore": 3.0,
+      "blurb": "Transit-rich and cheap for the region, with Manhattan 20 minutes by train. Improving downtown; limited outdoors."
+    },
+    {
+      "city": "Newton",
+      "state": "Massachusetts",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Leafy, safe Boston suburb on the T \u2014 comfortable and connected, but sedate rather than youthful."
+    },
+    {
+      "city": "Norman",
+      "state": "Oklahoma",
+      "social": 3,
+      "outdoors": 2,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "OU college town with a walkable Campus Corner and a football-shaped social calendar. Very cheap; Oklahoma City is 25 minutes."
+    },
+    {
+      "city": "North Haven",
+      "state": "Connecticut",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Quiet suburb north of New Haven. Car-dependent and residential; the actual social life is a ten-minute drive away."
+    },
+    {
+      "city": "Oklahoma City",
+      "state": "Oklahoma",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Cheap and rapidly redeveloping, with Bricktown and the Scissortail Park boathouse district. Sprawling and car-first."
+    },
+    {
+      "city": "Omaha",
+      "state": "Nebraska",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Bigger and more varied than Lincoln, with the Old Market for walkable nightlife. Cheap, steady, and quietly comfortable."
+    },
+    {
       "city": "Orange",
       "state": "California",
       "social": 3,
@@ -54,6 +954,141 @@
       "walkability": 2,
       "lifestyleScore": 3.0,
       "blurb": "Solid Orange County base with beaches and an old-town core, but largely suburban and car-dependent."
+    },
+    {
+      "city": "Orlando",
+      "state": "Florida",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Theme-park city with a young workforce and a growing nightlife/dining scene, offset by heavy sprawl and tourism."
+    },
+    {
+      "city": "Oxford",
+      "state": "Mississippi",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "The Square gives Oxford an outsized bar-and-bookstore culture for a town this small. Very cheap; isolated and football-seasonal."
+    },
+    {
+      "city": "Philadelphia",
+      "state": "Pennsylvania",
+      "social": 5,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.5,
+      "blurb": "Dense, walkable, transit-rich, and much cheaper than New York or Boston \u2014 one of the strongest big-city values on this list."
+    },
+    {
+      "city": "Pittsburgh",
+      "state": "Pennsylvania",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Cheap, hilly, and genuinely walkable neighborhood by neighborhood, with three rivers and good trail access. Underrated food scene."
+    },
+    {
+      "city": "Portland",
+      "state": "Maine",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "A small city with a wildly disproportionate food scene, a walkable Old Port, and the coast and mountains both close. Winters are long."
+    },
+    {
+      "city": "Portland",
+      "state": "Oregon",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "Bikeable, walkable, and hemmed in by the Gorge, Mount Hood, and the coast. Excellent food and beer; grey for eight months."
+    },
+    {
+      "city": "Provo",
+      "state": "Utah",
+      "social": 2,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Wasatch Front canyons and world-class skiing minutes away, paired with a notably quiet nightlife scene given the local culture."
+    },
+    {
+      "city": "Queens",
+      "state": "New York",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 4,
+      "lifestyleScore": 4.0,
+      "blurb": "The most diverse place in America \u2014 incredible food, dense neighborhoods, and NYC access at a (relative) discount."
+    },
+    {
+      "city": "Raleigh",
+      "state": "North Carolina",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Fast-growing capital drawing young professionals, with a good food/beer scene and Triangle access. Car-oriented overall."
+    },
+    {
+      "city": "Richmond",
+      "state": "Virginia",
+      "social": 4,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "The James River runs whitewater straight through downtown \u2014 rare for a city this size. Cheap, creative, and quickly improving."
+    },
+    {
+      "city": "Sacramento",
+      "state": "California",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Cheaper than the Bay with a real farm-to-table scene and river/delta access. Tahoe is two hours out; summers run hot."
+    },
+    {
+      "city": "Saint Paul",
+      "state": "Minnesota",
+      "social": 3,
+      "outdoors": 4,
+      "walkability": 4,
+      "lifestyleScore": 3.5,
+      "blurb": "Quieter, more residential twin with a handsome walkable core and river bluffs. Minneapolis nightlife is a short light-rail ride away."
+    },
+    {
+      "city": "Salem",
+      "state": "Oregon",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Quiet capital in the Willamette Valley, with wine country and the Cascades nearby. Social life is thin \u2014 Portland is an hour north."
+    },
+    {
+      "city": "Salt Lake City",
+      "state": "Utah",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Hard to beat for outdoors \u2014 seven ski resorts within an hour and canyon trailheads from downtown. Compact grid, growing food scene."
+    },
+    {
+      "city": "San Antonio",
+      "state": "Texas",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "River Walk energy and a solid food scene, family-friendly and affordable, though the young-professional nightlife is modest."
     },
     {
       "city": "San Diego",
@@ -83,184 +1118,40 @@
       "blurb": "Heart of Silicon Valley with a young tech workforce, but suburban and car-dependent with a thin nightlife scene."
     },
     {
-      "city": "Stanford",
-      "state": "California",
-      "social": 2,
-      "outdoors": 4,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Beautiful, affluent, and outdoorsy on the Peninsula, but a quiet campus-bubble feel rather than a nightlife town."
-    },
-    {
-      "city": "Austin",
-      "state": "Texas",
-      "social": 5,
+      "city": "Seattle",
+      "state": "Washington",
+      "social": 4,
       "outdoors": 5,
-      "walkability": 3,
-      "lifestyleScore": 4.5,
-      "blurb": "The poster child for youthful and active \u2014 live music, lakes and greenbelts, food trucks, and a young, growing crowd. Traffic and rising costs are the downside."
-    },
-    {
-      "city": "Dallas",
-      "state": "Texas",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Big-city dining, nightlife, and sports with a large young-professional base, but sprawling and very car-dependent."
-    },
-    {
-      "city": "Fort Worth",
-      "state": "Texas",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Friendlier, more laid-back DFW alternative with a growing scene, but quieter nightlife than Dallas and car-dependent."
-    },
-    {
-      "city": "Houston",
-      "state": "Texas",
-      "social": 4,
-      "outdoors": 2,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Enormous, diverse dining and nightlife and a young workforce, offset by heat, humidity, sprawl, and limited outdoors."
-    },
-    {
-      "city": "Lubbock",
-      "state": "Texas",
-      "social": 2,
-      "outdoors": 2,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "Isolated West Texas college town centered on Texas Tech \u2014 affordable, but a limited youthful/active scene."
-    },
-    {
-      "city": "San Antonio",
-      "state": "Texas",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "River Walk energy and a solid food scene, family-friendly and affordable, though the young-professional nightlife is modest."
-    },
-    {
-      "city": "Waco",
-      "state": "Texas",
-      "social": 2,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "Small Central Texas city built around Baylor \u2014 quiet, affordable, with limited nightlife and a mostly student social life."
-    },
-    {
-      "city": "Chicago",
-      "state": "Illinois",
-      "social": 5,
-      "outdoors": 4,
-      "walkability": 5,
-      "lifestyleScore": 5.0,
-      "blurb": "World-class dining, nightlife, and culture with a lakefront full of running paths and beaches, all on excellent transit. Winters are the tax."
-    },
-    {
-      "city": "Champaign",
-      "state": "Illinois",
-      "social": 3,
-      "outdoors": 2,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Lively UIUC college-town energy and a walkable campus core, but marooned in central-Illinois cornfields."
-    },
-    {
-      "city": "Carbondale",
-      "state": "Illinois",
-      "social": 2,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "Small, remote southern-Illinois university town with nearby Shawnee forest but a thin nightlife scene."
-    },
-    {
-      "city": "DeKalb",
-      "state": "Illinois",
-      "social": 2,
-      "outdoors": 2,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "Quiet NIU college town west of Chicago \u2014 affordable and small, with a limited youthful scene."
-    },
-    {
-      "city": "Ann Arbor",
-      "state": "Michigan",
-      "social": 4,
-      "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Quintessential vibrant college town \u2014 walkable, foodie, young, and cultured around the University of Michigan. Small, but punches above its size."
+      "blurb": "Mountains, water, and forest in every direction, with a dense walkable core and real transit. Expensive, and dark from November to March."
     },
     {
-      "city": "Detroit",
-      "state": "Michigan",
-      "social": 4,
-      "outdoors": 2,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "A revitalizing city with a real arts, music, and dining renaissance at low cost. Gritty in spots and light on outdoors."
-    },
-    {
-      "city": "East Lansing",
-      "state": "Michigan",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Michigan State college-town energy with a walkable strip and decent outdoors, but modest beyond campus life."
-    },
-    {
-      "city": "Lansing",
-      "state": "Michigan",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "State-capital town with a steady, low-key scene and affordable living \u2014 youthful energy is moderate."
-    },
-    {
-      "city": "Boston",
-      "state": "Massachusetts",
-      "social": 5,
-      "outdoors": 3,
-      "walkability": 5,
-      "lifestyleScore": 4.5,
-      "blurb": "One of the most student-dense cities in the country \u2014 walkable, transit-rich, packed with bars, sports, and young professionals. Expensive and cold."
-    },
-    {
-      "city": "Cambridge",
-      "state": "Massachusetts",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 5,
-      "lifestyleScore": 4.0,
-      "blurb": "Harvard/MIT energy: cafes, bookstores, and a young academic crowd on foot and transit. Pricey and small."
-    },
-    {
-      "city": "Dartmouth",
-      "state": "Massachusetts",
+      "city": "South Bend",
+      "state": "Indiana",
       "social": 2,
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Coastal southeastern-Massachusetts town near New Bedford \u2014 quiet, with limited youthful nightlife."
+      "blurb": "Small, cheap, and heavily oriented around Notre Dame. Lake Michigan is an hour; the winters are long."
     },
     {
-      "city": "Newton",
-      "state": "Massachusetts",
+      "city": "South Royalton",
+      "state": "Vermont",
+      "social": 1,
+      "outdoors": 5,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "A village of a few hundred in the White River valley. Exceptional hiking, skiing, and paddling; effectively no nightlife at all."
+    },
+    {
+      "city": "Spokane",
+      "state": "Washington",
       "social": 3,
-      "outdoors": 3,
+      "outdoors": 5,
       "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Leafy, safe Boston suburb on the T \u2014 comfortable and connected, but sedate rather than youthful."
+      "lifestyleScore": 3.5,
+      "blurb": "Cheap for the Northwest, with the Spokane River through downtown and skiing 45 minutes out. Small but improving social scene."
     },
     {
       "city": "Springfield",
@@ -272,292 +1163,22 @@
       "blurb": "Western-Massachusetts city that's affordable but economically strained, with a limited young-adult scene."
     },
     {
-      "city": "Baltimore",
-      "state": "Maryland",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.5,
-      "blurb": "An underrated, affordable arts/music/food city with walkable rowhouse neighborhoods and harbor access. Crime and blight in pockets are real."
-    },
-    {
-      "city": "Chapel Hill",
-      "state": "North Carolina",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 4,
-      "lifestyleScore": 4.0,
-      "blurb": "Classic Tar Heel college town \u2014 walkable Franklin Street, young, and lively, with Triangle amenities nearby."
-    },
-    {
-      "city": "Durham",
-      "state": "North Carolina",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.5,
-      "blurb": "Reinvented tobacco town turned foodie/arts hub with a young, creative Research Triangle crowd. Rising fast."
-    },
-    {
-      "city": "Greensboro",
-      "state": "North Carolina",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Mid-size Piedmont city with a modest college scene and affordable living \u2014 pleasant but not buzzing."
-    },
-    {
-      "city": "Raleigh",
-      "state": "North Carolina",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.5,
-      "blurb": "Fast-growing capital drawing young professionals, with a good food/beer scene and Triangle access. Car-oriented overall."
-    },
-    {
-      "city": "Winston-Salem",
-      "state": "North Carolina",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Arts-district charm and affordability in the Triad, but a quieter, smaller-city pace."
-    },
-    {
-      "city": "Charleston",
-      "state": "South Carolina",
-      "social": 4,
-      "outdoors": 4,
-      "walkability": 4,
-      "lifestyleScore": 4.0,
-      "blurb": "Historic, coastal, and genuinely fun \u2014 a celebrated food scene, beaches, and a walkable core. Tourist crowds and heat are the tradeoffs."
-    },
-    {
-      "city": "Columbia",
-      "state": "South Carolina",
+      "city": "St. Louis",
+      "state": "Missouri",
       "social": 3,
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "State-capital college town (USC) with steady student energy and affordability, but hot summers and a modest scene."
+      "blurb": "Cheap housing, big-city cultural institutions, and Forest Park. Uneven neighborhood by neighborhood, and mostly car-dependent."
     },
     {
-      "city": "Knoxville",
-      "state": "Tennessee",
-      "social": 3,
-      "outdoors": 4,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Vols college town at the gateway to the Smokies \u2014 strong outdoors, a reviving downtown, and low cost."
-    },
-    {
-      "city": "Memphis",
-      "state": "Tennessee",
-      "social": 4,
-      "outdoors": 2,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Deep music and food culture at very low cost, with real grit \u2014 crime and limited outdoors are the downsides."
-    },
-    {
-      "city": "Nashville",
-      "state": "Tennessee",
-      "social": 5,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 4.0,
-      "blurb": "A booming magnet for young people \u2014 music, nightlife, and food everywhere. Growth has brought traffic and rising rents."
-    },
-    {
-      "city": "Athens",
-      "state": "Georgia",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 4,
-      "lifestyleScore": 4.0,
-      "blurb": "Legendary music-scene college town (UGA) \u2014 walkable, cheap, and young. Small, but a lot of fun for its size."
-    },
-    {
-      "city": "Atlanta",
-      "state": "Georgia",
-      "social": 5,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 4.0,
-      "blurb": "A major young-professional and cultural hub with nightlife, music, and diversity. Sprawl and traffic are the price of admission."
-    },
-    {
-      "city": "Macon",
-      "state": "Georgia",
-      "social": 2,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "Small Central Georgia city with historic charm and affordability, but a limited youthful/active scene."
-    },
-    {
-      "city": "Coral Gables",
-      "state": "Florida",
-      "social": 3,
-      "outdoors": 4,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Upscale, leafy Miami-area city with a walkable Miracle Mile and quick access to Miami's scene and beaches. Pricey."
-    },
-    {
-      "city": "Fort Lauderdale",
-      "state": "Florida",
-      "social": 4,
-      "outdoors": 4,
-      "walkability": 3,
-      "lifestyleScore": 4.0,
-      "blurb": "Beaches, boating, and a lively nightlife scene drawing a young crowd \u2014 warm year-round, though car-dependent inland."
-    },
-    {
-      "city": "Gainesville",
-      "state": "Florida",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.5,
-      "blurb": "Energetic Gator college town with springs and trails nearby \u2014 young, affordable, and lively during the school year."
-    },
-    {
-      "city": "Gulfport",
-      "state": "Florida",
-      "social": 3,
-      "outdoors": 4,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Small artsy Gulf-coast enclave near St. Pete/Tampa \u2014 beaches and a quirky scene, but modest nightlife of its own."
-    },
-    {
-      "city": "Miami",
-      "state": "Florida",
-      "social": 5,
-      "outdoors": 5,
-      "walkability": 3,
-      "lifestyleScore": 4.5,
-      "blurb": "Iconic nightlife, beaches, and an international young crowd with year-round outdoor life. Expensive, hot, and sprawling."
-    },
-    {
-      "city": "Miami Gardens",
-      "state": "Florida",
-      "social": 2,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "North-county Miami suburb near Hard Rock Stadium \u2014 quiet and car-dependent, but with metro Miami within reach."
-    },
-    {
-      "city": "Naples",
-      "state": "Florida",
+      "city": "Stanford",
+      "state": "California",
       "social": 2,
       "outdoors": 4,
-      "walkability": 2,
-      "lifestyleScore": 2.5,
-      "blurb": "Beautiful, affluent Gulf-coast town with beaches and golf, but an older demographic and little youthful nightlife."
-    },
-    {
-      "city": "Orlando",
-      "state": "Florida",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 3.0,
-      "blurb": "Theme-park city with a young workforce and a growing nightlife/dining scene, offset by heavy sprawl and tourism."
-    },
-    {
-      "city": "Tallahassee",
-      "state": "Florida",
-      "social": 3,
-      "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "FSU capital college town \u2014 youthful during the year, with trails and lakes nearby, but sleepy otherwise."
-    },
-    {
-      "city": "Albany",
-      "state": "New York",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "State-capital town with a modest but real scene, a student presence, and easy access to the Adirondacks and Berkshires."
-    },
-    {
-      "city": "Brooklyn",
-      "state": "New York",
-      "social": 5,
-      "outdoors": 3,
-      "walkability": 5,
-      "lifestyleScore": 4.5,
-      "blurb": "The epicenter of young, creative NYC \u2014 endless food, nightlife, and arts, all walkable and transit-connected. Very expensive."
-    },
-    {
-      "city": "Buffalo",
-      "state": "New York",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Affordable, revitalizing rust-belt city with a growing food scene and real neighborhood character. Long, snowy winters."
-    },
-    {
-      "city": "Central Islip",
-      "state": "New York",
-      "social": 2,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "Suburban Long Island hamlet \u2014 commuter-oriented and car-dependent, with a limited youthful scene of its own."
-    },
-    {
-      "city": "Hempstead",
-      "state": "New York",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Long Island hub near Hofstra with LIRR access to NYC, but the immediate area is suburban and modest."
-    },
-    {
-      "city": "Ithaca",
-      "state": "New York",
-      "social": 3,
-      "outdoors": 5,
-      "walkability": 3,
-      "lifestyleScore": 3.5,
-      "blurb": "Gorges, lakes, and trails everywhere around Cornell \u2014 a small, outdoorsy, youthful town, if an isolated and snowy one."
-    },
-    {
-      "city": "Long Island City",
-      "state": "New York",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 5,
-      "lifestyleScore": 4.0,
-      "blurb": "Booming young waterfront neighborhood in Queens \u2014 new towers, a rising scene, and one subway stop from Manhattan."
-    },
-    {
-      "city": "New York",
-      "state": "New York",
-      "social": 5,
-      "outdoors": 3,
-      "walkability": 5,
-      "lifestyleScore": 4.5,
-      "blurb": "The ultimate walkable, transit-rich, always-on city \u2014 unmatched dining, nightlife, and young energy. Cost of living is the obstacle."
-    },
-    {
-      "city": "Queens",
-      "state": "New York",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 4,
-      "lifestyleScore": 4.0,
-      "blurb": "The most diverse place in America \u2014 incredible food, dense neighborhoods, and NYC access at a (relative) discount."
+      "blurb": "Beautiful, affluent, and outdoorsy on the Peninsula, but a quiet campus-bubble feel rather than a nightlife town."
     },
     {
       "city": "Syracuse",
@@ -569,6 +1190,114 @@
       "blurb": "Central New York college town (SU) with steady student energy and affordability, but famously long, snowy winters."
     },
     {
+      "city": "Tallahassee",
+      "state": "Florida",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "FSU capital college town \u2014 youthful during the year, with trails and lakes nearby, but sleepy otherwise."
+    },
+    {
+      "city": "Tempe",
+      "state": "Arizona",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 4.0,
+      "blurb": "Dense, young ASU energy on Mill Avenue with light rail into Phoenix. Desert hiking is minutes away; summers are brutal."
+    },
+    {
+      "city": "Toledo",
+      "state": "Ohio",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Cheap, quiet, and industrial, with Lake Erie and the Maumee close by. Detroit and Ann Arbor are both under an hour."
+    },
+    {
+      "city": "Topeka",
+      "state": "Kansas",
+      "social": 2,
+      "outdoors": 2,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Small, very affordable capital with a quiet social scene. Kansas City is an hour east when you need more."
+    },
+    {
+      "city": "Tucson",
+      "state": "Arizona",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 3,
+      "lifestyleScore": 3.5,
+      "blurb": "Cheap desert college town ringed by four mountain ranges \u2014 exceptional hiking and cycling. Social scene is modest and student-driven."
+    },
+    {
+      "city": "Tulsa",
+      "state": "Oklahoma",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Art-deco downtown, a strong park system along the Arkansas River, and cheap housing. Modest but real nightlife."
+    },
+    {
+      "city": "Tuscaloosa",
+      "state": "Alabama",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "A football town \u2014 enormous social energy on fall weekends, much quieter otherwise. The Black Warrior River and Lake Tuscaloosa are close."
+    },
+    {
+      "city": "Vermillion",
+      "state": "South Dakota",
+      "social": 1,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "A town of about 11,000 on the Missouri River bluffs. Almost entirely campus-driven; extremely cheap and extremely quiet."
+    },
+    {
+      "city": "Villanova",
+      "state": "Pennsylvania",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 2.5,
+      "blurb": "Main Line suburb with a regional-rail stop into Center City Philadelphia. Leafy and quiet; the nightlife is 30 minutes east."
+    },
+    {
+      "city": "Virginia Beach",
+      "state": "Virginia",
+      "social": 3,
+      "outdoors": 5,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Oceanfront living with year-round surf, paddling, and the Back Bay refuge. Sprawling, seasonal, and thoroughly car-dependent."
+    },
+    {
+      "city": "Waco",
+      "state": "Texas",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 2.0,
+      "blurb": "Small Central Texas city built around Baylor \u2014 quiet, affordable, with limited nightlife and a mostly student social life."
+    },
+    {
+      "city": "Washington",
+      "state": "District of Columbia",
+      "social": 5,
+      "outdoors": 4,
+      "walkability": 5,
+      "lifestyleScore": 5.0,
+      "blurb": "Dense, transit-rich, and packed with young professionals \u2014 the single best city in the country for a policy-minded law student. Expensive, and the pace is relentless."
+    },
+    {
       "city": "White Plains",
       "state": "New York",
       "social": 3,
@@ -576,6 +1305,33 @@
       "walkability": 3,
       "lifestyleScore": 3.0,
       "blurb": "Compact Westchester downtown with some dining/nightlife and Metro-North straight into NYC \u2014 convenient but suburban."
+    },
+    {
+      "city": "Williamsburg",
+      "state": "Virginia",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 3,
+      "lifestyleScore": 3.0,
+      "blurb": "Colonial-historic and walkable in its small core, with the York River and Jamestown nearby. Very quiet outside William & Mary."
+    },
+    {
+      "city": "Wilmington",
+      "state": "Delaware",
+      "social": 2,
+      "outdoors": 3,
+      "walkability": 3,
+      "lifestyleScore": 2.5,
+      "blurb": "Corporate-law company town with a compact riverfront core. Philadelphia is 30 minutes by train, which is where most weekends go."
+    },
+    {
+      "city": "Winston-Salem",
+      "state": "North Carolina",
+      "social": 3,
+      "outdoors": 3,
+      "walkability": 2,
+      "lifestyleScore": 3.0,
+      "blurb": "Arts-district charm and affordability in the Triad, but a quieter, smaller-city pace."
     }
   ]
 }
