@@ -2,7 +2,7 @@
 
 A personal tool for building a shortlist of law schools, organized by state.
 
-**Flow:** the map is the front door. Hover any state and the rail beside it fills with that state's real strengths and weaknesses — the measures where it genuinely stands apart from the other 50, with the figure behind each one. Click through to every school there. Open the fit panel and enter your GPA, LSAT, career goals, and where you want to practice, and you get every ABA school ranked for you, grouped into Safety / Target / Reach / Far reach, each with a modelled admit / waitlist / deny split. Click one for full stats, employment outcomes, and where your numbers land in its admitted range → add it to your target list. Your list is grouped by state, persists in the browser, and exports to Markdown or CSV.
+**Flow:** you land on **Find your fit**: enter your GPA, LSAT, career goals, and where you want to practice. You then get every ABA school sorted into Reach / Target / Safety / Far reach, listed beside a map. Point at a school and it's pinned on the map at its city; click it and a detail panel opens under the map with its numbers, your modelled admit / waitlist / deny split, and where its graduates end up, plus a link to the full school page. Add schools to your target list; it's grouped by state, persists in the browser, and exports to Markdown or CSV. **Explore by state** (in the menu) is the whiteboard map of every state: hover one for its real strengths and weaknesses, click through to its schools.
 
 Press `/` (or `⌘K`) anywhere to jump straight to any of the 193 schools or 51 jurisdictions by name.
 
@@ -23,7 +23,7 @@ Press `/` (or `⌘K`) anywhere to jump straight to any of the 193 schools or 51 
 
 Ten measures per jurisdiction, each percentile-ranked against the other 50, in `INSIGHT_METRICS` in `app.js`. Four come straight from `states.json` (legal market, legal pay, cost of living, quality of life); six are derived from the schools in that state (how many there are, its highest-ranked one, median out-of-state tuition, median employment rate, the best BigLaw share available, and the median share of a class that stays in state).
 
-The rail only shows a measure where the state genuinely stands apart — above the 62nd percentile for a strength, below the 38th for a weakness, at most three of each. A state that's mid-pack on everything says so rather than manufacturing a strength. Every line carries the raw figure and the state's place, so nothing is a bare adjective: "Legal pay · 2nd of 51 · $230k average salary."
+The map card and state page only show a measure where the state genuinely stands apart — above the 62nd percentile for a strength, below the 38th for a weakness, at most three of each. A state that's mid-pack on everything says so rather than manufacturing a strength. On the state page every line carries the raw figure and the state's place, so nothing is a bare adjective: "Legal pay · 2nd of 51 · $230k average salary."
 
 The denominators differ on purpose. Measures drawn from schools say "of 50" because Alaska has none; state-level measures say "of 51."
 

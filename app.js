@@ -5,7 +5,6 @@
   const UI_KEY = "lawSchoolUI";
 
   const app = document.getElementById("app");
-  const cursorTag = document.getElementById("cursorTag");
   const CAN_HOVER = window.matchMedia("(hover: hover)").matches;
 
   let DATA = { geo: null };
@@ -26,6 +25,9 @@
   function persist() {
     try { localStorage.setItem(LS_KEY, JSON.stringify(saved)); } catch (e) {}
     document.getElementById("listCount").textContent = saved.length;
+    const badge = document.getElementById("menuCount");
+    badge.textContent = saved.length;
+    badge.hidden = !saved.length;
   }
   function isSaved(name) { return saved.indexOf(name) !== -1; }
   function toggleSaved(name) {
@@ -36,7 +38,7 @@
 
   // Small bag of view preferences — which map layer you were on, whether the fit
   // panel was open. Never worth an error if storage is unavailable.
-  let ui = { mapMode: "overall", dockOpen: null };
+  let ui = { mapMode: "overall" };
   function loadUI() {
     try {
       const raw = localStorage.getItem(UI_KEY);
@@ -468,7 +470,7 @@
 
   // ---------- state insights ----------
   // Ten measures per jurisdiction, each percentile-ranked against the other 50.
-  // The rail shows only the ones where a state genuinely stands apart, with the
+  // The map card and state page show only the ones where a state genuinely stands apart, with the
   // raw figure attached — a strength you can't see the number behind is a vibe.
   const INSIGHT_METRICS = [
     {
@@ -582,22 +584,25 @@
     });
   }
 
-  // ---------- colour ramp + map layers --------------------------------------
-  // pale -> mid -> deep as the active measure rises. Multi-stop so the lightness
-  // range is far wider than a single linear 2-stop blend.
-  const RAMP_STOPS = [
-    [0.0, [237, 245, 246]], // very pale tint
-    [0.5, [74, 127, 138]],  // mid teal
-    [1.0, [15, 51, 58]],    // deep saturated teal
+  // ---------- hatching + map layers ----------------------------------------
+  // States are shaded the way you'd shade them on a whiteboard: diagonal marker
+  // strokes, packed tighter and drawn heavier as the active measure rises. Hand
+  // shading only has so many legible steps, so the ranking is cut into six;
+  // the exact figure is on the hover card.
+  const HATCH = [
+    { gap: 13, w: 1.1 },
+    { gap: 10, w: 1.3 },
+    { gap: 7.5, w: 1.5 },
+    { gap: 5.5, w: 1.7 },
+    { gap: 4.2, w: 1.9 },
+    { gap: 3.2, w: 2.1 },
   ];
-  function rampColor(t) {
-    t = Math.max(0, Math.min(1, t));
-    let i = 0;
-    while (i < RAMP_STOPS.length - 2 && t > RAMP_STOPS[i + 1][0]) i++;
-    const [t0, c0] = RAMP_STOPS[i], [t1, c1] = RAMP_STOPS[i + 1];
-    const f = (t - t0) / (t1 - t0 || 1);
-    const c = c0.map((v, k) => Math.round(v + (c1[k] - v) * f));
-    return `rgb(${c[0]},${c[1]},${c[2]})`;
+  const hatchFill = (k) => `url(#hatch-${k})`;
+  function hatchDefs() {
+    return HATCH.map((h, k) =>
+      `<pattern id="hatch-${k}" patternUnits="userSpaceOnUse" width="${h.gap}" height="${h.gap}"` +
+      ` patternTransform="rotate(-45)"><rect width="${h.gap}" height="${h.gap}" fill="rgba(31,87,195,${(0.03 * k).toFixed(2)})"/>` +
+      `<line x1="0" y1="0" x2="0" y2="${h.gap}" stroke="#1f57c3" stroke-width="${h.w}" stroke-opacity=".85"/></pattern>`).join("");
   }
 
   // With a profile set, the map answers "where should I be looking?" rather than
@@ -646,37 +651,37 @@
       key: "overall", label: "Overall",
       value: (n, st) => st.overall,
       fmt: (v) => v.toFixed(2) + "/5",
-      legend: (n) => `Colour ranks each state's blend of affordability, quality of life and legal market against all ${n} jurisdictions.`,
+      legend: (n) => `Shading ranks each state's blend of affordability, quality of life and legal market against all ${n} jurisdictions.`,
     },
     {
       key: "reach", label: "Your reach", needs: "numbers",
       value: (n) => (reachByState[n] ? reachByState[n].p : null),
       fmt: (v) => Math.round(v * 100) + "% at the flagship",
-      legend: () => `Darker means a better modelled chance at that state's highest-ranked school, on your two numbers alone. Measured at the flagship rather than at the easiest school in the state, which nearly everyone gets into.`,
+      legend: () => `Denser shading means a better modelled chance at that state's highest-ranked school, on your two numbers alone. Measured at the flagship rather than at the easiest school in the state, which nearly everyone gets into.`,
     },
     {
       key: "fit", label: "Your fit", needs: "prefs",
       value: (n) => (stateFit ? stateFit[n] : null),
       fmt: (v) => ordinal(Math.max(1, Math.round(v * 100))) + " pct",
-      legend: () => `Colour shows how the best-fitting school in each state ranks for your profile. Pale states have nothing that matched.`,
+      legend: () => `Shading shows how the best-fitting school in each state ranks for your profile. Blank states have nothing that matched.`,
     },
     {
       key: "cost", label: "Affordability",
       value: (n, st) => st.affordability && st.affordability.score,
       fmt: (v) => v.toFixed(1) + "/5",
-      legend: () => `Darker is cheaper to live in — the C2ER cost-of-living and housing indices, inverted.`,
+      legend: () => `Denser shading means cheaper to live in — the C2ER cost-of-living and housing indices, inverted.`,
     },
     {
       key: "market", label: "Legal market",
       value: (n, st) => st.legalIndustry && st.legalIndustry.score,
       fmt: (v) => v.toFixed(1) + "/5",
-      legend: () => `Darker means more lawyer jobs per 1,000 and higher average legal pay (BLS OES, May 2025).`,
+      legend: () => `Denser shading means more lawyer jobs per 1,000 and higher average legal pay (BLS OES, May 2025).`,
     },
     {
       key: "schools", label: "Schools",
       value: (n) => (schoolsByState[n] || []).length,
       fmt: (v) => plural(v, "school"),
-      legend: () => `Darker means more ABA-accredited law schools inside the state.`,
+      legend: () => `Denser shading means more ABA-accredited law schools inside the state.`,
     },
   ];
   const activeMode = () => MAP_MODES.find((m) => m.key === ui.mapMode) || MAP_MODES[0];
@@ -687,9 +692,9 @@
     ? "Name a career goal or a target state to unlock"
     : "Enter a GPA and LSAT to unlock";
 
-  let colorByState = {};
+  let fillByState = {};
   let valueByState = {};
-  function buildColorTable() {
+  function buildFillTable() {
     const mode = activeMode();
     valueByState = {};
     Object.keys(stateByName).forEach((n) => {
@@ -697,17 +702,23 @@
       if (v != null && isFinite(v)) valueByState[n] = v;
     });
     const vals = Object.values(valueByState).sort((a, b) => a - b);
-    colorByState = {};
+    fillByState = {};
     Object.keys(stateByName).forEach((n) => {
       const v = valueByState[n];
-      // Floor at 0.22 so even the weakest state still reads as teal rather than
-      // white — white is reserved for "no data on this layer".
-      colorByState[n] = v == null ? rampColor(0) : rampColor(0.22 + 0.78 * pctIn(vals, v));
+      // Blank board means "no data on this layer"; even the weakest state with a
+      // value gets the sparsest strokes. Transparent, not none, so it still
+      // takes the pointer.
+      fillByState[n] = v == null ? "transparent"
+        : hatchFill(Math.min(HATCH.length - 1, Math.floor(pctIn(vals, v) * HATCH.length)));
     });
   }
 
   // ---------- projection + map build ----------
-  function buildMapSVG() {
+  // Fitted once to the geometry's bounds, then shared by both maps and by the
+  // school pins, so a pin always lands where its city is drawn.
+  let projection = null;
+  function mapProjection() {
+    if (projection) return projection;
     const geo = DATA.geo;
     let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
     for (const name in geo) {
@@ -735,7 +746,29 @@
       offX + (lon - minLon) * kx * scale,
       offY + (maxLat - lat) * scale,   // flip: north up
     ];
+    projection = { project, VBW, VBH };
+    return projection;
+  }
 
+  // Alaska and Hawaii are drawn as insets, so real coordinates there have to
+  // go through the same move. Hawaii's main-island extent, real -> inset.
+  const HI_REAL = [-160.25, 18.91, -154.81, 22.24];
+  const HI_INSET = [-104.734, 19.6, -98.264, 23.412];
+  function schoolXY(sc) {
+    const c = cityByKey[sc.city + "|" + sc.state];
+    if (!c || c.lat == null) return null;
+    let lon = c.lon, lat = c.lat;
+    if (sc.state === "Hawaii") {
+      lon = HI_INSET[0] + (lon - HI_REAL[0]) * (HI_INSET[2] - HI_INSET[0]) / (HI_REAL[2] - HI_REAL[0]);
+      lat = HI_INSET[1] + (lat - HI_REAL[1]) * (HI_INSET[3] - HI_INSET[1]) / (HI_REAL[3] - HI_REAL[1]);
+    }
+    return mapProjection().project(lon, lat);
+  }
+
+  // `plain` draws bare outlines for the results map, where the pins are the point.
+  function buildMapSVG(plain) {
+    const geo = DATA.geo;
+    const { project, VBW, VBH } = mapProjection();
     let paths = "", overlays = "";
     const liveNames = new Set(Object.keys(stateByName));
     for (const name in geo) {
@@ -748,10 +781,13 @@
           return (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1);
         }).join(" ") + " Z ";
       }
-      if (!liveNames.has(name)) { paths += `<path class="dead" d="${d.trim()}"></path>`; continue; }
+      if (plain || !liveNames.has(name)) {
+        paths += `<path class="${plain ? "plain" : "dead"}" d="${d.trim()}"></path>`;
+        continue;
+      }
 
       paths += `<path class="live" data-state="${esc(name)}" tabindex="0" role="button"` +
-        ` aria-label="${esc(name)}" fill="${colorByState[name]}" d="${d.trim()}"></path>`;
+        ` aria-label="${esc(name)}" fill="${fillByState[name]}" d="${d.trim()}"></path>`;
 
       // DC renders a couple of pixels wide — unhittable. Give it a labelled
       // callout dot out over the Atlantic, wired to the same handlers.
@@ -760,11 +796,18 @@
         overlays +=
           `<line class="callout-line" x1="${cx.toFixed(1)}" y1="${cy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}"></line>` +
           `<g class="callout" data-state="${esc(name)}" tabindex="0" role="button" aria-label="District of Columbia">` +
-          `<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="11" fill="${colorByState[name]}"></circle>` +
+          `<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="11" fill="${fillByState[name]}"></circle>` +
           `<text x="${tx.toFixed(1)}" y="${(ty + 3.6).toFixed(1)}">DC</text></g>`;
       }
     }
-    return `<svg class="usmap" viewBox="0 0 ${VBW} ${VBH}" role="img" aria-label="US map of states scored for law school fit">${paths}${overlays}</svg>`;
+    // Drawn by hand, not plotted: a slow, low-frequency wobble bends every
+    // outline and hatch stroke the way a marker line wanders.
+    const marker = `<filter id="marker" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+    const label = plain ? "US map of the schools in your list" : "US map of states scored for law school fit";
+    return `<svg class="usmap" viewBox="0 0 ${VBW} ${VBH}" role="img" aria-label="${label}">` +
+      `<defs>${marker}${plain ? "" : hatchDefs()}</defs><g filter="url(#marker)">${paths}</g>${overlays}</svg>`;
   }
 
   // ---------- views + history ----------
@@ -787,6 +830,7 @@
 
   const RENDERERS = {
     map: () => renderHome(),
+    fit: () => renderFit(),
     results: () => renderResults(),
     state: (v) => renderState(v.name),
     school: (v) => renderSchool(v.name),
@@ -822,8 +866,11 @@
 
   let crumbLinks = [];
   function crumbHTML(view, current) {
-    crumbLinks = [{ label: "Map", view: { kind: "map" } }];
-    if (view.fit) crumbLinks.push({ label: "Your fit", view: { kind: "results" } });
+    const fromFit = view.kind === "results" || view.fit;
+    crumbLinks = [fromFit
+      ? { label: "Find your fit", view: { kind: "fit" } }
+      : { label: "Explore by state", view: { kind: "map" } }];
+    if (view.fit) crumbLinks.push({ label: "Your schools", view: { kind: "results" } });
     if (view.kind === "school") {
       const sc = schoolByName[view.name];
       if (sc) crumbLinks.push({ label: sc.state, view: { kind: "state", name: sc.state, fit: view.fit } });
@@ -842,21 +889,10 @@
   // without making you go back out to find it.
   let navList = [];
 
-  // ---------- fit panel ----------
+  // ---------- fit page ----------
   const SL_WORDS = ["Ignore", "A little", "Matters", "Priority"];
 
-  function profileSummary() {
-    if (!profileReady()) return "Your numbers, your goals, and where you want to practise.";
-    const bits = [`GPA <b>${profile.gpa}</b>`, `LSAT <b>${profile.lsat}</b>`];
-    const goals = GOALS.filter((g) => profile.goals[g.key]);
-    if (goals.length) bits.push(goals.length > 2 ? `<b>${goals.length}</b> goals` : goals.map((g) => g.label).join(", "));
-    if (profile.states.length) {
-      bits.push(profile.states.length > 3 ? `<b>${profile.states.length}</b> states` : profile.states.join(", "));
-    }
-    return bits.join(" · ");
-  }
-
-  function dockHTML() {
+  function renderFit() {
     const goalChips = GOALS.map((g) => {
       const w = profile.goals[g.key] || 0;
       const cls = w >= 2 ? "chip top" : w === 1 ? "chip on" : "chip";
@@ -883,24 +919,11 @@
         </div>`;
     }).join("");
 
-    const open = dockOpen();
-    return `
-      <section class="dock" id="dock" data-open="${open}">
-        <div class="dock-bar">
-          <button class="dock-toggle" id="dockToggle" type="button" aria-expanded="${open}" aria-controls="dockPanel">
-            <span class="dock-glyph" aria-hidden="true">◧</span>
-            <span class="dock-copy">
-              <span class="dock-title">Find your fit <span class="dock-chev" aria-hidden="true">▼</span></span>
-              <span class="dock-sum">${profileSummary()}</span>
-            </span>
-          </button>
-          ${profileReady() ? `<button class="btn" id="dockResults" type="button">See my ranked list</button>` : ""}
-        </div>
-        <div class="dock-panel" id="dockPanel">
-          <div class="dock-inner"><div class="dock-pad">
+    setView(`
+      <section class="fitpage" id="fitForm">
+            <h2 class="page-title">Find your fit</h2>
             <p class="pf-lede">Your numbers and what you want out of the degree, matched against
-              every ABA school's own reported admissions spread and employment outcomes.</p>
-            <div class="pf-grid">
+              every ABA school's own reported admissions spread and employment outcomes.</p>            <div class="pf-grid">
               <div>
                 <div class="pf-field">
                   <label for="pfGpa">Your numbers</label>
@@ -950,24 +973,17 @@
               </div>
             </div>
             <div class="pf-actions">
-              <button class="btn" id="pfGo" type="button">Rank every school for me</button>
+              <button class="btn" id="pfGo" type="button">Show my schools</button>
               <button class="linkbtn" id="pfReset" type="button">Clear</button>
               <span class="pf-status" id="pfStatus"></span>
             </div>
-          </div></div>
-        </div>
-      </section>`;
+      </section>`);
+    wireFit();
   }
 
   const stateChipsHTML = () => profile.states
     .map((s) => `<button type="button" class="chip on rm" data-unstate="${esc(s)}">${esc(s)}</button>`)
     .join("");
-
-  // Open by default for a blank profile — the tool is the point. Once there's a
-  // profile it collapses so the map gets the room, unless you say otherwise.
-  function dockOpen() {
-    return ui.dockOpen == null ? !profileReady() : !!ui.dockOpen;
-  }
 
   function updateGoStatus() {
     const status = document.getElementById("pfStatus");
@@ -985,21 +1001,8 @@
     }
   }
 
-  function wireDock() {
-    const dock = document.getElementById("dock");
-    if (!dock) return;
-
-    const toggle = document.getElementById("dockToggle");
-    toggle.addEventListener("click", () => {
-      const next = dock.getAttribute("data-open") !== "true";
-      dock.setAttribute("data-open", next);
-      toggle.setAttribute("aria-expanded", next);
-      ui.dockOpen = next; persistUI();
-      if (next) setTimeout(() => document.getElementById("pfGpa").focus(), 220);
-    });
-
-    const results = document.getElementById("dockResults");
-    if (results) results.addEventListener("click", openResults);
+  function wireFit() {
+    const form = document.getElementById("fitForm");
 
     const numField = (id, key, parse, lo, hi) => {
       const el = document.getElementById(id);
@@ -1025,7 +1028,7 @@
     });
 
     // Goals cycle none -> matters -> priority -> none.
-    dock.querySelectorAll("[data-goal]").forEach((el) => {
+    form.querySelectorAll("[data-goal]").forEach((el) => {
       el.addEventListener("click", () => {
         const k = el.getAttribute("data-goal");
         const next = ((profile.goals[k] || 0) + 1) % 3;
@@ -1042,7 +1045,7 @@
       persistProfile(); updateGoStatus();
     };
     function wireStateChips() {
-      dock.querySelectorAll("[data-unstate]").forEach((el) => {
+      form.querySelectorAll("[data-unstate]").forEach((el) => {
         el.addEventListener("click", () => {
           profile.states = profile.states.filter((s) => s !== el.getAttribute("data-unstate"));
           redrawStates();
@@ -1051,7 +1054,7 @@
     }
     wireStateChips();
 
-    dock.querySelectorAll("[data-region]").forEach((el) => {
+    form.querySelectorAll("[data-region]").forEach((el) => {
       el.addEventListener("click", () => {
         const known = (REGIONS[el.getAttribute("data-region")] || []).filter((s) => stateByName[s]);
         const allOn = known.every((s) => profile.states.indexOf(s) !== -1);
@@ -1071,11 +1074,11 @@
     addInput.addEventListener("change", commitState);
     addInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); commitState(); } });
 
-    dock.querySelectorAll("[data-factor]").forEach((el) => {
+    form.querySelectorAll("[data-factor]").forEach((el) => {
       el.addEventListener("input", () => {
         const k = el.getAttribute("data-factor");
         profile.factors[k] = parseInt(el.value, 10) || 0;
-        dock.querySelector(`[data-slval="${k}"]`).textContent = SL_WORDS[profile.factors[k]];
+        form.querySelector(`[data-slval="${k}"]`).textContent = SL_WORDS[profile.factors[k]];
         persistProfile(); updateGoStatus();
       });
     });
@@ -1086,7 +1089,7 @@
       persistProfile();
       stateFit = null;
       if (ui.mapMode === "fit") { ui.mapMode = "overall"; persistUI(); }
-      go({ kind: "map" }, true);
+      go({ kind: "fit" }, true);
     });
 
     updateGoStatus();
@@ -1098,19 +1101,21 @@
     // the last one, or which of its bands you'd expanded.
     resultsScroll = 0;
     expandedBands = {};
+    resultsSel = null;
     go({ kind: "results" });
   }
 
-  // ---------- home: map + rail ----------
-  let railPinned = null;    // state name the rail is holding when nothing is hovered
-  let leadScroll = 0;       // scroll offset of the ranked list, kept across re-renders
+  // ---------- home: the map on the board ----------
+  // Nothing but the map until you point at a state; then a card is written
+  // into the blank slot beside it. On touch a tap pins the card instead.
+  let cardPinned = null;    // state the card holds when nothing is hovered (touch only)
 
   function renderHome() {
     // Personalised colouring only once there's a profile worth colouring by.
     buildStateFit(profileReady() && hasPreferences() ? scoreAll() : null);
     buildStateReach();
     if (modeLocked(activeMode())) ui.mapMode = "overall";
-    buildColorTable();
+    buildFillTable();
 
     const modes = MAP_MODES.map((m) => {
       const off = modeLocked(m);
@@ -1119,52 +1124,47 @@
     }).join("");
 
     setView(`
-      ${dockHTML()}
-      <div class="home">
-        <div class="mapcol">
+      <div class="board">
+        <div class="mapwrap">${buildMapSVG()}</div>
+        <aside class="statecard" id="stateCard" aria-live="polite"></aside>
+        <div class="mapfoot">
           <div class="modes" role="group" aria-label="Map layer">${modes}</div>
-          <div class="mapwrap">${buildMapSVG()}</div>
           <div class="maplegend">
             <span class="legend-cap">Lower</span>
-            <div class="rampbar" id="rampBar"></div>
+            <svg class="hatchkey" viewBox="0 0 ${HATCH.length * 26} 18" aria-hidden="true">${HATCH.map((h, k) =>
+              `<rect x="${k * 26 + 2}" y="2" width="22" height="14" rx="2" fill="${hatchFill(k)}"></rect>`).join("")}</svg>
             <span class="legend-cap">Higher</span>
-            <span class="legend-text" id="legendText"></span>
           </div>
         </div>
-        <aside class="rail" id="rail" aria-live="polite"></aside>
+        <p class="legend-text" id="legendText"></p>
       </div>`, true);
 
-    wireDock();
     wireMap();
     paintLegend();
-    railShow(railPinned);
+    cardShow(cardPinned);
   }
 
   function paintLegend() {
-    const bar = document.getElementById("rampBar");
     const text = document.getElementById("legendText");
-    if (!bar || !text) return;
-    bar.style.background = `linear-gradient(90deg, ${rampColor(0.18)}, ${rampColor(0.6)}, ${rampColor(1)})`;
-    // The full sentence lives in the rail; this is just the axis label.
-    text.textContent = activeMode().label;
+    if (!text) return;
+    text.textContent = activeMode().legend(Object.keys(stateByName).length);
   }
 
   function setMode(key) {
     const mode = MAP_MODES.find((m) => m.key === key);
     if (!mode || modeLocked(mode)) return;
     ui.mapMode = key; persistUI();
-    leadScroll = 0;  // a new layer is a new ranking — start it at first place
-    buildColorTable();
+    buildFillTable();
     app.querySelectorAll("svg path.live").forEach((el) => {
-      el.setAttribute("fill", colorByState[el.getAttribute("data-state")]);
+      el.setAttribute("fill", fillByState[el.getAttribute("data-state")]);
     });
     app.querySelectorAll("svg g.callout circle").forEach((el) => {
-      el.setAttribute("fill", colorByState[el.parentNode.getAttribute("data-state")]);
+      el.setAttribute("fill", fillByState[el.parentNode.getAttribute("data-state")]);
     });
     app.querySelectorAll("[data-mode]").forEach((el) =>
       el.setAttribute("aria-pressed", el.getAttribute("data-mode") === key));
     paintLegend();
-    railShow(railPinned);
+    cardShow(cardPinned);
   }
 
   function wireMap() {
@@ -1181,17 +1181,17 @@
       const enter = () => {
         svg.classList.add("probing");
         targets.forEach((t) => t.classList.toggle("hot", t === el));
-        railShow(name);
+        cardShow(name);
       };
       el.addEventListener("mouseenter", enter);
       el.addEventListener("focus", enter);
-      el.addEventListener("mousemove", (e) => moveCursorTag(e, name));
 
-      // Desktop: a click drills straight in. Touch: the first tap fills the rail,
-      // and the rail's own button takes you into the state.
-      el.addEventListener("click", () => {
+      // Desktop: a click drills straight in. Touch: the first tap fills the card,
+      // and the card's own button takes you into the state.
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
         if (CAN_HOVER) go({ kind: "state", name });
-        else { railPinned = name; railShow(name); }
+        else { cardPinned = name; enter(); }
       });
       el.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go({ kind: "state", name }); }
@@ -1201,76 +1201,47 @@
     const clear = () => {
       svg.classList.remove("probing");
       targets.forEach((t) => t.classList.remove("hot"));
-      hideCursorTag();
-      railShow(railPinned);
+      cardShow(cardPinned);
     };
     svg.addEventListener("mouseleave", clear);
-    app.querySelectorAll("svg path.live, svg g.callout").forEach((el) =>
+    // Touch: tapping open water lets go of the pinned state.
+    svg.addEventListener("click", () => { cardPinned = null; clear(); });
+    targets.forEach((el) =>
       el.addEventListener("blur", () => { if (!app.contains(document.activeElement)) clear(); }));
   }
 
-  function moveCursorTag(e, name) {
-    const v = valueByState[name];
-    cursorTag.innerHTML = `${esc(name)}${v == null ? "" : ` <span>${esc(activeMode().fmt(v))}</span>`}`;
-    cursorTag.classList.add("on");
-    const pad = 14;
-    let x = e.clientX + pad, y = e.clientY + pad;
-    const r = cursorTag.getBoundingClientRect();
-    if (x + r.width > window.innerWidth - 8) x = e.clientX - r.width - pad;
-    if (y + r.height > window.innerHeight - 8) y = e.clientY - r.height - pad;
-    cursorTag.style.left = x + "px";
-    cursorTag.style.top = y + "px";
-  }
-  function hideCursorTag() { cursorTag.classList.remove("on"); }
-
-  // The rail: strengths and weaknesses for one state, or the leaderboard for the
-  // current layer when nothing is under the pointer.
-  function railShow(name) {
-    const rail = document.getElementById("rail");
-    if (!rail) return;
+  function cardShow(name) {
+    const card = document.getElementById("stateCard");
+    if (!card) return;
     app.querySelectorAll("svg path.live").forEach((el) =>
       el.classList.toggle("sel", !!name && el.getAttribute("data-state") === name));
-
-    // Hold the ranking's scroll position across re-renders — probing a state on
-    // the map and coming back shouldn't throw you to the top of the list again.
-    const prevList = rail.querySelector(".lead-list");
-    const prevScroll = prevList ? prevList.scrollTop : leadScroll;
-    if (prevList) leadScroll = prevScroll;
-
-    rail.innerHTML = name && stateByName[name] ? railStateHTML(name) : railLeadersHTML();
-    const list = rail.querySelector(".lead-list");
-    if (list) list.scrollTop = leadScroll;
-
-    const open = rail.querySelector("[data-open-state]");
-    if (open) open.addEventListener("click", () => go({ kind: "state", name: open.getAttribute("data-open-state") }));
-    // Click drills in; hover deliberately does nothing. Swapping the rail on
-    // hover re-wrote the very node the pointer was over, so mouseleave and
-    // mouseenter fired against each other and the list strobed.
-    rail.querySelectorAll("[data-lead]").forEach((el) => {
-      const n = el.getAttribute("data-lead");
-      el.addEventListener("click", () => go({ kind: "state", name: n }));
-    });
+    const on = !!name && !!stateByName[name];
+    card.classList.toggle("on", on);
+    if (!on) return;
+    card.innerHTML = stateCardHTML(name);
+    const open = card.querySelector("[data-open-state]");
+    if (open) open.addEventListener("click", () => go({ kind: "state", name }));
   }
 
   // The three factor scores, for every state, always. Strengths and weaknesses
   // only cover what stands out — without this a state that is merely good at
   // everything (Georgia is 2nd overall and has no weakness) would show no
   // numbers at all, which is less than the old hover tooltip gave you.
-  function railFacts(st) {
+  function cardFacts(st) {
     const cell = (label, score) => `
       <div class="rf-cell">
         <div class="rf-lbl">${label}</div>
         <div class="rf-val">${score.toFixed(1)}<span>/5</span></div>
         <div class="track track-sm"><span class="fill" style="width:${(score / 5) * 100}%"></span></div>
       </div>`;
-    return `<div class="rail-facts">
+    return `<div class="card-facts">
         ${cell("Afford", st.affordability.score)}
         ${cell("Quality", st.qualityOfLife.score)}
         ${cell("Market", st.legalIndustry.score)}
       </div>`;
   }
 
-  function insGroup(kind, rows) {
+  function insGroup(kind, rows, brief) {
     if (!rows.length) return "";
     const up = kind === "up";
     return `
@@ -1282,64 +1253,32 @@
               <span class="ins-label">${esc(r.label)}</span>
               <span class="ins-rank">${ordinal(r.place)} of ${r.of}</span>
             </div>
-            <div class="ins-val">${esc(r.detail)}</div>
+            ${brief ? "" : `<div class="ins-val">${esc(r.detail)}</div>`}
           </div>`).join("")}
       </div>`;
   }
 
-  function railStateHTML(name) {
+  function stateCardHTML(name) {
     const st = stateByName[name];
     const ins = INSIGHTS[name] || { strengths: [], weaknesses: [] };
     const n = (schoolsByState[name] || []).length;
     const v = valueByState[name];
 
     const flat = !ins.strengths.length && !ins.weaknesses.length
-      ? `<p class="ins-flat">Middle of the pack on every measure — no standout strengths
-         or weaknesses against the other 50 jurisdictions.</p>` : "";
+      ? `<p class="ins-flat">Middle of the pack on every measure.</p>` : "";
 
     return `
-      <div class="rail-head">
-        <div class="rail-kicker">${esc(activeMode().label)} · ${v == null ? "no data" : esc(activeMode().fmt(v))}</div>
-        <h2 class="rail-title">${esc(name)}</h2>
-        <div class="rail-meta">${n ? plural(n, "law school") : "No law school"} ·
-          overall <b>${st.overall.toFixed(2)}</b>/5 · anchored to ${esc(st.anchorCity)}</div>
-      </div>
-      <div class="rail-body">
-        ${railFacts(st)}
-        ${insGroup("up", ins.strengths)}
-        ${insGroup("dn", ins.weaknesses)}
-        ${flat}
-        <button class="rail-cta" type="button" data-open-state="${esc(name)}">
-          ${n ? `See all ${plural(n, "school")}` : `Open ${esc(name)}`} →
-        </button>
-      </div>`;
-  }
-
-  function railLeadersHTML() {
-    const mode = activeMode();
-    // Every ranked state, not a top ten — the list scrolls inside a fixed frame,
-    // so the rail's height stays put no matter which layer is showing.
-    const ranked = Object.keys(valueByState)
-      .sort((a, b) => valueByState[b] - valueByState[a]);
-    const rows = ranked.map((n, i) => `
-      <button class="lead-row" type="button" data-lead="${esc(n)}">
-        <span class="lead-n">${i + 1}</span>
-        <span class="lead-swatch" style="background:${colorByState[n]}"></span>
-        <span class="lead-name">${esc(n)}</span>
-        <span class="lead-val">${esc(mode.fmt(valueByState[n]))}</span>
-      </button>`).join("");
-
-    return `
-      <div class="rail-head">
-        <div class="rail-kicker">Leading states</div>
-        <h2 class="rail-title">${esc(mode.label)}</h2>
-        <div class="rail-meta">All ${ranked.length} ranked · ${CAN_HOVER ? "hover" : "tap"} a state on the map for its
-          strengths and weaknesses.</div>
-      </div>
-      <div class="rail-body">
-        <div class="lead-list">${rows}</div>
-        <p class="rail-note">${esc(mode.legend(Object.keys(stateByName).length))}</p>
-      </div>`;
+      <div class="card-kicker">${esc(activeMode().label)} · ${v == null ? "no data" : esc(activeMode().fmt(v))}</div>
+      <h2 class="card-title">${esc(name)}</h2>
+      <div class="card-meta">${n ? plural(n, "law school") : "No law school"} · overall <b>${st.overall.toFixed(2)}</b>/5</div>
+      ${cardFacts(st)}
+      ${insGroup("up", ins.strengths.slice(0, 3), true)}
+      ${insGroup("dn", ins.weaknesses.slice(0, 3), true)}
+      ${flat}
+      ${CAN_HOVER
+        ? `<p class="card-hint">Click the state to see its schools</p>`
+        : `<button class="card-cta" type="button" data-open-state="${esc(name)}">
+            ${n ? `See all ${plural(n, "school")}` : `Open ${esc(name)}`} →</button>`}`;
   }
 
   // ---------- results ----------
@@ -1397,7 +1336,7 @@
     const lsatMed = a.lsat50 != null ? a.lsat50 : s.medianLSAT;
     const gpaMed = a.gpa50 != null ? a.gpa50 : s.medianGPA;
     return `
-      <div class="rrow" data-school="${esc(s.name)}">
+      <div class="rrow${s.name === resultsSel ? " on" : ""}" data-school="${esc(s.name)}" role="button" tabindex="0">
         <div class="rmain">
           <div class="rname">${esc(s.name)}${isSaved(s.name) ? ' <span class="saved-flag">✓ on list</span>' : ""}</div>
           <div class="rloc">${esc(s.city)}, ${esc(s.state)} · ${esc(s.tier || "—")}${s.rank == null ? "" : " · #" + s.rank}</div>
@@ -1412,15 +1351,20 @@
       </div>`;
   }
 
+  // The results page: your list on the left, a map on the right that pins
+  // whichever school the pointer is on. Clicking a row locks the pin and opens
+  // that school's detail in the panel under the map.
+  let resultsSel = null;   // school whose detail panel is open
+
   function renderResults() {
     const results = scoreAll();
     const groups = [[], [], [], []];
     results.forEach((r) => groups[r.adm.band].push(r));
 
-    // Target first — it's the actionable middle. Then reach, safety, far reach.
-    const order = [1, 2, 0, 3];
-    // Step order has to match reading order, or "next" jumps from the top of
-    // Target to something buried in Far reach.
+    // Hardest first, the way you'd split applications: reach, target, safety,
+    // then far reach last so nothing quietly drops off the list.
+    const order = [2, 1, 0, 3];
+    // Step order has to match reading order, or "next" jumps around the list.
     navList = order.reduce((acc, bi) => acc.concat(groups[bi].map((r) => r.school.name)), []);
 
     let jumps = "", body = "";
@@ -1453,33 +1397,64 @@
       bits.push(profile.states.length > 4 ? `${profile.states.length} states` : profile.states.join(", "));
     }
 
+    // Every listed school is a dot in its band's colour; the hovered or
+    // selected one also gets a pin. Schools sharing a city share a dot.
+    const dots = {};
+    results.forEach((r) => {
+      const xy = schoolXY(r.school);
+      if (!xy) return;
+      const k = xy[0].toFixed(0) + "," + xy[1].toFixed(0);
+      // Keep the most attainable band at a shared spot — the dot you can act on.
+      if (!dots[k] || r.adm.band < dots[k].band) dots[k] = { xy, band: r.adm.band };
+    });
+    const dotSVG = Object.values(dots).map((d) =>
+      `<circle class="dot ${BAND_CLS[d.band]}" cx="${d.xy[0].toFixed(1)}" cy="${d.xy[1].toFixed(1)}" r="5"></circle>`).join("");
+    const mapSVG = buildMapSVG(true).replace("</svg>", `<g class="dots">${dotSVG}</g></svg>`);
+
     setView(`
-      ${crumbHTML({ kind: "results" }, "Your fit")}
-      <div class="res-head">
-        <h2>${plural(results.length, "school")} ranked for you</h2>
-        <p>${esc(bits.join("  ·  "))} · <button class="linkbtn" id="editProfile" type="button">edit</button></p>
-      </div>
-      <div class="bandnav">${jumps}</div>
-      ${body}
-      <p class="footnote">
-        The LSAT and GPA figures are each school's own reported medians, with the tick
-        marking where your number falls inside their 25th–75th percentile spread. The
-        percentage is a modelled chance of admission on your two numbers alone, built
-        from each school's acceptance rate, its reported spread, and its yield — it has
-        no knowledge of your essays, work history, or softs, and nothing in it is fitted
-        to real admission results, because no school publishes them. The band label is
-        just a name for that percentage. Waitlist is the softest figure on the page: the
-        ABA collects no waitlist data at all, so that share is a modelled band around the
-        decision boundary rather than anything reported. Ranking within a band uses your
-        stated goals and geography — the line under each school names the outcomes doing
-        the work. Employment figures describe the class of 2024.
-      </p>`);
+      <div class="res">
+        <div class="res-list">
+          <div class="res-head">
+            <h2>${plural(results.length, "school")} ranked for you</h2>
+            <p>${esc(bits.join("  ·  "))} · <button class="linkbtn" id="editProfile" type="button">edit</button></p>
+          </div>
+          <div class="bandnav">${jumps}</div>
+          ${body}
+          <p class="footnote">
+            The LSAT and GPA figures are each school's own reported medians, with the tick
+            marking where your number falls inside their 25th–75th percentile spread. The
+            percentage is a modelled chance of admission on your two numbers alone, built
+            from each school's acceptance rate, its reported spread, and its yield — it has
+            no knowledge of your essays, work history, or softs, and nothing in it is fitted
+            to real admission results, because no school publishes them. The band label is
+            just a name for that percentage. Waitlist is the softest figure on the page: the
+            ABA collects no waitlist data at all, so that share is a modelled band around the
+            decision boundary rather than anything reported. Ranking within a band uses your
+            stated goals and geography — the line under each school names the outcomes doing
+            the work. Employment figures describe the class of 2024.
+          </p>
+        </div>
+        <aside class="res-side">
+          <div class="res-map">
+            ${mapSVG}
+            <div class="mappin" id="mapPin" aria-hidden="true"><i></i><span></span></div>
+          </div>
+          <div class="res-detail" id="resDetail" aria-live="polite"></div>
+        </aside>
+      </div>`, true);
     window.scrollTo({ top: resultsScroll, behavior: "auto" });
 
-    wireCrumb();
-    app.querySelectorAll("[data-school]").forEach((el) =>
-      el.addEventListener("click", () =>
-        go({ kind: "school", name: el.getAttribute("data-school"), fit: fitOrigin(currentView) })));
+    const list = app.querySelector(".res-list");
+    app.querySelectorAll("[data-school]").forEach((el) => {
+      const name = el.getAttribute("data-school");
+      el.addEventListener("mouseenter", () => pinTo(name));
+      el.addEventListener("focus", () => pinTo(name));
+      el.addEventListener("click", () => selectSchool(name));
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectSchool(name); }
+      });
+    });
+    list.addEventListener("mouseleave", () => pinTo(resultsSel));
     app.querySelectorAll("[data-expand]").forEach((el) =>
       el.addEventListener("click", () => {
         expandedBands[el.getAttribute("data-expand")] = true;
@@ -1490,9 +1465,82 @@
         const t = document.getElementById("band-" + el.getAttribute("data-jump"));
         if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
       }));
-    document.getElementById("editProfile").addEventListener("click", () => {
-      ui.dockOpen = true; persistUI();
-      go({ kind: "map" });
+    document.getElementById("editProfile").addEventListener("click", () => go({ kind: "fit" }));
+
+    pinTo(resultsSel);
+    showDetail(resultsSel);
+  }
+
+  // Positioned in percent of the map box, so it tracks the SVG at any width.
+  function pinTo(name) {
+    const pin = document.getElementById("mapPin");
+    if (!pin) return;
+    const sc = name && schoolByName[name];
+    const xy = sc && schoolXY(sc);
+    pin.classList.toggle("on", !!xy);
+    if (!xy) return;
+    const { VBW, VBH } = mapProjection();
+    pin.style.left = (xy[0] / VBW * 100) + "%";
+    pin.style.top = (xy[1] / VBH * 100) + "%";
+    const st = stateByName[sc.state];
+    const label = pin.querySelector("span");
+    label.innerHTML = `<b>${esc(sc.name)}</b>${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)}`;
+    // Flip the label to the pin's left whenever it would run off the map —
+    // measured, because how far it runs depends on the map's rendered width.
+    pin.classList.remove("flip");
+    const edge = pin.parentNode.getBoundingClientRect().right;
+    if (label.getBoundingClientRect().right > edge) pin.classList.add("flip");
+  }
+
+  function selectSchool(name) {
+    resultsSel = resultsSel === name ? null : name;
+    app.querySelectorAll(".rrow").forEach((el) =>
+      el.classList.toggle("on", el.getAttribute("data-school") === resultsSel));
+    pinTo(resultsSel);
+    showDetail(resultsSel);
+    // Stacked layout: the panel sits above the list, so bring it into view.
+    if (resultsSel && !window.matchMedia("(min-width: 901px)").matches) {
+      app.querySelector(".res-side").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function showDetail(name) {
+    const box = document.getElementById("resDetail");
+    if (!box) return;
+    const sc = name && schoolByName[name];
+    box.classList.toggle("on", !!sc);
+    if (!sc) {
+      box.innerHTML = `<p class="res-hint">${CAN_HOVER ? "Point at" : "Tap"} a school to pin it on the map.
+        Click one for its numbers, your odds and where its graduates end up.</p>`;
+      return;
+    }
+    const st = stateByName[sc.state];
+    const added = isSaved(sc.name);
+    box.innerHTML = `
+      <div class="rd-head">
+        <div>
+          <h3>${esc(sc.name)}</h3>
+          <div class="loc">${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)} ${tierBadge(sc.tier)}</div>
+        </div>
+        <button class="iconbtn" id="rdClose" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="rd-actions">
+        <button class="btn ${added ? "btn-quiet" : ""}" id="rdSave" type="button">${added ? "✓ On my list" : "Add to my list"}</button>
+        <button class="linkbtn" id="rdOpen" type="button">Full school page →</button>
+      </div>
+      ${schoolStatsHTML(sc)}
+      ${schoolOddsHTML(sc)}
+      ${schoolOutcomesHTML(sc)}
+      <div class="writeup-h gap-t">How it stacks up</div>
+      <p class="writeup">${esc(sc.writeup)}</p>`;
+    box.scrollTop = 0;
+    document.getElementById("rdClose").addEventListener("click", () => selectSchool(sc.name));
+    document.getElementById("rdOpen").addEventListener("click", () =>
+      go({ kind: "school", name: sc.name, fit: true }));
+    document.getElementById("rdSave").addEventListener("click", () => {
+      toggleSaved(sc.name);
+      renderDrawer();
+      rerender();
     });
   }
 
@@ -1576,18 +1624,9 @@
   }
 
   // ---------- school view ----------
-  function renderSchool(schoolName) {
-    const sc = schoolByName[schoolName];
-    if (!sc) { go({ kind: "map" }, true); return; }
-    const st = stateByName[sc.state];
-    const added = isSaved(sc.name);
-    const city = cityByKey[sc.city + "|" + sc.state];
-
-    const lifeBar = (label, v) =>
-      `<div class="life-row"><span>${label}</span>
-         <span class="track"><span class="fill" style="width:${(v / 5) * 100}%"></span></span>
-         <b>${v}/5</b></div>`;
-
+  // The pieces of a school's read that both the full page and the results
+  // detail panel show.
+  function schoolOutcomesHTML(sc) {
     // Class-of-2024 outcomes, with each figure's percentile against every other
     // ABA school — 12% federal clerkships means something very different from 12% BigLaw.
     const oc = sc.outcomes;
@@ -1601,7 +1640,7 @@
       ? `<div class="feeds">Graduates land mostly in ` +
         sc.topStates.map((t) => `<b>${esc(t.state)}</b> (${t.pct}%)`).join(", ") + `.</div>`
       : "";
-    const outcomesBlock = oc ? `
+    return oc ? `
       <div class="outcomes">
         <div class="writeup-h">Where the class of 2024 ended up</div>
         <div class="oc-grid">
@@ -1617,6 +1656,9 @@
         ${feeds}
       </div>` : "";
 
+  }
+
+  function schoolOddsHTML(sc) {
     // Where the user's own numbers land in this school's admitted range.
     const adm = admissionRead(sc);
     const a = sc.admissions;
@@ -1628,7 +1670,7 @@
           <span class="pin" style="left:${left.toFixed(1)}%"></span></span>
         <span class="pv"><b>${value}</b></span></div>`;
     };
-    const oddsBlock = adm ? (() => {
+    return adm ? (() => {
       const p = splitPct(adm.odds);
       const seg = (cls, v) => (v <= 0 ? "" : `<span class="${cls}" style="width:${v}%"></span>`);
       return `
@@ -1657,6 +1699,37 @@
           it knows nothing about your essays, work history, or softs.</div>
       </div>`;
     })() : "";
+
+  }
+
+  function schoolStatsHTML(sc) {
+    const a = sc.admissions;
+    return `
+        <div class="statblock">
+          <div class="stat"><div class="lbl">Median GPA</div><div class="val">${sc.medianGPA.toFixed(2)}</div>
+            ${a ? `<div class="rng">${a.gpa25}–${a.gpa75} (25th–75th)</div>` : ""}</div>
+          <div class="stat"><div class="lbl">Median LSAT</div><div class="val">${sc.medianLSAT}</div>
+            ${a ? `<div class="rng">${a.lsat25}–${a.lsat75} (25th–75th)</div>` : ""}</div>
+          <div class="stat"><div class="lbl">Acceptance Rate</div>
+            <div class="val">${a && a.acceptanceRate != null ? a.acceptanceRate + "%" : "—"}</div>
+            ${a && a.applications ? `<div class="rng">${a.applications.toLocaleString("en-US")} applied</div>` : ""}</div>
+          <div class="stat"><div class="lbl">Rank</div><div class="val">${sc.rank == null ? "—" : "#" + sc.rank}</div></div>
+          <div class="stat"><div class="lbl">In-State Tuition</div><div class="val">${money(sc.tuitionInState)}</div></div>
+          <div class="stat"><div class="lbl">Out-of-State Tuition</div><div class="val">${money(sc.tuitionOutState)}</div></div>
+        </div>`;
+  }
+
+  function renderSchool(schoolName) {
+    const sc = schoolByName[schoolName];
+    if (!sc) { go({ kind: "map" }, true); return; }
+    const st = stateByName[sc.state];
+    const added = isSaved(sc.name);
+    const city = cityByKey[sc.city + "|" + sc.state];
+
+    const lifeBar = (label, v) =>
+      `<div class="life-row"><span>${label}</span>
+         <span class="track"><span class="fill" style="width:${(v / 5) * 100}%"></span></span>
+         <b>${v}/5</b></div>`;
 
     const lifestyleBlock = city ? `
       <div class="lifestyle">
@@ -1700,22 +1773,11 @@
             </button>
           </div>
         </div>
-        <div class="statblock">
-          <div class="stat"><div class="lbl">Median GPA</div><div class="val">${sc.medianGPA.toFixed(2)}</div>
-            ${a ? `<div class="rng">${a.gpa25}–${a.gpa75} (25th–75th)</div>` : ""}</div>
-          <div class="stat"><div class="lbl">Median LSAT</div><div class="val">${sc.medianLSAT}</div>
-            ${a ? `<div class="rng">${a.lsat25}–${a.lsat75} (25th–75th)</div>` : ""}</div>
-          <div class="stat"><div class="lbl">Acceptance Rate</div>
-            <div class="val">${a && a.acceptanceRate != null ? a.acceptanceRate + "%" : "—"}</div>
-            ${a && a.applications ? `<div class="rng">${a.applications.toLocaleString("en-US")} applied</div>` : ""}</div>
-          <div class="stat"><div class="lbl">Rank</div><div class="val">${sc.rank == null ? "—" : "#" + sc.rank}</div></div>
-          <div class="stat"><div class="lbl">In-State Tuition</div><div class="val">${money(sc.tuitionInState)}</div></div>
-          <div class="stat"><div class="lbl">Out-of-State Tuition</div><div class="val">${money(sc.tuitionOutState)}</div></div>
-        </div>
-        ${oddsBlock}
+        ${schoolStatsHTML(sc)}
+        ${schoolOddsHTML(sc)}
         <div class="writeup-h gap-t">How it stacks up</div>
         <p class="writeup">${esc(sc.writeup)}</p>
-        ${outcomesBlock}
+        ${schoolOutcomesHTML(sc)}
         ${lifestyleBlock}
       </div>
       ${navBlock}`);
@@ -2003,7 +2065,7 @@
         `${nJur - 1} states and DC · ${nSch} ABA-accredited schools`;
       searchInput.placeholder = `Search ${nSch} schools and ${nJur} states…`;
 
-      go({ kind: "map" }, true);
+      go({ kind: "fit" }, true);
     } catch (err) {
       app.innerHTML = `<div class="view"><div class="errbox">
         <b>Couldn't load the data.</b><br>
@@ -2015,8 +2077,26 @@
   }
 
   // ---------- persistent wiring ----------
-  document.getElementById("brandBtn").addEventListener("click", () => go({ kind: "map" }));
-  document.getElementById("listBtn").addEventListener("click", openDrawer);
+  document.getElementById("brandBtn").addEventListener("click", () => go({ kind: "fit" }));
+  const menu = document.getElementById("menu");
+  const menuBtn = document.getElementById("menuBtn");
+  function menuToggle(open) {
+    menu.classList.toggle("on", open);
+    menuBtn.setAttribute("aria-expanded", open);
+    // The ranked list needs numbers to rank on; say so rather than hide it.
+    const res = document.getElementById("menuResults");
+    res.disabled = !profileReady();
+    res.title = profileReady() ? "" : "Enter a GPA and LSAT on Find your fit first";
+  }
+  menuBtn.addEventListener("click", (e) => { e.stopPropagation(); menuToggle(!menu.classList.contains("on")); });
+  document.addEventListener("click", (e) => { if (!menu.contains(e.target)) menuToggle(false); });
+  menu.querySelectorAll("[data-nav]").forEach((el) =>
+    el.addEventListener("click", () => {
+      menuToggle(false);
+      const kind = el.getAttribute("data-nav");
+      if (kind === "results") openResults(); else go({ kind });
+    }));
+  document.getElementById("listBtn").addEventListener("click", () => { menuToggle(false); openDrawer(); });
   document.getElementById("drawerClose").addEventListener("click", closeDrawer);
   scrim.addEventListener("click", closeDrawer);
   document.getElementById("exportMd").addEventListener("click", exportMarkdown);
@@ -2034,7 +2114,7 @@
 
   document.addEventListener("keydown", (e) => {
     const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName);
-    if (e.key === "Escape") { searchClose(); closeDrawer(); return; }
+    if (e.key === "Escape") { searchClose(); closeDrawer(); menuToggle(false); return; }
     if (typing) return;
     if (e.key === "/" || ((e.metaKey || e.ctrlKey) && e.key === "k")) {
       e.preventDefault(); searchOpen();

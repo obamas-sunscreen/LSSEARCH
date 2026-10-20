@@ -1,5 +1,5 @@
 {
-  "_note": "City-level youthful-active-lifestyle scores, one per law-school city. This replaces the old state-level 'community' score because lifestyle varies enormously within a state (Austin vs. Lubbock). Sub-signals are 1-5: social = nightlife/dining/music/young-professional density (weighted heaviest); outdoors = active outdoor recreation; walkability = walkable/transit vs. car-dependent. lifestyleScore = 0.5*social + 0.25*outdoors + 0.25*walkability, rounded to the nearest 0.5. Editable estimates, not survey data.",
+  "_note": "City-level youthful-active-lifestyle scores, one per law-school city. This replaces the old state-level 'community' score because lifestyle varies enormously within a state (Austin vs. Lubbock). Sub-signals are 1-5: social = nightlife/dining/music/young-professional density (weighted heaviest); outdoors = active outdoor recreation; walkability = walkable/transit vs. car-dependent. lifestyleScore = 0.5*social + 0.25*outdoors + 0.25*walkability, rounded to the nearest 0.5. Editable estimates, not survey data. lat/lon: US Census 2024 Gazetteer place interior points, with a few hand-placed where the city isn't a Census place (NYC boroughs, New England towns) or its interior point misleads (San Francisco, Portland ME, Orlando, New York).",
   "cities": [
     {
       "city": "Ada",
@@ -8,7 +8,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "A village of about 5,000 built around the university. Essentially no independent social scene \u2014 this is a heads-down three years."
+      "blurb": "A village of about 5,000 built around the university. Essentially no independent social scene \u2014 this is a heads-down three years.",
+      "lat": 40.7681,
+      "lon": -83.8252
     },
     {
       "city": "Akron",
@@ -17,7 +19,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 2.5,
-      "blurb": "Cheap rust-belt city with surprisingly good outdoors in Cuyahoga Valley National Park just north. Thin nightlife; Cleveland is 40 minutes."
+      "blurb": "Cheap rust-belt city with surprisingly good outdoors in Cuyahoga Valley National Park just north. Thin nightlife; Cleveland is 40 minutes.",
+      "lat": 41.0805,
+      "lon": -81.5214
     },
     {
       "city": "Albany",
@@ -26,7 +30,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "State-capital town with a modest but real scene, a student presence, and easy access to the Adirondacks and Berkshires."
+      "blurb": "State-capital town with a modest but real scene, a student presence, and easy access to the Adirondacks and Berkshires.",
+      "lat": 42.6657,
+      "lon": -73.7984
     },
     {
       "city": "Albuquerque",
@@ -35,7 +41,9 @@
       "outdoors": 5,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Sandia Mountains on one side, the Rio Grande bosque on the other, and 300 days of sun. Cheap, gritty, and thoroughly car-dependent."
+      "blurb": "Sandia Mountains on one side, the Rio Grande bosque on the other, and 300 days of sun. Cheap, gritty, and thoroughly car-dependent.",
+      "lat": 35.1048,
+      "lon": -106.6468
     },
     {
       "city": "Ann Arbor",
@@ -44,7 +52,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Quintessential vibrant college town \u2014 walkable, foodie, young, and cultured around the University of Michigan. Small, but punches above its size."
+      "blurb": "Quintessential vibrant college town \u2014 walkable, foodie, young, and cultured around the University of Michigan. Small, but punches above its size.",
+      "lat": 42.2761,
+      "lon": -83.7309
     },
     {
       "city": "Athens",
@@ -53,7 +63,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Legendary music-scene college town (UGA) \u2014 walkable, cheap, and young. Small, but a lot of fun for its size."
+      "blurb": "Legendary music-scene college town (UGA) \u2014 walkable, cheap, and young. Small, but a lot of fun for its size.",
+      "lat": 33.9496,
+      "lon": -83.3701
     },
     {
       "city": "Atlanta",
@@ -62,7 +74,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "A major young-professional and cultural hub with nightlife, music, and diversity. Sprawl and traffic are the price of admission."
+      "blurb": "A major young-professional and cultural hub with nightlife, music, and diversity. Sprawl and traffic are the price of admission.",
+      "lat": 33.7629,
+      "lon": -84.4227
     },
     {
       "city": "Austin",
@@ -71,7 +85,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.5,
-      "blurb": "The poster child for youthful and active \u2014 live music, lakes and greenbelts, food trucks, and a young, growing crowd. Traffic and rising costs are the downside."
+      "blurb": "The poster child for youthful and active \u2014 live music, lakes and greenbelts, food trucks, and a young, growing crowd. Traffic and rising costs are the downside.",
+      "lat": 30.2986,
+      "lon": -97.7541
     },
     {
       "city": "Ave Maria",
@@ -80,7 +96,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "A purpose-built town of a few thousand in the Southwest Florida farmland. Nearly no independent social scene; Naples is 30 minutes away."
+      "blurb": "A purpose-built town of a few thousand in the Southwest Florida farmland. Nearly no independent social scene; Naples is 30 minutes away.",
+      "lat": 26.3228,
+      "lon": -81.4394
     },
     {
       "city": "Baltimore",
@@ -89,7 +107,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "An underrated, affordable arts/music/food city with walkable rowhouse neighborhoods and harbor access. Crime and blight in pockets are real."
+      "blurb": "An underrated, affordable arts/music/food city with walkable rowhouse neighborhoods and harbor access. Crime and blight in pockets are real.",
+      "lat": 39.3,
+      "lon": -76.6105
     },
     {
       "city": "Baton Rouge",
@@ -98,7 +118,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "LSU-driven and affordable, with New Orleans an hour away for anything the city can't supply. Hot, humid, and car-dependent."
+      "blurb": "LSU-driven and affordable, with New Orleans an hour away for anything the city can't supply. Hot, humid, and car-dependent.",
+      "lat": 30.4404,
+      "lon": -91.1332
     },
     {
       "city": "Berkeley",
@@ -107,7 +129,9 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Bustling university town with Bay Area access, a walkable core, and hills/bay trails close by. Young and active, though pricey."
+      "blurb": "Bustling university town with Bay Area access, a walkable core, and hills/bay trails close by. Young and active, though pricey.",
+      "lat": 37.8657,
+      "lon": -122.2987
     },
     {
       "city": "Birmingham",
@@ -116,7 +140,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Cheap, and the food-and-music scene punches above the metro's size. Sprawling and car-first once you leave Avondale or Five Points."
+      "blurb": "Cheap, and the food-and-music scene punches above the metro's size. Sprawling and car-first once you leave Avondale or Five Points.",
+      "lat": 33.5272,
+      "lon": -86.797
     },
     {
       "city": "Bloomington",
@@ -125,7 +151,9 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Unusually good college town \u2014 live music, a compact walkable core, and Hoosier National Forest nearby. Cheap, and it empties in summer."
+      "blurb": "Unusually good college town \u2014 live music, a compact walkable core, and Hoosier National Forest nearby. Cheap, and it empties in summer.",
+      "lat": 39.1637,
+      "lon": -86.5243
     },
     {
       "city": "Boston",
@@ -134,7 +162,9 @@
       "outdoors": 3,
       "walkability": 5,
       "lifestyleScore": 4.5,
-      "blurb": "One of the most student-dense cities in the country \u2014 walkable, transit-rich, packed with bars, sports, and young professionals. Expensive and cold."
+      "blurb": "One of the most student-dense cities in the country \u2014 walkable, transit-rich, packed with bars, sports, and young professionals. Expensive and cold.",
+      "lat": 42.3386,
+      "lon": -71.0183
     },
     {
       "city": "Boulder",
@@ -143,7 +173,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "About as outdoors-forward as American cities get \u2014 trailheads at the edge of a compact, walkable, bike-mad downtown. Expensive and small."
+      "blurb": "About as outdoors-forward as American cities get \u2014 trailheads at the edge of a compact, walkable, bike-mad downtown. Expensive and small.",
+      "lat": 40.0244,
+      "lon": -105.2513
     },
     {
       "city": "Bristol",
@@ -152,16 +184,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Small waterfront town on Narragansett Bay with sailing and the East Bay Bike Path. Providence is 30 minutes for anything else."
-    },
-    {
-      "city": "Bronx",
-      "state": "New York",
-      "social": 4,
-      "outdoors": 3,
-      "walkability": 5,
-      "lifestyleScore": 4.0,
-      "blurb": "Full subway access to all of New York City, with Van Cortlandt Park and the Botanical Garden nearby. Cheaper than Manhattan."
+      "blurb": "Small waterfront town on Narragansett Bay with sailing and the East Bay Bike Path. Providence is 30 minutes for anything else.",
+      "lat": 41.6431,
+      "lon": -71.26
     },
     {
       "city": "Brooklyn",
@@ -170,7 +195,9 @@
       "outdoors": 3,
       "walkability": 5,
       "lifestyleScore": 4.5,
-      "blurb": "The epicenter of young, creative NYC \u2014 endless food, nightlife, and arts, all walkable and transit-connected. Very expensive."
+      "blurb": "The epicenter of young, creative NYC \u2014 endless food, nightlife, and arts, all walkable and transit-connected. Very expensive.",
+      "lat": 40.6782,
+      "lon": -73.9442
     },
     {
       "city": "Buffalo",
@@ -179,7 +206,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Affordable, revitalizing rust-belt city with a growing food scene and real neighborhood character. Long, snowy winters."
+      "blurb": "Affordable, revitalizing rust-belt city with a growing food scene and real neighborhood character. Long, snowy winters.",
+      "lat": 42.8925,
+      "lon": -78.8597
     },
     {
       "city": "Cambridge",
@@ -188,7 +217,9 @@
       "outdoors": 3,
       "walkability": 5,
       "lifestyleScore": 4.0,
-      "blurb": "Harvard/MIT energy: cafes, bookstores, and a young academic crowd on foot and transit. Pricey and small."
+      "blurb": "Harvard/MIT energy: cafes, bookstores, and a young academic crowd on foot and transit. Pricey and small.",
+      "lat": 42.376,
+      "lon": -71.1187
     },
     {
       "city": "Camden",
@@ -197,7 +228,9 @@
       "outdoors": 2,
       "walkability": 3,
       "lifestyleScore": 2.0,
-      "blurb": "Working waterfront city directly across from Philadelphia, which is where the social life is \u2014 PATCO gets you there in minutes."
+      "blurb": "Working waterfront city directly across from Philadelphia, which is where the social life is \u2014 PATCO gets you there in minutes.",
+      "lat": 39.9368,
+      "lon": -75.1066
     },
     {
       "city": "Carbondale",
@@ -206,7 +239,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small, remote southern-Illinois university town with nearby Shawnee forest but a thin nightlife scene."
+      "blurb": "Small, remote southern-Illinois university town with nearby Shawnee forest but a thin nightlife scene.",
+      "lat": 37.7221,
+      "lon": -89.2237
     },
     {
       "city": "Carlisle",
@@ -215,7 +250,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Small, walkable historic borough in the Cumberland Valley with the Appalachian Trail close by. Cheap and very quiet."
+      "blurb": "Small, walkable historic borough in the Cumberland Valley with the Appalachian Trail close by. Cheap and very quiet.",
+      "lat": 40.2,
+      "lon": -77.2041
     },
     {
       "city": "Central Islip",
@@ -224,7 +261,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Suburban Long Island hamlet \u2014 commuter-oriented and car-dependent, with a limited youthful scene of its own."
+      "blurb": "Suburban Long Island hamlet \u2014 commuter-oriented and car-dependent, with a limited youthful scene of its own.",
+      "lat": 40.7836,
+      "lon": -73.1945
     },
     {
       "city": "Champaign",
@@ -233,7 +272,9 @@
       "outdoors": 2,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Lively UIUC college-town energy and a walkable campus core, but marooned in central-Illinois cornfields."
+      "blurb": "Lively UIUC college-town energy and a walkable campus core, but marooned in central-Illinois cornfields.",
+      "lat": 40.1141,
+      "lon": -88.2746
     },
     {
       "city": "Chapel Hill",
@@ -242,7 +283,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Classic Tar Heel college town \u2014 walkable Franklin Street, young, and lively, with Triangle amenities nearby."
+      "blurb": "Classic Tar Heel college town \u2014 walkable Franklin Street, young, and lively, with Triangle amenities nearby.",
+      "lat": 35.9283,
+      "lon": -79.0414
     },
     {
       "city": "Charleston",
@@ -251,7 +294,9 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Historic, coastal, and genuinely fun \u2014 a celebrated food scene, beaches, and a walkable core. Tourist crowds and heat are the tradeoffs."
+      "blurb": "Historic, coastal, and genuinely fun \u2014 a celebrated food scene, beaches, and a walkable core. Tourist crowds and heat are the tradeoffs.",
+      "lat": 32.828,
+      "lon": -79.9729
     },
     {
       "city": "Charlottesville",
@@ -260,7 +305,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Blue Ridge and Shenandoah on the doorstep, a walkable downtown mall, and a strong wine-and-food scene. Small and not cheap."
+      "blurb": "Blue Ridge and Shenandoah on the doorstep, a walkable downtown mall, and a strong wine-and-food scene. Small and not cheap.",
+      "lat": 38.0377,
+      "lon": -78.4854
     },
     {
       "city": "Chicago",
@@ -269,7 +316,9 @@
       "outdoors": 4,
       "walkability": 5,
       "lifestyleScore": 5.0,
-      "blurb": "World-class dining, nightlife, and culture with a lakefront full of running paths and beaches, all on excellent transit. Winters are the tax."
+      "blurb": "World-class dining, nightlife, and culture with a lakefront full of running paths and beaches, all on excellent transit. Winters are the tax.",
+      "lat": 41.837,
+      "lon": -87.6849
     },
     {
       "city": "Cincinnati",
@@ -278,7 +327,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Over-the-Rhine is one of the better walkable nightlife districts in the Midwest, and housing is cheap. Hilly, with good river access."
+      "blurb": "Over-the-Rhine is one of the better walkable nightlife districts in the Midwest, and housing is cheap. Hilly, with good river access.",
+      "lat": 39.1402,
+      "lon": -84.5058
     },
     {
       "city": "Cleveland",
@@ -287,7 +338,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Very cheap, with world-class cultural institutions, lakefront access, and the Metroparks 'Emerald Necklace.' Winters are grey and long."
+      "blurb": "Very cheap, with world-class cultural institutions, lakefront access, and the Metroparks 'Emerald Necklace.' Winters are grey and long.",
+      "lat": 41.4785,
+      "lon": -81.6794
     },
     {
       "city": "Columbia",
@@ -296,7 +349,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Mid-Missouri college town with good trail access (the Katy Trail) and a walkable downtown. Cheap and comfortably scaled."
+      "blurb": "Mid-Missouri college town with good trail access (the Katy Trail) and a walkable downtown. Cheap and comfortably scaled.",
+      "lat": 38.9473,
+      "lon": -92.3264
     },
     {
       "city": "Columbia",
@@ -305,7 +360,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "State-capital college town (USC) with steady student energy and affordability, but hot summers and a modest scene."
+      "blurb": "State-capital college town (USC) with steady student energy and affordability, but hot summers and a modest scene.",
+      "lat": 34.0405,
+      "lon": -80.9061
     },
     {
       "city": "Columbus",
@@ -314,7 +371,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Young, growing, and cheap, with the Short North supplying most of the nightlife. Flat and bikeable; outdoors is unremarkable."
+      "blurb": "Young, growing, and cheap, with the Short North supplying most of the nightlife. Flat and bikeable; outdoors is unremarkable.",
+      "lat": 39.9839,
+      "lon": -82.9849
     },
     {
       "city": "Concord",
@@ -323,7 +382,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Small, quiet capital with the White Mountains and Lakes Region within easy reach. Very little in the way of nightlife."
+      "blurb": "Small, quiet capital with the White Mountains and Lakes Region within easy reach. Very little in the way of nightlife.",
+      "lat": 43.2325,
+      "lon": -71.5613
     },
     {
       "city": "Coral Gables",
@@ -332,7 +393,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Upscale, leafy Miami-area city with a walkable Miracle Mile and quick access to Miami's scene and beaches. Pricey."
+      "blurb": "Upscale, leafy Miami-area city with a walkable Miracle Mile and quick access to Miami's scene and beaches. Pricey.",
+      "lat": 25.6831,
+      "lon": -80.2617
     },
     {
       "city": "Dallas",
@@ -341,7 +404,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Big-city dining, nightlife, and sports with a large young-professional base, but sprawling and very car-dependent."
+      "blurb": "Big-city dining, nightlife, and sports with a large young-professional base, but sprawling and very car-dependent.",
+      "lat": 32.7933,
+      "lon": -96.7665
     },
     {
       "city": "Dartmouth",
@@ -350,7 +415,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Coastal southeastern-Massachusetts town near New Bedford \u2014 quiet, with limited youthful nightlife."
+      "blurb": "Coastal southeastern-Massachusetts town near New Bedford \u2014 quiet, with limited youthful nightlife.",
+      "lat": 41.6604,
+      "lon": -70.9902
     },
     {
       "city": "Davie",
@@ -359,7 +426,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 2.5,
-      "blurb": "Suburban, horse-country-adjacent Broward County. Beaches and the Everglades are close, but you will drive everywhere."
+      "blurb": "Suburban, horse-country-adjacent Broward County. Beaches and the Everglades are close, but you will drive everywhere.",
+      "lat": 26.0792,
+      "lon": -80.283
     },
     {
       "city": "Davis",
@@ -368,7 +437,9 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 3.0,
-      "blurb": "Flat, bike-obsessed college town \u2014 great for an active outdoor routine, but a quiet nightlife scene and isolated from a big city."
+      "blurb": "Flat, bike-obsessed college town \u2014 great for an active outdoor routine, but a quiet nightlife scene and isolated from a big city.",
+      "lat": 38.5561,
+      "lon": -121.7378
     },
     {
       "city": "Dayton",
@@ -377,7 +448,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 2.5,
-      "blurb": "Inexpensive, with an excellent regional bike-trail network and river access. Small social scene, largely car-dependent."
+      "blurb": "Inexpensive, with an excellent regional bike-trail network and river access. Small social scene, largely car-dependent.",
+      "lat": 39.7847,
+      "lon": -84.1996
     },
     {
       "city": "DeKalb",
@@ -386,7 +459,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Quiet NIU college town west of Chicago \u2014 affordable and small, with a limited youthful scene."
+      "blurb": "Quiet NIU college town west of Chicago \u2014 affordable and small, with a limited youthful scene.",
+      "lat": 41.9282,
+      "lon": -88.7476
     },
     {
       "city": "Denver",
@@ -395,7 +470,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "Young, active, and beer-soaked, with the Front Range an hour west. Downtown walks well; the rest sprawls. No longer cheap."
+      "blurb": "Young, active, and beer-soaked, with the Front Range an hour west. Downtown walks well; the rest sprawls. No longer cheap.",
+      "lat": 39.7619,
+      "lon": -104.8811
     },
     {
       "city": "Des Moines",
@@ -404,7 +481,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Underrated small capital \u2014 cheap, walkable downtown, strong trail network, and a real young-professional cohort in the East Village."
+      "blurb": "Underrated small capital \u2014 cheap, walkable downtown, strong trail network, and a real young-professional cohort in the East Village.",
+      "lat": 41.5726,
+      "lon": -93.6102
     },
     {
       "city": "Detroit",
@@ -413,7 +492,9 @@
       "outdoors": 2,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "A revitalizing city with a real arts, music, and dining renaissance at low cost. Gritty in spots and light on outdoors."
+      "blurb": "A revitalizing city with a real arts, music, and dining renaissance at low cost. Gritty in spots and light on outdoors.",
+      "lat": 42.383,
+      "lon": -83.1022
     },
     {
       "city": "Durham",
@@ -422,7 +503,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Reinvented tobacco town turned foodie/arts hub with a young, creative Research Triangle crowd. Rising fast."
+      "blurb": "Reinvented tobacco town turned foodie/arts hub with a young, creative Research Triangle crowd. Rising fast.",
+      "lat": 35.9779,
+      "lon": -78.8981
     },
     {
       "city": "East Lansing",
@@ -431,7 +514,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Michigan State college-town energy with a walkable strip and decent outdoors, but modest beyond campus life."
+      "blurb": "Michigan State college-town energy with a walkable strip and decent outdoors, but modest beyond campus life.",
+      "lat": 42.7489,
+      "lon": -84.4824
     },
     {
       "city": "Eugene",
@@ -440,7 +525,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Track Town \u2014 running, cycling, and river trails everywhere, with the Cascades and coast both an hour out. Small, wet, and cheap for Oregon."
+      "blurb": "Track Town \u2014 running, cycling, and river trails everywhere, with the Cascades and coast both an hour out. Small, wet, and cheap for Oregon.",
+      "lat": 44.0568,
+      "lon": -123.119
     },
     {
       "city": "Fairfax",
@@ -449,7 +536,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Northern Virginia suburb with Metro access into DC, which supplies the actual social life. Expensive for what it is."
+      "blurb": "Northern Virginia suburb with Metro access into DC, which supplies the actual social life. Expensive for what it is.",
+      "lat": 38.8532,
+      "lon": -77.299
     },
     {
       "city": "Fayetteville",
@@ -458,7 +547,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Ozarks trail town with a genuinely good mountain-biking network and a lively square. Cheap, growing, and much younger than the state average."
+      "blurb": "Ozarks trail town with a genuinely good mountain-biking network and a lively square. Cheap, growing, and much younger than the state average.",
+      "lat": 36.0715,
+      "lon": -94.1666
     },
     {
       "city": "Fort Worth",
@@ -467,7 +558,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Friendlier, more laid-back DFW alternative with a growing scene, but quieter nightlife than Dallas and car-dependent."
+      "blurb": "Friendlier, more laid-back DFW alternative with a growing scene, but quieter nightlife than Dallas and car-dependent.",
+      "lat": 32.782,
+      "lon": -97.3486
     },
     {
       "city": "Gainesville",
@@ -476,7 +569,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Energetic Gator college town with springs and trails nearby \u2014 young, affordable, and lively during the school year."
+      "blurb": "Energetic Gator college town with springs and trails nearby \u2014 young, affordable, and lively during the school year.",
+      "lat": 29.6795,
+      "lon": -82.3468
     },
     {
       "city": "Grand Forks",
@@ -485,7 +580,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 2.5,
-      "blurb": "Very small, very cheap, and very cold. A compact downtown and river greenway; the social scene is almost entirely campus."
+      "blurb": "Very small, very cheap, and very cold. A compact downtown and river greenway; the social scene is almost entirely campus.",
+      "lat": 47.9196,
+      "lon": -97.0873
     },
     {
       "city": "Greensboro",
@@ -494,7 +591,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Mid-size Piedmont city with a modest college scene and affordable living \u2014 pleasant but not buzzing."
+      "blurb": "Mid-size Piedmont city with a modest college scene and affordable living \u2014 pleasant but not buzzing.",
+      "lat": 36.0949,
+      "lon": -79.8236
     },
     {
       "city": "Grundy",
@@ -503,7 +602,9 @@
       "outdoors": 5,
       "walkability": 1,
       "lifestyleScore": 2.0,
-      "blurb": "A town of about 1,000 deep in the Appalachian coalfields. Outstanding hiking and ATV trails; essentially no social infrastructure."
+      "blurb": "A town of about 1,000 deep in the Appalachian coalfields. Outstanding hiking and ATV trails; essentially no social infrastructure.",
+      "lat": 37.2672,
+      "lon": -82.0946
     },
     {
       "city": "Gulfport",
@@ -512,7 +613,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Small artsy Gulf-coast enclave near St. Pete/Tampa \u2014 beaches and a quirky scene, but modest nightlife of its own."
+      "blurb": "Small artsy Gulf-coast enclave near St. Pete/Tampa \u2014 beaches and a quirky scene, but modest nightlife of its own.",
+      "lat": 27.7464,
+      "lon": -82.7099
     },
     {
       "city": "Harrisburg",
@@ -521,7 +624,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 2.5,
-      "blurb": "Small capital on the Susquehanna with a compact riverfront core. Cheap, practical, and limited after hours."
+      "blurb": "Small capital on the Susquehanna with a compact riverfront core. Cheap, practical, and limited after hours.",
+      "lat": 40.2759,
+      "lon": -76.885
     },
     {
       "city": "Hartford",
@@ -530,7 +635,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 2.5,
-      "blurb": "Insurance-industry capital that empties out on weekends. Cheap for the Northeast, with easy rail to Boston and New York when you need more."
+      "blurb": "Insurance-industry capital that empties out on weekends. Cheap for the Northeast, with easy rail to Boston and New York when you need more.",
+      "lat": 41.7659,
+      "lon": -72.6816
     },
     {
       "city": "Hempstead",
@@ -539,7 +646,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Long Island hub near Hofstra with LIRR access to NYC, but the immediate area is suburban and modest."
+      "blurb": "Long Island hub near Hofstra with LIRR access to NYC, but the immediate area is suburban and modest.",
+      "lat": 40.7044,
+      "lon": -73.6194
     },
     {
       "city": "Highland Heights",
@@ -548,7 +657,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Northern Kentucky campus suburb across the river from Cincinnati, which supplies most of the actual nightlife. Car-dependent and cheap."
+      "blurb": "Northern Kentucky campus suburb across the river from Cincinnati, which supplies most of the actual nightlife. Car-dependent and cheap.",
+      "lat": 39.0355,
+      "lon": -84.4566
     },
     {
       "city": "Honolulu",
@@ -557,7 +668,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "Unmatched outdoors \u2014 surf, reef, and ridge hikes inside the city limits. Small legal market, extreme cost of living, and a long flight from anywhere."
+      "blurb": "Unmatched outdoors \u2014 surf, reef, and ridge hikes inside the city limits. Small legal market, extreme cost of living, and a long flight from anywhere.",
+      "lat": 21.3243,
+      "lon": -157.8476
     },
     {
       "city": "Houston",
@@ -566,7 +679,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Enormous, diverse dining and nightlife and a young workforce, offset by heat, humidity, sprawl, and limited outdoors."
+      "blurb": "Enormous, diverse dining and nightlife and a young workforce, offset by heat, humidity, sprawl, and limited outdoors.",
+      "lat": 29.7857,
+      "lon": -95.3888
     },
     {
       "city": "Indianapolis",
@@ -575,7 +690,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Affordable, flat, and very bikeable along the Cultural Trail. Growing food scene; still a car city outside the Mile Square."
+      "blurb": "Affordable, flat, and very bikeable along the Cultural Trail. Growing food scene; still a car city outside the Mile Square.",
+      "lat": 39.7767,
+      "lon": -86.1459
     },
     {
       "city": "Iowa City",
@@ -584,7 +701,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "A literary college town with a genuinely walkable pedestrian mall and outsized bar and arts density for its size. Very cheap."
+      "blurb": "A literary college town with a genuinely walkable pedestrian mall and outsized bar and arts density for its size. Very cheap.",
+      "lat": 41.6557,
+      "lon": -91.5309
     },
     {
       "city": "Irvine",
@@ -593,7 +712,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 2.5,
-      "blurb": "Master-planned, spotless, and safe with beaches and trails nearby, but sterile and car-dependent with little organic young-adult scene."
+      "blurb": "Master-planned, spotless, and safe with beaches and trails nearby, but sterile and car-dependent with little organic young-adult scene.",
+      "lat": 33.6784,
+      "lon": -117.7713
     },
     {
       "city": "Ithaca",
@@ -602,7 +723,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Gorges, lakes, and trails everywhere around Cornell \u2014 a small, outdoorsy, youthful town, if an isolated and snowy one."
+      "blurb": "Gorges, lakes, and trails everywhere around Cornell \u2014 a small, outdoorsy, youthful town, if an isolated and snowy one.",
+      "lat": 42.4439,
+      "lon": -76.5031
     },
     {
       "city": "Jackson",
@@ -611,7 +734,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small, very cheap capital with a limited social scene and real infrastructure problems. Car-dependent."
+      "blurb": "Small, very cheap capital with a limited social scene and real infrastructure problems. Car-dependent.",
+      "lat": 32.3158,
+      "lon": -90.2129
     },
     {
       "city": "Jacksonville",
@@ -620,7 +745,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Sprawling, cheap by Florida standards, with genuine beach and St. Johns River access. The urban core is thin and very car-dependent."
+      "blurb": "Sprawling, cheap by Florida standards, with genuine beach and St. Johns River access. The urban core is thin and very car-dependent.",
+      "lat": 30.3369,
+      "lon": -81.6616
     },
     {
       "city": "Kansas City",
@@ -629,7 +756,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Barbecue, jazz, and a legitimately good restaurant scene at a fraction of coastal cost. Sprawling, though the streetcar core is improving."
+      "blurb": "Barbecue, jazz, and a legitimately good restaurant scene at a fraction of coastal cost. Sprawling, though the streetcar core is improving.",
+      "lat": 39.1252,
+      "lon": -94.5503
     },
     {
       "city": "Knoxville",
@@ -638,7 +767,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Vols college town at the gateway to the Smokies \u2014 strong outdoors, a reviving downtown, and low cost."
+      "blurb": "Vols college town at the gateway to the Smokies \u2014 strong outdoors, a reviving downtown, and low cost.",
+      "lat": 35.9707,
+      "lon": -83.9493
     },
     {
       "city": "Lansing",
@@ -647,7 +778,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "State-capital town with a steady, low-key scene and affordable living \u2014 youthful energy is moderate."
+      "blurb": "State-capital town with a steady, low-key scene and affordable living \u2014 youthful energy is moderate.",
+      "lat": 42.7143,
+      "lon": -84.5609
     },
     {
       "city": "Laramie",
@@ -656,7 +789,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "High-plains town at 7,200 feet with the Snowy Range and Vedauwoo minutes away. Tiny, windy, cheap, and cold."
+      "blurb": "High-plains town at 7,200 feet with the Snowy Range and Vedauwoo minutes away. Tiny, windy, cheap, and cold.",
+      "lat": 41.306,
+      "lon": -105.6086
     },
     {
       "city": "Las Vegas",
@@ -665,7 +800,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 3.5,
-      "blurb": "Enormous nightlife if you want it, and Red Rock and Mount Charleston for when you don't. Extremely car-dependent and brutally hot."
+      "blurb": "Enormous nightlife if you want it, and Red Rock and Mount Charleston for when you don't. Extremely car-dependent and brutally hot.",
+      "lat": 36.2335,
+      "lon": -115.264
     },
     {
       "city": "Lawrence",
@@ -674,7 +811,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Massachusetts Street is one of the better small-city main drags in the Midwest \u2014 live music, bars, and everything walkable. Cheap and young."
+      "blurb": "Massachusetts Street is one of the better small-city main drags in the Midwest \u2014 live music, bars, and everything walkable. Cheap and young.",
+      "lat": 38.9596,
+      "lon": -95.2655
     },
     {
       "city": "Lexington",
@@ -683,7 +822,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Horse country with a compact, improving downtown and good cycling on the surrounding rolling roads. Affordable and manageable."
+      "blurb": "Horse country with a compact, improving downtown and good cycling on the surrounding rolling roads. Affordable and manageable.",
+      "lat": 38.0407,
+      "lon": -84.4583
     },
     {
       "city": "Lexington",
@@ -692,7 +833,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Tiny, handsome Shenandoah Valley town with immediate access to the Blue Ridge and the Maury River. Very quiet."
+      "blurb": "Tiny, handsome Shenandoah Valley town with immediate access to the Blue Ridge and the Maury River. Very quiet.",
+      "lat": 37.7823,
+      "lon": -79.4443
     },
     {
       "city": "Lincoln",
@@ -701,7 +844,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Affordable, safe, bike-friendly capital with a Husker-driven social calendar. Compact downtown; not much beyond it."
+      "blurb": "Affordable, safe, bike-friendly capital with a Husker-driven social calendar. Compact downtown; not much beyond it.",
+      "lat": 40.8103,
+      "lon": -96.6749
     },
     {
       "city": "Little Rock",
@@ -710,7 +855,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Affordable capital with a walkable River Market district and trail access along the Arkansas River. Limited beyond that, and car-dependent."
+      "blurb": "Affordable capital with a walkable River Market district and trail access along the Arkansas River. Limited beyond that, and car-dependent.",
+      "lat": 34.7254,
+      "lon": -92.3586
     },
     {
       "city": "Los Angeles",
@@ -719,7 +866,9 @@
       "outdoors": 5,
       "walkability": 2,
       "lifestyleScore": 4.0,
-      "blurb": "Endless dining, nightlife, beaches, and hiking, with a huge young population. The catch is sprawl \u2014 you live in your car."
+      "blurb": "Endless dining, nightlife, beaches, and hiking, with a huge young population. The catch is sprawl \u2014 you live in your car.",
+      "lat": 34.0194,
+      "lon": -118.4108
     },
     {
       "city": "Louisville",
@@ -728,7 +877,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Cheap, distinctive, and genuinely fun \u2014 bourbon, the Highlands, and a strong independent-restaurant streak. Waterfront and park access is good."
+      "blurb": "Cheap, distinctive, and genuinely fun \u2014 bourbon, the Highlands, and a strong independent-restaurant streak. Waterfront and park access is good.",
+      "lat": 38.2247,
+      "lon": -85.7406
     },
     {
       "city": "Lubbock",
@@ -737,7 +888,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Isolated West Texas college town centered on Texas Tech \u2014 affordable, but a limited youthful/active scene."
+      "blurb": "Isolated West Texas college town centered on Texas Tech \u2014 affordable, but a limited youthful/active scene.",
+      "lat": 33.5619,
+      "lon": -101.8889
     },
     {
       "city": "Lynchburg",
@@ -746,7 +899,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 2.5,
-      "blurb": "Small Blue Ridge foothills city with river and trail access. Limited nightlife; conservative and car-dependent."
+      "blurb": "Small Blue Ridge foothills city with river and trail access. Limited nightlife; conservative and car-dependent.",
+      "lat": 37.399,
+      "lon": -79.1955
     },
     {
       "city": "Macon",
@@ -755,7 +910,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small Central Georgia city with historic charm and affordability, but a limited youthful/active scene."
+      "blurb": "Small Central Georgia city with historic charm and affordability, but a limited youthful/active scene.",
+      "lat": 32.809,
+      "lon": -83.6941
     },
     {
       "city": "Madison",
@@ -764,7 +921,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "An isthmus between two lakes, a walkable State Street, and an exceptional bike network. One of the best college-town lifestyles anywhere."
+      "blurb": "An isthmus between two lakes, a walkable State Street, and an exceptional bike network. One of the best college-town lifestyles anywhere.",
+      "lat": 43.0878,
+      "lon": -89.4299
     },
     {
       "city": "Malibu",
@@ -773,7 +932,9 @@
       "outdoors": 5,
       "walkability": 1,
       "lifestyleScore": 2.0,
-      "blurb": "Stunning beaches and canyon trails, but isolated, wealthy, and older \u2014 essentially no walkable nightlife or young social scene."
+      "blurb": "Stunning beaches and canyon trails, but isolated, wealthy, and older \u2014 essentially no walkable nightlife or young social scene.",
+      "lat": 34.0259,
+      "lon": -118.7596
     },
     {
       "city": "Memphis",
@@ -782,7 +943,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Deep music and food culture at very low cost, with real grit \u2014 crime and limited outdoors are the downsides."
+      "blurb": "Deep music and food culture at very low cost, with real grit \u2014 crime and limited outdoors are the downsides.",
+      "lat": 35.1092,
+      "lon": -89.9685
     },
     {
       "city": "Miami",
@@ -791,7 +954,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.5,
-      "blurb": "Iconic nightlife, beaches, and an international young crowd with year-round outdoor life. Expensive, hot, and sprawling."
+      "blurb": "Iconic nightlife, beaches, and an international young crowd with year-round outdoor life. Expensive, hot, and sprawling.",
+      "lat": 25.7752,
+      "lon": -80.2086
     },
     {
       "city": "Miami Gardens",
@@ -800,7 +965,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "North-county Miami suburb near Hard Rock Stadium \u2014 quiet and car-dependent, but with metro Miami within reach."
+      "blurb": "North-county Miami suburb near Hard Rock Stadium \u2014 quiet and car-dependent, but with metro Miami within reach.",
+      "lat": 25.9489,
+      "lon": -80.2436
     },
     {
       "city": "Milwaukee",
@@ -809,7 +976,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "Cheap, with a strong bar and festival culture and real Lake Michigan access. Winters are hard; the city is very segregated."
+      "blurb": "Cheap, with a strong bar and festival culture and real Lake Michigan access. Winters are hard; the city is very segregated.",
+      "lat": 43.0633,
+      "lon": -87.9667
     },
     {
       "city": "Minneapolis",
@@ -818,7 +987,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Lakes, an elite bike network, and real theater and music \u2014 one of the best active-lifestyle cities in the country if you can take the winter."
+      "blurb": "Lakes, an elite bike network, and real theater and music \u2014 one of the best active-lifestyle cities in the country if you can take the winter.",
+      "lat": 44.9633,
+      "lon": -93.2683
     },
     {
       "city": "Missoula",
@@ -827,7 +998,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "River running through downtown, trailheads at the edge of town, and a small but real music scene. Isolated, and increasingly not cheap."
+      "blurb": "River running through downtown, trailheads at the edge of town, and a small but real music scene. Isolated, and increasingly not cheap.",
+      "lat": 46.8744,
+      "lon": -114.0261
     },
     {
       "city": "Montgomery",
@@ -836,7 +1009,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small capital with a serious civil-rights heritage but a thin nightlife bench. Car-dependent, inexpensive, quiet after dark."
+      "blurb": "Small capital with a serious civil-rights heritage but a thin nightlife bench. Car-dependent, inexpensive, quiet after dark.",
+      "lat": 32.3485,
+      "lon": -86.2673
     },
     {
       "city": "Morgantown",
@@ -845,7 +1020,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Mountaineer town on the Monongahela with whitewater, climbing, and the rail-trail network close. Cheap, hilly, and football-driven."
+      "blurb": "Mountaineer town on the Monongahela with whitewater, climbing, and the rail-trail network close. Cheap, hilly, and football-driven.",
+      "lat": 39.6375,
+      "lon": -79.9469
     },
     {
       "city": "Moscow",
@@ -854,7 +1031,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Palouse college town with immediate access to hills, rivers, and the Idaho backcountry. Tiny, isolated, and very cheap."
+      "blurb": "Palouse college town with immediate access to hills, rivers, and the Idaho backcountry. Tiny, isolated, and very cheap.",
+      "lat": 46.7306,
+      "lon": -116.9989
     },
     {
       "city": "Nashville",
@@ -863,7 +1042,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "A booming magnet for young people \u2014 music, nightlife, and food everywhere. Growth has brought traffic and rising rents."
+      "blurb": "A booming magnet for young people \u2014 music, nightlife, and food everywhere. Growth has brought traffic and rising rents.",
+      "lat": 36.1718,
+      "lon": -86.785
     },
     {
       "city": "New Haven",
@@ -872,7 +1053,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Dense, walkable, and far livelier than its reputation \u2014 a real pizza and music town. Long Island Sound and East Rock are close."
+      "blurb": "Dense, walkable, and far livelier than its reputation \u2014 a real pizza and music town. Long Island Sound and East Rock are close.",
+      "lat": 41.3108,
+      "lon": -72.925
     },
     {
       "city": "New Orleans",
@@ -881,7 +1064,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Nowhere else has this much social life per dollar. Walkable, musical, and cheap; also hot, hurricane-exposed, and hard on a study schedule."
+      "blurb": "Nowhere else has this much social life per dollar. Walkable, musical, and cheap; also hot, hurricane-exposed, and hard on a study schedule.",
+      "lat": 30.0534,
+      "lon": -89.9345
     },
     {
       "city": "New York",
@@ -890,7 +1075,9 @@
       "outdoors": 3,
       "walkability": 5,
       "lifestyleScore": 4.5,
-      "blurb": "The ultimate walkable, transit-rich, always-on city \u2014 unmatched dining, nightlife, and young energy. Cost of living is the obstacle."
+      "blurb": "The ultimate walkable, transit-rich, always-on city \u2014 unmatched dining, nightlife, and young energy. Cost of living is the obstacle.",
+      "lat": 40.7306,
+      "lon": -73.9866
     },
     {
       "city": "Newark",
@@ -899,7 +1086,9 @@
       "outdoors": 2,
       "walkability": 4,
       "lifestyleScore": 3.0,
-      "blurb": "Transit-rich and cheap for the region, with Manhattan 20 minutes by train. Improving downtown; limited outdoors."
+      "blurb": "Transit-rich and cheap for the region, with Manhattan 20 minutes by train. Improving downtown; limited outdoors.",
+      "lat": 40.7242,
+      "lon": -74.1726
     },
     {
       "city": "Newton",
@@ -908,7 +1097,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Leafy, safe Boston suburb on the T \u2014 comfortable and connected, but sedate rather than youthful."
+      "blurb": "Leafy, safe Boston suburb on the T \u2014 comfortable and connected, but sedate rather than youthful.",
+      "lat": 42.3318,
+      "lon": -71.2084
     },
     {
       "city": "Norman",
@@ -917,7 +1108,9 @@
       "outdoors": 2,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "OU college town with a walkable Campus Corner and a football-shaped social calendar. Very cheap; Oklahoma City is 25 minutes."
+      "blurb": "OU college town with a walkable Campus Corner and a football-shaped social calendar. Very cheap; Oklahoma City is 25 minutes.",
+      "lat": 35.2406,
+      "lon": -97.3453
     },
     {
       "city": "North Haven",
@@ -926,7 +1119,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Quiet suburb north of New Haven. Car-dependent and residential; the actual social life is a ten-minute drive away."
+      "blurb": "Quiet suburb north of New Haven. Car-dependent and residential; the actual social life is a ten-minute drive away.",
+      "lat": 41.3815,
+      "lon": -72.8564
     },
     {
       "city": "Oklahoma City",
@@ -935,7 +1130,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Cheap and rapidly redeveloping, with Bricktown and the Scissortail Park boathouse district. Sprawling and car-first."
+      "blurb": "Cheap and rapidly redeveloping, with Bricktown and the Scissortail Park boathouse district. Sprawling and car-first.",
+      "lat": 35.4671,
+      "lon": -97.5137
     },
     {
       "city": "Omaha",
@@ -944,7 +1141,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Bigger and more varied than Lincoln, with the Old Market for walkable nightlife. Cheap, steady, and quietly comfortable."
+      "blurb": "Bigger and more varied than Lincoln, with the Old Market for walkable nightlife. Cheap, steady, and quietly comfortable.",
+      "lat": 41.2627,
+      "lon": -96.0535
     },
     {
       "city": "Orange",
@@ -953,7 +1152,9 @@
       "outdoors": 4,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Solid Orange County base with beaches and an old-town core, but largely suburban and car-dependent."
+      "blurb": "Solid Orange County base with beaches and an old-town core, but largely suburban and car-dependent.",
+      "lat": 33.787,
+      "lon": -117.8613
     },
     {
       "city": "Orlando",
@@ -962,7 +1163,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Theme-park city with a young workforce and a growing nightlife/dining scene, offset by heavy sprawl and tourism."
+      "blurb": "Theme-park city with a young workforce and a growing nightlife/dining scene, offset by heavy sprawl and tourism.",
+      "lat": 28.5384,
+      "lon": -81.3789
     },
     {
       "city": "Oxford",
@@ -971,7 +1174,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "The Square gives Oxford an outsized bar-and-bookstore culture for a town this small. Very cheap; isolated and football-seasonal."
+      "blurb": "The Square gives Oxford an outsized bar-and-bookstore culture for a town this small. Very cheap; isolated and football-seasonal.",
+      "lat": 34.3513,
+      "lon": -89.537
     },
     {
       "city": "Philadelphia",
@@ -980,7 +1185,9 @@
       "outdoors": 3,
       "walkability": 5,
       "lifestyleScore": 4.5,
-      "blurb": "Dense, walkable, transit-rich, and much cheaper than New York or Boston \u2014 one of the strongest big-city values on this list."
+      "blurb": "Dense, walkable, transit-rich, and much cheaper than New York or Boston \u2014 one of the strongest big-city values on this list.",
+      "lat": 40.0094,
+      "lon": -75.1333
     },
     {
       "city": "Pittsburgh",
@@ -989,7 +1196,9 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Cheap, hilly, and genuinely walkable neighborhood by neighborhood, with three rivers and good trail access. Underrated food scene."
+      "blurb": "Cheap, hilly, and genuinely walkable neighborhood by neighborhood, with three rivers and good trail access. Underrated food scene.",
+      "lat": 40.4399,
+      "lon": -79.9757
     },
     {
       "city": "Portland",
@@ -998,7 +1207,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "A small city with a wildly disproportionate food scene, a walkable Old Port, and the coast and mountains both close. Winters are long."
+      "blurb": "A small city with a wildly disproportionate food scene, a walkable Old Port, and the coast and mountains both close. Winters are long.",
+      "lat": 43.6591,
+      "lon": -70.2568
     },
     {
       "city": "Portland",
@@ -1007,7 +1218,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Bikeable, walkable, and hemmed in by the Gorge, Mount Hood, and the coast. Excellent food and beer; grey for eight months."
+      "blurb": "Bikeable, walkable, and hemmed in by the Gorge, Mount Hood, and the coast. Excellent food and beer; grey for eight months.",
+      "lat": 45.537,
+      "lon": -122.65
     },
     {
       "city": "Provo",
@@ -1016,7 +1229,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Wasatch Front canyons and world-class skiing minutes away, paired with a notably quiet nightlife scene given the local culture."
+      "blurb": "Wasatch Front canyons and world-class skiing minutes away, paired with a notably quiet nightlife scene given the local culture.",
+      "lat": 40.2453,
+      "lon": -111.6451
     },
     {
       "city": "Queens",
@@ -1025,7 +1240,9 @@
       "outdoors": 3,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "The most diverse place in America \u2014 incredible food, dense neighborhoods, and NYC access at a (relative) discount."
+      "blurb": "The most diverse place in America \u2014 incredible food, dense neighborhoods, and NYC access at a (relative) discount.",
+      "lat": 40.7282,
+      "lon": -73.7949
     },
     {
       "city": "Raleigh",
@@ -1034,7 +1251,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Fast-growing capital drawing young professionals, with a good food/beer scene and Triangle access. Car-oriented overall."
+      "blurb": "Fast-growing capital drawing young professionals, with a good food/beer scene and Triangle access. Car-oriented overall.",
+      "lat": 35.8319,
+      "lon": -78.641
     },
     {
       "city": "Richmond",
@@ -1043,7 +1262,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "The James River runs whitewater straight through downtown \u2014 rare for a city this size. Cheap, creative, and quickly improving."
+      "blurb": "The James River runs whitewater straight through downtown \u2014 rare for a city this size. Cheap, creative, and quickly improving.",
+      "lat": 37.5314,
+      "lon": -77.476
     },
     {
       "city": "Sacramento",
@@ -1052,7 +1273,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Cheaper than the Bay with a real farm-to-table scene and river/delta access. Tahoe is two hours out; summers run hot."
+      "blurb": "Cheaper than the Bay with a real farm-to-table scene and river/delta access. Tahoe is two hours out; summers run hot.",
+      "lat": 38.5677,
+      "lon": -121.4682
     },
     {
       "city": "Saint Paul",
@@ -1061,7 +1284,9 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 3.5,
-      "blurb": "Quieter, more residential twin with a handsome walkable core and river bluffs. Minneapolis nightlife is a short light-rail ride away."
+      "blurb": "Quieter, more residential twin with a handsome walkable core and river bluffs. Minneapolis nightlife is a short light-rail ride away.",
+      "lat": 44.9489,
+      "lon": -93.1041
     },
     {
       "city": "Salem",
@@ -1070,7 +1295,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Quiet capital in the Willamette Valley, with wine country and the Cascades nearby. Social life is thin \u2014 Portland is an hour north."
+      "blurb": "Quiet capital in the Willamette Valley, with wine country and the Cascades nearby. Social life is thin \u2014 Portland is an hour north.",
+      "lat": 44.9239,
+      "lon": -123.023
     },
     {
       "city": "Salt Lake City",
@@ -1079,7 +1306,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Hard to beat for outdoors \u2014 seven ski resorts within an hour and canyon trailheads from downtown. Compact grid, growing food scene."
+      "blurb": "Hard to beat for outdoors \u2014 seven ski resorts within an hour and canyon trailheads from downtown. Compact grid, growing food scene.",
+      "lat": 40.7769,
+      "lon": -111.931
     },
     {
       "city": "San Antonio",
@@ -1088,7 +1317,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "River Walk energy and a solid food scene, family-friendly and affordable, though the young-professional nightlife is modest."
+      "blurb": "River Walk energy and a solid food scene, family-friendly and affordable, though the young-professional nightlife is modest.",
+      "lat": 29.4628,
+      "lon": -98.5246
     },
     {
       "city": "San Diego",
@@ -1097,7 +1328,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "Beach city with perfect weather and a genuinely active outdoor culture, plus a real nightlife scene. Some neighborhoods walkable, most not."
+      "blurb": "Beach city with perfect weather and a genuinely active outdoor culture, plus a real nightlife scene. Some neighborhoods walkable, most not.",
+      "lat": 32.815,
+      "lon": -117.1356
     },
     {
       "city": "San Francisco",
@@ -1106,7 +1339,9 @@
       "outdoors": 4,
       "walkability": 5,
       "lifestyleScore": 5.0,
-      "blurb": "Dense, transit-rich, and stacked with dining/nightlife plus quick outdoor escapes \u2014 a magnet for young professionals. Brutally expensive."
+      "blurb": "Dense, transit-rich, and stacked with dining/nightlife plus quick outdoor escapes \u2014 a magnet for young professionals. Brutally expensive.",
+      "lat": 37.7793,
+      "lon": -122.4193
     },
     {
       "city": "Santa Clara",
@@ -1115,7 +1350,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Heart of Silicon Valley with a young tech workforce, but suburban and car-dependent with a thin nightlife scene."
+      "blurb": "Heart of Silicon Valley with a young tech workforce, but suburban and car-dependent with a thin nightlife scene.",
+      "lat": 37.3646,
+      "lon": -121.968
     },
     {
       "city": "Seattle",
@@ -1124,7 +1361,9 @@
       "outdoors": 5,
       "walkability": 4,
       "lifestyleScore": 4.0,
-      "blurb": "Mountains, water, and forest in every direction, with a dense walkable core and real transit. Expensive, and dark from November to March."
+      "blurb": "Mountains, water, and forest in every direction, with a dense walkable core and real transit. Expensive, and dark from November to March.",
+      "lat": 47.6193,
+      "lon": -122.3515
     },
     {
       "city": "South Bend",
@@ -1133,7 +1372,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small, cheap, and heavily oriented around Notre Dame. Lake Michigan is an hour; the winters are long."
+      "blurb": "Small, cheap, and heavily oriented around Notre Dame. Lake Michigan is an hour; the winters are long.",
+      "lat": 41.6766,
+      "lon": -86.2688
     },
     {
       "city": "South Royalton",
@@ -1142,7 +1383,9 @@
       "outdoors": 5,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "A village of a few hundred in the White River valley. Exceptional hiking, skiing, and paddling; effectively no nightlife at all."
+      "blurb": "A village of a few hundred in the White River valley. Exceptional hiking, skiing, and paddling; effectively no nightlife at all.",
+      "lat": 43.8071,
+      "lon": -72.5123
     },
     {
       "city": "Spokane",
@@ -1151,7 +1394,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Cheap for the Northwest, with the Spokane River through downtown and skiing 45 minutes out. Small but improving social scene."
+      "blurb": "Cheap for the Northwest, with the Spokane River through downtown and skiing 45 minutes out. Small but improving social scene.",
+      "lat": 47.6669,
+      "lon": -117.4333
     },
     {
       "city": "Springfield",
@@ -1160,7 +1405,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Western-Massachusetts city that's affordable but economically strained, with a limited young-adult scene."
+      "blurb": "Western-Massachusetts city that's affordable but economically strained, with a limited young-adult scene.",
+      "lat": 42.1155,
+      "lon": -72.54
     },
     {
       "city": "St. Louis",
@@ -1169,7 +1416,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Cheap housing, big-city cultural institutions, and Forest Park. Uneven neighborhood by neighborhood, and mostly car-dependent."
+      "blurb": "Cheap housing, big-city cultural institutions, and Forest Park. Uneven neighborhood by neighborhood, and mostly car-dependent.",
+      "lat": 38.6357,
+      "lon": -90.2446
     },
     {
       "city": "Stanford",
@@ -1178,7 +1427,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Beautiful, affluent, and outdoorsy on the Peninsula, but a quiet campus-bubble feel rather than a nightlife town."
+      "blurb": "Beautiful, affluent, and outdoorsy on the Peninsula, but a quiet campus-bubble feel rather than a nightlife town.",
+      "lat": 37.4269,
+      "lon": -122.1677
     },
     {
       "city": "Syracuse",
@@ -1187,7 +1438,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Central New York college town (SU) with steady student energy and affordability, but famously long, snowy winters."
+      "blurb": "Central New York college town (SU) with steady student energy and affordability, but famously long, snowy winters.",
+      "lat": 43.041,
+      "lon": -76.1436
     },
     {
       "city": "Tallahassee",
@@ -1196,7 +1449,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "FSU capital college town \u2014 youthful during the year, with trails and lakes nearby, but sleepy otherwise."
+      "blurb": "FSU capital college town \u2014 youthful during the year, with trails and lakes nearby, but sleepy otherwise.",
+      "lat": 30.4535,
+      "lon": -84.2523
     },
     {
       "city": "Tempe",
@@ -1205,7 +1460,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "Dense, young ASU energy on Mill Avenue with light rail into Phoenix. Desert hiking is minutes away; summers are brutal."
+      "blurb": "Dense, young ASU energy on Mill Avenue with light rail into Phoenix. Desert hiking is minutes away; summers are brutal.",
+      "lat": 33.3884,
+      "lon": -111.9318
     },
     {
       "city": "Toledo",
@@ -1214,7 +1471,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Cheap, quiet, and industrial, with Lake Erie and the Maumee close by. Detroit and Ann Arbor are both under an hour."
+      "blurb": "Cheap, quiet, and industrial, with Lake Erie and the Maumee close by. Detroit and Ann Arbor are both under an hour.",
+      "lat": 41.6641,
+      "lon": -83.5819
     },
     {
       "city": "Topeka",
@@ -1223,7 +1482,9 @@
       "outdoors": 2,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small, very affordable capital with a quiet social scene. Kansas City is an hour east when you need more."
+      "blurb": "Small, very affordable capital with a quiet social scene. Kansas City is an hour east when you need more.",
+      "lat": 39.0347,
+      "lon": -95.6962
     },
     {
       "city": "Tucson",
@@ -1232,7 +1493,9 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Cheap desert college town ringed by four mountain ranges \u2014 exceptional hiking and cycling. Social scene is modest and student-driven."
+      "blurb": "Cheap desert college town ringed by four mountain ranges \u2014 exceptional hiking and cycling. Social scene is modest and student-driven.",
+      "lat": 32.153,
+      "lon": -110.8708
     },
     {
       "city": "Tulsa",
@@ -1241,7 +1504,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Art-deco downtown, a strong park system along the Arkansas River, and cheap housing. Modest but real nightlife."
+      "blurb": "Art-deco downtown, a strong park system along the Arkansas River, and cheap housing. Modest but real nightlife.",
+      "lat": 36.1279,
+      "lon": -95.9023
     },
     {
       "city": "Tuscaloosa",
@@ -1250,7 +1515,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "A football town \u2014 enormous social energy on fall weekends, much quieter otherwise. The Black Warrior River and Lake Tuscaloosa are close."
+      "blurb": "A football town \u2014 enormous social energy on fall weekends, much quieter otherwise. The Black Warrior River and Lake Tuscaloosa are close.",
+      "lat": 33.2344,
+      "lon": -87.5283
     },
     {
       "city": "Vermillion",
@@ -1259,7 +1526,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "A town of about 11,000 on the Missouri River bluffs. Almost entirely campus-driven; extremely cheap and extremely quiet."
+      "blurb": "A town of about 11,000 on the Missouri River bluffs. Almost entirely campus-driven; extremely cheap and extremely quiet.",
+      "lat": 42.7817,
+      "lon": -96.9256
     },
     {
       "city": "Villanova",
@@ -1268,7 +1537,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 2.5,
-      "blurb": "Main Line suburb with a regional-rail stop into Center City Philadelphia. Leafy and quiet; the nightlife is 30 minutes east."
+      "blurb": "Main Line suburb with a regional-rail stop into Center City Philadelphia. Leafy and quiet; the nightlife is 30 minutes east.",
+      "lat": 40.0405,
+      "lon": -75.341
     },
     {
       "city": "Virginia Beach",
@@ -1277,7 +1548,9 @@
       "outdoors": 5,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Oceanfront living with year-round surf, paddling, and the Back Bay refuge. Sprawling, seasonal, and thoroughly car-dependent."
+      "blurb": "Oceanfront living with year-round surf, paddling, and the Back Bay refuge. Sprawling, seasonal, and thoroughly car-dependent.",
+      "lat": 36.7795,
+      "lon": -76.0291
     },
     {
       "city": "Waco",
@@ -1286,7 +1559,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 2.0,
-      "blurb": "Small Central Texas city built around Baylor \u2014 quiet, affordable, with limited nightlife and a mostly student social life."
+      "blurb": "Small Central Texas city built around Baylor \u2014 quiet, affordable, with limited nightlife and a mostly student social life.",
+      "lat": 31.558,
+      "lon": -97.1898
     },
     {
       "city": "Washington",
@@ -1295,7 +1570,9 @@
       "outdoors": 4,
       "walkability": 5,
       "lifestyleScore": 5.0,
-      "blurb": "Dense, transit-rich, and packed with young professionals \u2014 the single best city in the country for a policy-minded law student. Expensive, and the pace is relentless."
+      "blurb": "Dense, transit-rich, and packed with young professionals \u2014 the single best city in the country for a policy-minded law student. Expensive, and the pace is relentless.",
+      "lat": 38.9042,
+      "lon": -77.0165
     },
     {
       "city": "White Plains",
@@ -1304,7 +1581,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Compact Westchester downtown with some dining/nightlife and Metro-North straight into NYC \u2014 convenient but suburban."
+      "blurb": "Compact Westchester downtown with some dining/nightlife and Metro-North straight into NYC \u2014 convenient but suburban.",
+      "lat": 41.0238,
+      "lon": -73.751
     },
     {
       "city": "Williamsburg",
@@ -1313,7 +1592,9 @@
       "outdoors": 4,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "Colonial-historic and walkable in its small core, with the York River and Jamestown nearby. Very quiet outside William & Mary."
+      "blurb": "Colonial-historic and walkable in its small core, with the York River and Jamestown nearby. Very quiet outside William & Mary.",
+      "lat": 37.2695,
+      "lon": -76.7082
     },
     {
       "city": "Wilmington",
@@ -1322,7 +1603,9 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 2.5,
-      "blurb": "Corporate-law company town with a compact riverfront core. Philadelphia is 30 minutes by train, which is where most weekends go."
+      "blurb": "Corporate-law company town with a compact riverfront core. Philadelphia is 30 minutes by train, which is where most weekends go.",
+      "lat": 39.7357,
+      "lon": -75.5321
     },
     {
       "city": "Winston-Salem",
@@ -1331,7 +1614,9 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Arts-district charm and affordability in the Triad, but a quieter, smaller-city pace."
+      "blurb": "Arts-district charm and affordability in the Triad, but a quieter, smaller-city pace.",
+      "lat": 36.1029,
+      "lon": -80.2608
     }
   ]
 }
