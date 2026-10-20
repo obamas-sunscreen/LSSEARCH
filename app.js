@@ -1103,6 +1103,7 @@
 
   // ---------- home: map + rail ----------
   let railPinned = null;    // state name the rail is holding when nothing is hovered
+  let leadScroll = 0;       // scroll offset of the ranked list, kept across re-renders
 
   function renderHome() {
     // Personalised colouring only once there's a profile worth colouring by.
@@ -1152,6 +1153,7 @@
     const mode = MAP_MODES.find((m) => m.key === key);
     if (!mode || modeLocked(mode)) return;
     ui.mapMode = key; persistUI();
+    leadScroll = 0;  // a new layer is a new ranking — start it at first place
     buildColorTable();
     app.querySelectorAll("svg path.live").forEach((el) => {
       el.setAttribute("fill", colorByState[el.getAttribute("data-state")]);
@@ -1228,15 +1230,25 @@
     if (!rail) return;
     app.querySelectorAll("svg path.live").forEach((el) =>
       el.classList.toggle("sel", !!name && el.getAttribute("data-state") === name));
+
+    // Hold the ranking's scroll position across re-renders — probing a state on
+    // the map and coming back shouldn't throw you to the top of the list again.
+    const prevList = rail.querySelector(".lead-list");
+    const prevScroll = prevList ? prevList.scrollTop : leadScroll;
+    if (prevList) leadScroll = prevScroll;
+
     rail.innerHTML = name && stateByName[name] ? railStateHTML(name) : railLeadersHTML();
+    const list = rail.querySelector(".lead-list");
+    if (list) list.scrollTop = leadScroll;
 
     const open = rail.querySelector("[data-open-state]");
     if (open) open.addEventListener("click", () => go({ kind: "state", name: open.getAttribute("data-open-state") }));
+    // Click drills in; hover deliberately does nothing. Swapping the rail on
+    // hover re-wrote the very node the pointer was over, so mouseleave and
+    // mouseenter fired against each other and the list strobed.
     rail.querySelectorAll("[data-lead]").forEach((el) => {
       const n = el.getAttribute("data-lead");
       el.addEventListener("click", () => go({ kind: "state", name: n }));
-      el.addEventListener("mouseenter", () => railShow(n));
-      el.addEventListener("mouseleave", () => railShow(railPinned));
     });
   }
 
@@ -1281,20 +1293,6 @@
     const n = (schoolsByState[name] || []).length;
     const v = valueByState[name];
 
-    // Your own read on this state: the best-fitting school when there are stated
-    // preferences to rank on, otherwise the one your numbers reach furthest into.
-    const mine = bestByState[name]
-      ? { school: bestByState[name].school, adm: bestByState[name].adm, head: "Your best fit here" }
-      : reachByState[name]
-        ? { school: reachByState[name].school, adm: admissionRead(reachByState[name].school), head: "Your odds at the flagship" }
-        : null;
-    const fitRow = mine && mine.adm ? `
-        <div class="rail-fit">
-          <div class="rf-h">${mine.head}</div>
-          <div class="rf-school">${esc(mine.school.name)}</div>
-          <div class="rf-odds"><b class="${mine.adm.cls}">${splitPct(mine.adm.odds).admit}% · ${mine.adm.label}</b></div>
-        </div>` : "";
-
     const flat = !ins.strengths.length && !ins.weaknesses.length
       ? `<p class="ins-flat">Middle of the pack on every measure — no standout strengths
          or weaknesses against the other 50 jurisdictions.</p>` : "";
@@ -1308,7 +1306,6 @@
       </div>
       <div class="rail-body">
         ${railFacts(st)}
-        ${fitRow}
         ${insGroup("up", ins.strengths)}
         ${insGroup("dn", ins.weaknesses)}
         ${flat}
@@ -1320,10 +1317,11 @@
 
   function railLeadersHTML() {
     const mode = activeMode();
-    const top = Object.keys(valueByState)
-      .sort((a, b) => valueByState[b] - valueByState[a])
-      .slice(0, 10);
-    const rows = top.map((n, i) => `
+    // Every ranked state, not a top ten — the list scrolls inside a fixed frame,
+    // so the rail's height stays put no matter which layer is showing.
+    const ranked = Object.keys(valueByState)
+      .sort((a, b) => valueByState[b] - valueByState[a]);
+    const rows = ranked.map((n, i) => `
       <button class="lead-row" type="button" data-lead="${esc(n)}">
         <span class="lead-n">${i + 1}</span>
         <span class="lead-swatch" style="background:${colorByState[n]}"></span>
@@ -1335,9 +1333,11 @@
       <div class="rail-head">
         <div class="rail-kicker">Leading states</div>
         <h2 class="rail-title">${esc(mode.label)}</h2>
-        <div class="rail-meta">${CAN_HOVER ? "Hover" : "Tap"} any state for its strengths and weaknesses.</div>
+        <div class="rail-meta">All ${ranked.length} ranked · ${CAN_HOVER ? "hover" : "tap"} a state on the map for its
+          strengths and weaknesses.</div>
       </div>
-      <div class="rail-body">${rows}
+      <div class="rail-body">
+        <div class="lead-list">${rows}</div>
         <p class="rail-note">${esc(mode.legend(Object.keys(stateByName).length))}</p>
       </div>`;
   }

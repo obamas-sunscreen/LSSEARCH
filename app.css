@@ -174,6 +174,9 @@ main { max-width: 1240px; margin: 0 auto; padding: 22px 22px 90px; }
 }
 .track > .band {
   position: absolute; top: 0; bottom: 0; left: 25%; right: 25%;
+  /* Reset the margin: the results-page group wrapper is also called `.band`, and
+     its margin-bottom over-constrains this one to a negative (clamped 0) height. */
+  margin: 0;
   background: #a3bfc7; border-radius: 2px;
 }
 .track > .pin {
@@ -455,17 +458,6 @@ svg.usmap g.callout text {
 }
 .rf-val span { font-size: 10.5px; font-weight: 500; color: var(--ink-faint); letter-spacing: 0; }
 
-.rail-fit {
-  margin: 0 0 14px; padding: 11px 12px;
-  background: var(--accent-tint); border-radius: var(--r-sm);
-}
-.rail-fit .rf-h {
-  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
-  color: var(--accent-deep);
-}
-.rail-fit .rf-school { font-size: 13px; font-weight: 620; margin-top: 4px; }
-.rail-fit .rf-odds { font-size: 12px; color: var(--ink-soft); margin-top: 2px; font-variant-numeric: tabular-nums; }
-
 .rail-cta {
   display: block; width: 100%; margin-top: 15px;
   padding: 10px; font-size: 13px; font-weight: 600;
@@ -474,6 +466,20 @@ svg.usmap g.callout text {
   transition: background var(--fast) var(--ease);
 }
 .rail-cta:hover { background: #26333f; }
+
+/* A fixed frame the whole ranking scrolls inside, so the rail is the same
+   height on every layer and never resizes under the pointer. */
+.lead-list {
+  height: clamp(240px, calc(100vh - var(--topbar-h) - 258px), 620px);
+  overflow-y: auto; overscroll-behavior: contain;
+  padding-right: 4px; margin-right: -4px;
+}
+.lead-list::-webkit-scrollbar { width: 8px; }
+.lead-list::-webkit-scrollbar-thumb {
+  background: var(--line-strong); border-radius: var(--pill);
+  border: 2px solid var(--surface); background-clip: padding-box;
+}
+.lead-list::-webkit-scrollbar-track { background: transparent; }
 
 .lead-row {
   display: flex; align-items: center; gap: 10px; width: 100%;
@@ -845,6 +851,9 @@ svg.usmap g.callout text {
 @media (max-width: 1040px) {
   .home { grid-template-columns: 1fr; }
   .rail { position: static; }
+  /* Stacked under the map there's no sticky viewport to fill — a flat frame
+     keeps the ranking from pushing the rest of the page miles down. */
+  .lead-list { height: 380px; }
 }
 @media (max-width: 860px) {
   .factor-grid { grid-template-columns: 1fr; }
