@@ -753,31 +753,9 @@ svg.usmap .dot.band-far { fill: var(--far); }
 }
 .navbtn:disabled { opacity: 0; pointer-events: none; }
 
-/* --- drawer --------------------------------------------------------------- */
-.scrim {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(var(--ink-rgb), .26); backdrop-filter: blur(2px);
-  opacity: 0; pointer-events: none; transition: opacity var(--mid) var(--ease);
-}
-.scrim.on { opacity: 1; pointer-events: auto; }
-.drawer {
-  position: fixed; top: 0; right: 0; bottom: 0; z-index: 210;
-  width: 440px; max-width: 92vw;
-  background: var(--paper); box-shadow: var(--sh-3);
-  border-left: 2px solid var(--line);
-  transform: translateX(100%); transition: transform var(--mid) var(--ease);
-  display: flex; flex-direction: column;
-}
-.drawer.on { transform: none; }
-.drawer-head {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-  padding: 18px 20px; border-bottom: 1px solid var(--line);
-}
-.drawer-head h2 { margin: 0; font-size: 24px; }
-.drawer-head p { margin: 2px 0 0; font-size: 12px; color: var(--ink-faint); }
-.drawer-body { flex: 1 1 auto; overflow-y: auto; padding: 16px 20px; }
-.drawer-foot { padding: 14px 20px; border-top: 1px solid var(--line); display: flex; gap: 10px; }
+/* --- buttons ------------------------------------------------------------- */
 .iconbtn {
+  text-decoration: none;
   background: none; border: none; color: var(--ink-faint);
   font-size: 20px; line-height: 1; padding: 4px 8px;
   border-radius: 6px; cursor: pointer; flex: none;
@@ -793,20 +771,156 @@ svg.usmap .dot.band-far { fill: var(--far); }
 .ghostbtn:hover { background: var(--surface-sunk); border-color: var(--accent); }
 .ghostbtn:disabled { opacity: .45; cursor: not-allowed; }
 
-.pl-state { font-family: var(--hand); font-size: 17px; color: var(--accent); margin: 18px 0 4px; }
-.pl-state:first-child { margin-top: 0; }
-.pl-entry { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.pe-main { flex: 1 1 auto; cursor: pointer; min-width: 0; }
-.pe-main .n { font-weight: 620; font-size: 13.5px; }
-.pe-main:hover .n { color: var(--accent); }
-.pe-main .m { font-size: 13px; color: var(--ink-faint); font-variant-numeric: tabular-nums; margin-top: 2px; }
-.pl-remove {
-  background: none; border: 1px solid var(--line); color: var(--ink-faint);
-  width: 26px; height: 26px; border-radius: 6px; cursor: pointer;
-  font-size: 15px; line-height: 1; flex: none;
-  transition: all var(--fast) var(--ease);
+/* --- my saved list: folders --------------------------------------------- */
+/* A filing drawer, after mosbyfiles.com: each saved school is a manila folder
+   standing in a stack, tipped back a little, with its tab staggered so names
+   don't line up. Hover lifts one out; opening it is done in app.js. The band
+   colour runs along the top edge, the cover is that colour washed out. */
+.f-0 { --fc: var(--safety); }
+.f-1 { --fc: var(--target); }
+.f-2 { --fc: var(--reach); }
+.f-3 { --fc: var(--far); }
+.f-4 { --fc: var(--ink-faint); }
+.folder, .ofolder {
+  --tab-h: 32px;
+  --cover: color-mix(in srgb, var(--fc) 14%, var(--paper));
+  --inside: color-mix(in srgb, var(--fc) 6%, var(--paper));
 }
-.pl-remove:hover { background: rgba(207, 47, 43, .12); border-color: var(--far); color: var(--far); }
+
+.files-head {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.files-head h2 { margin: 0; font-size: 36px; }
+.files-sub { margin: 4px 0 0; color: var(--ink-soft); font-size: 14px; }
+.files-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+.files-tools .ghostbtn { flex: none; padding: 5px 13px; font-size: 16px; }
+.restore-bar {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin: -8px 0 24px; padding: 12px 16px; font-size: 15px;
+  background: var(--paper); border: 1.5px dashed var(--accent); border-radius: var(--r);
+}
+.restore-bar[hidden] { display: none; }
+.restore-bar .btn { font-size: 17px; padding: 4px 16px; }
+
+.fgroup { margin-bottom: 30px; }
+.fgroup-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.fgroup-h h3 { margin: 0; font-size: 22px; }
+.fgroup-h .n { font-size: 14px; color: var(--ink-faint); }
+.fstack { perspective: 1400px; perspective-origin: 50% -40%; padding-top: 12px; }
+
+.folder {
+  position: relative; display: block; width: 100%;
+  height: calc(var(--tab-h) + 104px); margin-top: -62px;
+  padding: var(--tab-h) 0 0; background: none; border: none;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+  transform-origin: 50% 100%; transform: rotateX(12deg);
+  transition: transform var(--mid) var(--ease-out), filter var(--mid) var(--ease-out);
+}
+.folder:first-child { margin-top: 0; }
+.folder:hover, .folder:focus-visible {
+  transform: rotateX(4deg) translateY(-12px);
+  filter: drop-shadow(0 12px 14px rgba(var(--ink-rgb), .16));
+}
+.folder:focus-visible { outline: none; }
+.folder:focus-visible .folder-tab { color: var(--accent); }
+.folder-tab {
+  position: absolute; top: 0; z-index: 1;
+  left: calc(16px + var(--tab, 0) * 17%); max-width: 46%;
+  height: calc(var(--tab-h) + 6px); padding: 3px 16px 0;
+  font-family: var(--hand); font-size: 16px; font-weight: 700; line-height: 1.6;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: var(--cover); border: 2px solid var(--ink); border-bottom: none;
+  border-radius: 9px 13px 0 0;
+}
+.folder-body, .ofolder-cover {
+  display: block; position: relative; height: 100%; padding: 11px 18px;
+  background: var(--cover); border: 2px solid var(--ink); border-radius: 4px 9px 5px 8px;
+  box-shadow: inset 0 4px 0 var(--fc);
+}
+.folder-meta { display: block; font-size: 15px; color: var(--ink-soft); }
+.folder-meta b { color: var(--fc); }
+.folder-extra { display: block; font-size: 13px; color: var(--ink-faint); min-height: 1.5em; }
+
+/* Open folder. `.files.is-open` swaps the stack for the open pane; while the
+   stand-in is flying, the real pane is laid out but kept invisible. */
+.files-stack { transition: opacity .3s var(--ease); }
+.files.fading .files-stack { opacity: 0; }
+.files-open { display: none; }
+.files.is-open .files-stack { display: none; }
+.files.is-open .files-open { display: block; }
+.files { position: relative; }
+.files.is-animating .files-open { visibility: hidden; }
+.files.is-animating:not(.is-open) .files-open { display: block; position: absolute; top: 0; left: 0; right: 0; }
+
+.ofolder { position: relative; padding-top: var(--tab-h); }
+.ofolder .folder-tab { max-width: 60%; }
+.ofolder-body {
+  position: relative; min-height: 70vh; padding: 22px 24px 26px;
+  background: var(--inside); border: 2px solid var(--ink); border-radius: 5px 12px 9px 11px;
+  box-shadow: inset 0 4px 0 var(--fc);
+}
+.ofolder.reveal .ofolder-body > * { animation: viewIn var(--slow) var(--ease-out) both; }
+.ofolder.reveal .ofolder-pages { animation-delay: 60ms; }
+.ofolder-top {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.ofolder-top h2 { margin: 0; font-size: 32px; }
+.ofolder-top .loc { display: flex; align-items: center; gap: 8px; margin-top: 2px; color: var(--ink-soft); font-size: 15px; }
+.ofolder-actions { display: flex; align-items: center; gap: 16px; }
+.ofolder-pages {
+  display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 18px; align-items: start;
+}
+.page {
+  background: var(--paper); border: 1.5px solid var(--line-strong); border-radius: var(--r);
+  padding: 18px 20px 22px; box-shadow: 3px 4px 0 rgba(var(--ink-rgb), .06);
+}
+.page-mine { position: sticky; top: calc(var(--topbar-h) + 16px); }
+.page-h {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin: 0 0 12px; font-size: 21px;
+}
+.page-h.gap-t { margin-top: 24px; }
+.note-status { font-family: var(--hand); font-size: 13px; color: var(--ink-faint); }
+
+/* Stand-in: fixed, flown from the stack to the pane, cover swung open. */
+.ofolder.fly {
+  position: fixed; z-index: 40; margin: 0; pointer-events: none;
+}
+.ofolder.fly .ofolder-body {
+  height: 100%; min-height: 0; padding: 0; perspective: 1800px;
+  box-shadow: inset 0 4px 0 var(--fc), 0 14px 28px rgba(var(--ink-rgb), .16);
+}
+.ofolder-cover { position: absolute; inset: -2px; transform-origin: 0 50%; }
+
+/* Lined paper, so notes read as written into the folder. */
+.notes {
+  display: block; width: 100%; min-height: 200px; resize: vertical;
+  padding: 0 12px; border: 1.5px solid var(--line-strong); border-radius: var(--r-sm);
+  font-family: var(--hand); font-size: 16px; line-height: 26px; color: var(--ink);
+  background: var(--paper) repeating-linear-gradient(transparent 0 25px, var(--line) 25px 26px) local;
+}
+.notes:focus { outline: none; border-color: var(--accent); }
+.dropzone {
+  display: block; padding: 16px 12px; text-align: center; cursor: pointer;
+  font-size: 15px; color: var(--ink-soft);
+  border: 1.5px dashed var(--line-strong); border-radius: var(--r-sm);
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--accent-tint); }
+.dropzone u { color: var(--accent); }
+.dropzone span { display: block; font-size: 13px; color: var(--ink-faint); }
+.fl-msg { margin: 6px 0 0; font-size: 13px; color: var(--far); }
+.fl-msg:empty { display: none; }
+.flist { margin-top: 10px; }
+.fl-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.fl-name {
+  flex: 1 1 auto; min-width: 0; color: var(--accent); font-size: 15px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.fl-size { flex: none; font-size: 13px; color: var(--ink-faint); }
+.fl-empty { margin: 4px 0 0; font-size: 14px; color: var(--ink-faint); }
 
 /* --- search palette ------------------------------------------------------- */
 .search-scrim {
@@ -881,6 +995,8 @@ svg.usmap .dot.band-far { fill: var(--far); }
 }
 @media (max-width: 860px) {
   .factor-grid { grid-template-columns: 1fr; }
+  .ofolder-pages { grid-template-columns: minmax(0, 1fr); }
+  .page-mine { position: static; order: -1; }
   .statblock { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
@@ -899,6 +1015,14 @@ svg.usmap .dot.band-far { fill: var(--far); }
   .rrow { gap: 10px; padding: 12px 13px; }
   .school-hero { padding: 18px; }
   .search-scrim { padding: 8vh 12px 12px; }
+  .files-head h2 { font-size: 28px; }
+  .folder { transform: rotateX(6deg); margin-top: -58px; }
+  .folder:hover, .folder:focus-visible { transform: translateY(-8px); }
+  .folder-tab { left: calc(10px + var(--tab, 0) * 7%); max-width: 72%; }
+  .ofolder .folder-tab { max-width: 80%; }
+  .ofolder-body { padding: 16px 14px 18px; }
+  .ofolder-top h2 { font-size: 26px; }
+  .page { padding: 14px 14px 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -29,6 +29,47 @@
     badge.textContent = saved.length;
     badge.hidden = !saved.length;
   }
+  // Your own notes per school, keyed by name. They outlive removing a school
+  // from the list, so re-adding it brings them back.
+  const NOTES_KEY = "lawSchoolNotes";
+  let notes = loadNotes();
+  function loadNotes() {
+    try {
+      const o = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}");
+      return o && typeof o === "object" && !Array.isArray(o) ? o : {};
+    } catch (e) { return {}; }
+  }
+  function persistNotes() {
+    try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); return true; } catch (e) { return false; }
+  }
+
+  // Attachments live in IndexedDB: a couple of scanned letters would blow
+  // through localStorage's few megabytes on their own.
+  const MAX_FILE = 10 * 1024 * 1024;
+  let dbPromise = null;
+  function fileDB() {
+    if (!dbPromise) {
+      dbPromise = new Promise((resolve, reject) => {
+        const req = indexedDB.open("lawSchoolFiles", 1);
+        req.onupgradeneeded = () => req.result.createObjectStore("files", { keyPath: "id", autoIncrement: true });
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      }).catch((e) => { dbPromise = null; throw e; });
+    }
+    return dbPromise;
+  }
+  function fileStore(mode, fn) {
+    return fileDB().then((db) => new Promise((resolve, reject) => {
+      const tx = db.transaction("files", mode);
+      const req = fn(tx.objectStore("files"));
+      tx.oncomplete = () => resolve(req.result);
+      tx.onerror = () => reject(tx.error);
+    }));
+  }
+  const allFiles = () => fileStore("readonly", (s) => s.getAll());
+  const putFile = (rec) => fileStore("readwrite", (s) => s.add(rec));
+  const dropFile = (id) => fileStore("readwrite", (s) => s.delete(id));
+
   function isSaved(name) { return saved.indexOf(name) !== -1; }
   function toggleSaved(name) {
     const i = saved.indexOf(name);
@@ -834,6 +875,7 @@
     results: () => renderResults(),
     state: (v) => renderState(v.name),
     school: (v) => renderSchool(v.name),
+    list: (v) => renderList(v),
   };
 
   function go(view, replace) {
@@ -846,6 +888,8 @@
   }
 
   window.addEventListener("popstate", (e) => {
+    // Closing a folder steps back off its history entry by itself.
+    if (skipPop) { skipPop = false; return; }
     if (currentView && currentView.kind === "results") resultsScroll = window.scrollY;
     const view = e.state && RENDERERS[e.state.kind] ? e.state : { kind: "map" };
     currentView = view;
@@ -1539,7 +1583,6 @@
       go({ kind: "school", name: sc.name, fit: true }));
     document.getElementById("rdSave").addEventListener("click", () => {
       toggleSaved(sc.name);
-      renderDrawer();
       rerender();
     });
   }
@@ -1719,19 +1762,14 @@
         </div>`;
   }
 
-  function renderSchool(schoolName) {
-    const sc = schoolByName[schoolName];
-    if (!sc) { go({ kind: "map" }, true); return; }
-    const st = stateByName[sc.state];
-    const added = isSaved(sc.name);
+  function schoolLifestyleHTML(sc) {
     const city = cityByKey[sc.city + "|" + sc.state];
-
     const lifeBar = (label, v) =>
       `<div class="life-row"><span>${label}</span>
          <span class="track"><span class="fill" style="width:${(v / 5) * 100}%"></span></span>
          <b>${v}/5</b></div>`;
 
-    const lifestyleBlock = city ? `
+    return city ? `
       <div class="lifestyle">
         <div class="life-head">
           <div class="writeup-h" style="margin:0">Lifestyle in ${esc(sc.city)}</div>
@@ -1743,6 +1781,13 @@
         ${lifeBar("Walkability", city.walkability)}
         <p class="writeup gap-t">${esc(city.blurb)}</p>
       </div>` : "";
+  }
+
+  function renderSchool(schoolName) {
+    const sc = schoolByName[schoolName];
+    if (!sc) { go({ kind: "map" }, true); return; }
+    const st = stateByName[sc.state];
+    const added = isSaved(sc.name);
 
     // Step through whatever list brought you here, so comparing two schools
     // doesn't mean bouncing back out to find the second one.
@@ -1778,7 +1823,7 @@
         <div class="writeup-h gap-t">How it stacks up</div>
         <p class="writeup">${esc(sc.writeup)}</p>
         ${schoolOutcomesHTML(sc)}
-        ${lifestyleBlock}
+        ${schoolLifestyleHTML(sc)}
       </div>
       ${navBlock}`);
 
@@ -1786,14 +1831,16 @@
     app.querySelector("#toggleBtn").addEventListener("click", () => {
       toggleSaved(sc.name);
       rerender();
-      renderDrawer();
     });
     app.querySelectorAll("[data-step]").forEach((el) =>
       el.addEventListener("click", () =>
         go({ kind: "school", name: el.getAttribute("data-step"), fit: fitOrigin(currentView) })));
   }
 
-  // ---------- saved-list drawer ----------
+  // ---------- my saved list: a drawer of folders ----------
+  // Every saved school gets a folder standing in a stack, filed under the same
+  // bands as the results. Open one and the site's read of the school sits next
+  // to whatever you've put in it yourself: notes, and attached files.
   function groupedSaved() {
     const groups = {};
     saved.map((n) => schoolByName[n]).filter(Boolean)
@@ -1801,60 +1848,376 @@
     return groups;
   }
 
-  function renderDrawer() {
-    const body = document.getElementById("drawerBody");
-    const sub = document.getElementById("drawerSub");
-    const groups = groupedSaved();
-    const names = Object.keys(groups).sort();
-    const total = names.reduce((a, n) => a + groups[n].length, 0);
+  // Hardest first, like the results. Without a GPA and LSAT there's no band to
+  // read, so everything shares one unlabelled drawer (index 4).
+  function savedBands() {
+    const groups = [[], [], [], [], []];
+    sortSchools(saved.map((n) => schoolByName[n]).filter(Boolean)).forEach((s) => {
+      const a = admissionRead(s);
+      groups[a ? a.band : 4].push(s);
+    });
+    return [2, 1, 0, 3, 4].filter((bi) => groups[bi].length).map((bi) => ({ bi, list: groups[bi] }));
+  }
+  const folderCls = (sc) => { const a = admissionRead(sc); return "f-" + (a ? a.band : 4); };
 
-    document.getElementById("exportMd").disabled = !total;
-    document.getElementById("exportCsv").disabled = !total;
+  function folderMeta(sc) {
+    const st = stateByName[sc.state];
+    const adm = admissionRead(sc);
+    return `${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)} · ${esc(sc.tier || "—")}` +
+      (sc.rank == null ? "" : ` · #${sc.rank}`) +
+      (adm ? ` · <b>${splitPct(adm.odds).admit}% admit</b>` : "");
+  }
 
-    if (!total) {
-      sub.textContent = "Nothing saved yet.";
-      body.innerHTML = `<div class="empty">Your list is empty.<br>Add schools from any school's page.</div>`;
+  let filesCache = null, filesBroken = false, fileUrls = [];
+  function loadFiles() {
+    return allFiles().then(
+      (list) => { filesCache = list; filesBroken = false; },
+      () => { filesCache = []; filesBroken = true; });
+  }
+  const filesFor = (name) => (filesCache || []).filter((f) => f.school === name);
+  const fileSize = (n) => n < 1048576 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(1) + " MB";
+
+  function folderExtras(name) {
+    const bits = [];
+    if ((notes[name] || "").trim()) bits.push("✎ notes");
+    const n = filesFor(name).length;
+    if (n) bits.push(plural(n, "file"));
+    return bits.join(" · ");
+  }
+  function refreshExtras() {
+    app.querySelectorAll("[data-extra]").forEach((el) => {
+      el.textContent = folderExtras(el.getAttribute("data-extra"));
+    });
+  }
+
+  function folderHTML(sc, i) {
+    return `
+      <button class="folder ${folderCls(sc)}" type="button" data-folder="${esc(sc.name)}" data-tab="${i % 4}" style="--tab:${i % 4}">
+        <span class="folder-tab">${esc(sc.name)}</span>
+        <span class="folder-body">
+          <span class="folder-meta">${folderMeta(sc)}</span>
+          <span class="folder-extra" data-extra="${esc(sc.name)}">${folderExtras(sc.name)}</span>
+        </span>
+      </button>`;
+  }
+
+  function openFolderHTML(sc, tab) {
+    const st = stateByName[sc.state];
+    return `
+      <div class="ofolder ${folderCls(sc)}" style="--tab:${tab}">
+        <span class="folder-tab">${esc(sc.name)}</span>
+        <div class="ofolder-body">
+          <div class="ofolder-top">
+            <div>
+              <h2>${esc(sc.name)}</h2>
+              <div class="loc">${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)} ${tierBadge(sc.tier)}</div>
+            </div>
+            <div class="ofolder-actions">
+              <button class="linkbtn" id="ofPage" type="button">Full school page →</button>
+              <button class="linkbtn" id="ofRemove" type="button">Remove from list</button>
+              <button class="iconbtn" id="ofClose" type="button" aria-label="Close folder">&times;</button>
+            </div>
+          </div>
+          <div class="ofolder-pages">
+            <section class="page">
+              <h3 class="page-h">From the site</h3>
+              ${schoolStatsHTML(sc)}
+              ${schoolOddsHTML(sc)}
+              <div class="writeup-h gap-t">How it stacks up</div>
+              <p class="writeup">${esc(sc.writeup)}</p>
+              ${schoolOutcomesHTML(sc)}
+              ${schoolLifestyleHTML(sc)}
+            </section>
+            <section class="page page-mine">
+              <h3 class="page-h">Your notes <span class="note-status" id="noteStatus"></span></h3>
+              <textarea class="notes" id="ofNotes" spellcheck="true"
+                placeholder="Visit impressions, people you talked to, deadlines, gut feel…">${esc(notes[sc.name] || "")}</textarea>
+              <h3 class="page-h gap-t">Your files</h3>
+              <label class="dropzone" id="ofDrop">
+                <input type="file" id="ofFile" multiple hidden />
+                Drop files here or <u>choose</u><span>up to 10 MB each</span>
+              </label>
+              <p class="fl-msg" id="ofFileMsg"></p>
+              <div class="flist" id="ofList"></div>
+            </section>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function paintFiles(name) {
+    const box = document.getElementById("ofList");
+    if (!box) return;
+    fileUrls.forEach((u) => URL.revokeObjectURL(u));
+    fileUrls = [];
+    if (filesBroken) {
+      box.innerHTML = `<p class="fl-empty">This browser won't let the page store files — private windows usually don't.</p>`;
       return;
     }
-    sub.textContent = `${plural(total, "school")} across ${plural(names.length, "state")}.`;
+    if (!filesCache) { box.innerHTML = `<p class="fl-empty">Loading…</p>`; return; }
+    const mine = filesFor(name).sort((a, b) => b.added - a.added);
+    box.innerHTML = mine.length ? mine.map((f) => {
+      const u = URL.createObjectURL(f.blob);
+      fileUrls.push(u);
+      return `<div class="fl-row">
+          <a class="fl-name" href="${u}" target="_blank" rel="noopener">${esc(f.name)}</a>
+          <span class="fl-size">${fileSize(f.size)}</span>
+          <a class="iconbtn" href="${u}" download="${esc(f.name)}" title="Download" aria-label="Download ${esc(f.name)}">↓</a>
+          <button class="iconbtn" type="button" data-del="${f.id}" title="Remove" aria-label="Remove ${esc(f.name)}">&times;</button>
+        </div>`;
+    }).join("") : `<p class="fl-empty">Nothing attached yet.</p>`;
+    box.querySelectorAll("[data-del]").forEach((b) =>
+      b.addEventListener("click", async () => {
+        try { await dropFile(+b.getAttribute("data-del")); } catch (e) {}
+        await loadFiles();
+        paintFiles(name);
+        refreshExtras();
+      }));
+  }
 
-    body.innerHTML = names.map((stn) =>
-      `<div class="pl-state">${esc(stn)}</div>` +
-      sortSchools(groups[stn]).map((s) => `
-        <div class="pl-entry">
-          <div class="pe-main" data-school="${esc(s.name)}">
-            <div class="n">${esc(s.name)}</div>
-            <div class="m">${esc(s.city)} · ${esc(s.tier || "—")} · LSAT ${s.medianLSAT} · GPA ${s.medianGPA.toFixed(2)} · ${money(s.tuitionInState)} in / ${money(s.tuitionOutState)} out</div>
+  async function addFiles(name, list) {
+    const msg = document.getElementById("ofFileMsg");
+    const big = [];
+    let failed = 0;
+    for (const f of Array.from(list)) {
+      if (f.size > MAX_FILE) { big.push(f.name); continue; }
+      try {
+        await putFile({ school: name, name: f.name, type: f.type, size: f.size, added: Date.now(), blob: f });
+      } catch (e) { failed++; }
+    }
+    const out = [];
+    if (big.length) out.push(`${big.join(", ")} ${big.length > 1 ? "are" : "is"} over 10 MB — skipped.`);
+    if (failed) out.push(`Couldn't store ${plural(failed, "file")}.`);
+    if (msg) msg.textContent = out.join(" ");
+    await loadFiles();
+    paintFiles(name);
+    refreshExtras();
+  }
+
+  function wireOpenFolder(sc) {
+    const name = sc.name;
+    document.getElementById("ofClose").addEventListener("click", closeFolder);
+    document.getElementById("ofPage").addEventListener("click", () =>
+      go({ kind: "school", name, fit: fitOrigin(currentView) }));
+    document.getElementById("ofRemove").addEventListener("click", () => {
+      toggleSaved(name);
+      leaveFolder();
+      renderList(currentView);
+    });
+
+    const ta = document.getElementById("ofNotes");
+    const status = document.getElementById("noteStatus");
+    ta.addEventListener("input", () => {
+      if (ta.value.trim()) notes[name] = ta.value; else delete notes[name];
+      status.textContent = persistNotes() ? "saved" : "couldn't save";
+    });
+
+    const input = document.getElementById("ofFile");
+    const drop = document.getElementById("ofDrop");
+    input.addEventListener("change", () => { addFiles(name, input.files); input.value = ""; });
+    drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault();
+      drop.classList.remove("over");
+      addFiles(name, e.dataTransfer.files);
+    });
+    paintFiles(name);
+  }
+
+  function renderList(v) {
+    const bands = savedBands();
+    const total = bands.reduce((a, g) => a + g.list.length, 0);
+    navList = bands.reduce((acc, g) => acc.concat(g.list.map((s) => s.name)), []);
+    const open = v.open && isSaved(v.open) ? schoolByName[v.open] : null;
+    if (v.open && !open) { v = currentView = { kind: "list" }; history.replaceState(v, ""); }
+
+    const body = total ? bands.map((g) => `
+      <section class="fgroup">
+        <div class="fgroup-h">
+          <h3 class="${g.bi < 4 ? BAND_CLS[g.bi] : ""}">${g.bi < 4 ? BANDS[g.bi].label : profileReady() ? "No odds yet" : "Saved"}</h3>
+          <span class="n">${plural(g.list.length, "school")}</span>
+        </div>
+        <div class="fstack">${g.list.map(folderHTML).join("")}</div>
+      </section>`).join("")
+      : `<div class="empty card">Your list is empty.<br>Add schools from any school's page and each one gets a folder here.</div>`;
+
+    setView(`
+      <div class="files${open ? " is-open" : ""}">
+        <div class="files-stack">
+          ${crumbHTML(v, "My saved list")}
+          <div class="files-head">
+            <div>
+              <h2>My saved list</h2>
+              <p class="files-sub">${total
+                ? plural(total, "folder") + (profileReady() ? ", filed by your odds." : ". Add a GPA and LSAT on Find your fit to file them by your odds.")
+                : "Nothing saved yet."}</p>
+            </div>
+            <div class="files-tools">
+              <button class="ghostbtn" type="button" id="exportMd" ${total ? "" : "disabled"}>Markdown</button>
+              <button class="ghostbtn" type="button" id="exportCsv" ${total ? "" : "disabled"}>CSV</button>
+              <button class="ghostbtn" type="button" id="backupBtn" ${total ? "" : "disabled"}>Back up</button>
+              <button class="ghostbtn" type="button" id="restoreBtn">Restore</button>
+              <input type="file" id="restoreFile" accept=".json,application/json" hidden />
+            </div>
           </div>
-          <button class="pl-remove" type="button" data-remove="${esc(s.name)}" title="Remove" aria-label="Remove ${esc(s.name)}">&times;</button>
-        </div>`).join("")
-    ).join("");
+          <div class="restore-bar" id="restoreBar" hidden></div>
+          ${body}
+        </div>
+        <div class="files-open" id="filesOpen">${open ? openFolderHTML(open, 0) : ""}</div>
+      </div>`, true);
 
-    body.querySelectorAll(".pe-main").forEach((el) =>
-      el.addEventListener("click", () => {
-        closeDrawer();
-        go({ kind: "school", name: el.getAttribute("data-school"), fit: fitOrigin(currentView) });
-      }));
-    body.querySelectorAll(".pl-remove").forEach((el) =>
-      el.addEventListener("click", () => {
-        toggleSaved(el.getAttribute("data-remove"));
-        renderDrawer();
-        rerender();
-      }));
+    wireCrumb();
+    app.querySelectorAll(".folder").forEach((el) =>
+      el.addEventListener("click", () => openFolder(el.getAttribute("data-folder"), +el.getAttribute("data-tab"))));
+    document.getElementById("exportMd").addEventListener("click", exportMarkdown);
+    document.getElementById("exportCsv").addEventListener("click", exportCsv);
+    document.getElementById("backupBtn").addEventListener("click", exportBackup);
+    const rf = document.getElementById("restoreFile");
+    document.getElementById("restoreBtn").addEventListener("click", () => rf.click());
+    rf.addEventListener("change", () => { if (rf.files[0]) readBackup(rf.files[0]); rf.value = ""; });
+    if (open) wireOpenFolder(open);
+
+    loadFiles().then(() => {
+      refreshExtras();
+      if (open && currentView.open === open.name) paintFiles(open.name);
+    });
   }
 
-  const drawer = document.getElementById("drawer");
-  const scrim = document.getElementById("scrim");
-  function openDrawer() {
-    renderDrawer();
-    scrim.classList.add("on");
-    drawer.classList.add("on");
-    drawer.setAttribute("aria-hidden", "false");
+  // ---------- folder animation ----------
+  // A fixed-position stand-in does the flying and the opening, so the real pages
+  // can be laid out underneath at their final size and simply revealed.
+  const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const FOLD_EASE = "cubic-bezier(.33, 1, .68, 1)";
+  // The flight eases in as well as out, so it never starts from a dead stop.
+  const FLY_EASE = "cubic-bezier(.45, 0, .2, 1)";
+  let folderBusy = false, skipPop = false;
+
+  const anim = (el, frames, ms, opts) =>
+    el.animate(frames, Object.assign({ duration: ms, easing: FOLD_EASE, fill: "forwards" }, opts)).finished;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const box = (r) => ({ top: r.top + "px", left: r.left + "px", width: r.width + "px", height: r.height + "px" });
+  // An open folder can run far past the fold; only fly the part you can see.
+  function onScreen(r) {
+    const top = Math.max(r.top, 0);
+    return { top, left: r.left, width: r.width, height: Math.min(r.bottom, window.innerHeight - 12) - top };
   }
-  function closeDrawer() {
-    scrim.classList.remove("on");
-    drawer.classList.remove("on");
-    drawer.setAttribute("aria-hidden", "true");
+  function folderClone(sc, tab, rect) {
+    const el = document.createElement("div");
+    el.className = "ofolder fly " + folderCls(sc);
+    el.style.setProperty("--tab", tab);
+    el.innerHTML = `<span class="folder-tab">${esc(sc.name)}</span>
+      <div class="ofolder-body"><div class="ofolder-cover"><span class="folder-meta">${folderMeta(sc)}</span></div></div>`;
+    Object.assign(el.style, box(rect));
+    app.appendChild(el);
+    return el;
+  }
+  // Pin the clone where it currently looks, dropping finished fill-forwards animations.
+  function settle(el) {
+    const r = el.getBoundingClientRect();
+    el.getAnimations().forEach((a) => a.cancel());
+    Object.assign(el.style, box(r));
+    return r;
+  }
+
+  async function openFolder(name, tab) {
+    const sc = schoolByName[name];
+    const wrap = app.querySelector(".files");
+    const src = wrap && wrap.querySelector(`.folder[data-folder="${CSS.escape(name)}"]`);
+    if (!sc || !src || folderBusy) return;
+    currentView = { kind: "list", open: name };
+    history.pushState(currentView, "");
+    const pane = document.getElementById("filesOpen");
+    pane.innerHTML = openFolderHTML(sc, tab);
+    wireOpenFolder(sc);
+    if (REDUCED.matches) { wrap.classList.add("is-open"); window.scrollTo(0, 0); return; }
+
+    folderBusy = true;
+    const from = src.getBoundingClientRect();
+    const clone = folderClone(sc, tab, from);
+    src.style.visibility = "hidden";
+    // Lay the real pages out now, invisibly, so nothing heavy lands mid-flight.
+    // The clone aims for where they'll sit once the page is scrolled to the top.
+    wrap.classList.add("fading", "is-animating");
+    const r = pane.querySelector(".ofolder").getBoundingClientRect();
+    const y = window.scrollY;
+    const to = onScreen({ top: r.top + y, bottom: r.bottom + y, left: r.left, width: r.width });
+    try {
+      // The cover starts swinging before the folder lands, and its label fades
+      // before it turns edge-on (opacity flattens 3D, so backface-visibility
+      // alone would let the mirrored text show through).
+      const fly = anim(clone, [box(from), box(to)], 540, { easing: FLY_EASE });
+      const swing = anim(clone.querySelector(".ofolder-cover"), [
+        { transform: "rotateY(0deg)", opacity: 1 },
+        { opacity: 1, offset: 0.55 },
+        { transform: "rotateY(-178deg)", opacity: 0 },
+      ], 660, { delay: 360 });
+      anim(clone.querySelector(".ofolder-cover .folder-meta"), [{ opacity: 1 }, { opacity: 0 }], 120, { delay: 360, easing: "linear" });
+      await fly;
+      wrap.classList.add("is-open");
+      window.scrollTo(0, 0);
+      await swing;
+      pane.querySelector(".ofolder").classList.add("reveal");
+    } finally {
+      clone.remove();
+      src.style.visibility = "";
+      wrap.classList.remove("fading", "is-animating");
+      folderBusy = false;
+    }
+  }
+
+  // Every open-folder history entry sits directly on top of a plain list entry,
+  // so closing is just stepping back over it.
+  function leaveFolder() {
+    skipPop = true;
+    history.back();
+    currentView = { kind: "list" };
+  }
+
+  async function closeFolder() {
+    const wrap = app.querySelector(".files");
+    if (!wrap || folderBusy || !currentView || !currentView.open) return;
+    const sc = schoolByName[currentView.open];
+    const open = wrap.querySelector(".ofolder");
+    const src = wrap.querySelector(`.folder[data-folder="${CSS.escape(currentView.open)}"]`);
+    leaveFolder();
+    refreshExtras();
+    const done = () => {
+      wrap.classList.remove("is-open", "is-animating", "fading");
+      document.getElementById("filesOpen").innerHTML = "";
+    };
+    if (REDUCED.matches || !src || !open || !sc) { done(); return; }
+
+    folderBusy = true;
+    let clone = null;
+    try {
+      await Promise.all(Array.from(open.querySelectorAll(".ofolder-body > *"))
+        .map((el) => anim(el, [{ opacity: 1 }, { opacity: 0 }], 140)));
+      clone = folderClone(sc, open.style.getPropertyValue("--tab"), onScreen(open.getBoundingClientRect()));
+      wrap.classList.add("is-animating");
+      const swing = anim(clone.querySelector(".ofolder-cover"), [
+        { transform: "rotateY(-178deg)", opacity: 0 },
+        { opacity: 1, offset: 0.4 },
+        { transform: "rotateY(0deg)", opacity: 1 },
+      ], 560);
+      const meta = clone.querySelector(".ofolder-cover .folder-meta");
+      meta.style.opacity = 0;
+      anim(meta, [{ opacity: 0 }, { opacity: 1 }], 160, { delay: 400 });
+      // Back into the drawer while the cover is still settling shut.
+      await wait(300);
+      wrap.classList.add("fading");
+      wrap.classList.remove("is-open");
+      src.scrollIntoView({ block: "center" });
+      src.style.visibility = "hidden";
+      const from = settle(clone);
+      wrap.classList.remove("fading");
+      await Promise.all([swing, anim(clone, [box(from), box(src.getBoundingClientRect())], 520, { easing: FLY_EASE })]);
+    } finally {
+      if (clone) clone.remove();
+      src.style.visibility = "";
+      done();
+      folderBusy = false;
+    }
   }
 
   // ---------- search ----------
@@ -1995,6 +2358,7 @@
         const rk = s.rank == null ? (s.tier || "unranked") : "#" + s.rank;
         md += `- **${s.name}** — ${s.city}. GPA ${s.medianGPA.toFixed(2)}, LSAT ${s.medianLSAT}, ` +
           `${money(s.tuitionInState)} in-state / ${money(s.tuitionOutState)} out-of-state, ${rk} (${s.tier || "—"})\n`;
+        if (notes[s.name]) md += notes[s.name].trim().split("\n").map((l) => "  > " + l).join("\n") + "\n";
       });
       md += "\n";
     });
@@ -2008,18 +2372,104 @@
       const s = v == null ? "" : String(v);
       return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
     };
-    let csv = "State,School,City,MedianGPA,MedianLSAT,InStateTuition,OutStateTuition,Rank,Tier\n";
+    let csv = "State,School,City,MedianGPA,MedianLSAT,InStateTuition,OutStateTuition,Rank,Tier,Notes\n";
     names.forEach((stn) => {
       sortSchools(groups[stn]).forEach((s) => {
         csv += [
           cell(s.state), cell(s.name), cell(s.city),
           cell(s.medianGPA), cell(s.medianLSAT),
           cell(s.tuitionInState), cell(s.tuitionOutState),
-          cell(s.rank == null ? "" : s.rank), cell(s.tier),
+          cell(s.rank == null ? "" : s.rank), cell(s.tier), cell(notes[s.name]),
         ].join(",") + "\n";
       });
     });
     download("law-school-shortlist.csv", csv, "text/csv");
+  }
+
+  // ---------- backup / restore ----------
+  // One JSON file with the list, notes and every attachment (as data URLs), so
+  // cleared site data or a new browser doesn't cost you your folders.
+  const BACKUP_APP = "law-school-shortlist";
+  const toDataURL = (blob) => new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+
+  async function exportBackup() {
+    let files = [];
+    try { files = await allFiles(); } catch (e) {}
+    const out = await Promise.all(files.map(async (f) => ({
+      school: f.school, name: f.name, added: f.added, data: await toDataURL(f.blob),
+    })));
+    download(`law-school-files-${new Date().toISOString().slice(0, 10)}.json`,
+      JSON.stringify({ app: BACKUP_APP, version: 1, saved, notes, files: out }), "application/json");
+  }
+
+  let pendingRestore = null;
+  function restoreBar(html) {
+    const bar = document.getElementById("restoreBar");
+    if (!bar) return null;
+    bar.innerHTML = html;
+    bar.hidden = !html;
+    return bar;
+  }
+
+  // Restoring only ever adds: schools you don't have, notes you don't have
+  // (appended under yours if both exist), files not already in that folder.
+  async function readBackup(file) {
+    let data = null;
+    try { data = JSON.parse(await file.text()); } catch (e) {}
+    if (!data || data.app !== BACKUP_APP || !Array.isArray(data.saved)) {
+      restoreBar(`That isn't a backup from this site. <button class="linkbtn" type="button" id="restoreNo">Dismiss</button>`);
+    } else {
+      if (!filesCache) await loadFiles();
+      const imported = data.notes && typeof data.notes === "object" ? data.notes : {};
+      const names = data.saved.filter((n) => schoolByName[n] && !isSaved(n));
+      const noteKeys = Object.keys(imported).filter((k) =>
+        typeof imported[k] === "string" && imported[k].trim() && !(notes[k] || "").includes(imported[k]));
+      const files = (Array.isArray(data.files) ? data.files : []).filter((f) =>
+        f && typeof f.data === "string" && typeof f.name === "string" &&
+        !filesFor(f.school).some((e) => e.name === f.name));
+      if (!names.length && !noteKeys.length && !files.length) {
+        restoreBar(`Nothing new in that backup — you already have all of it.
+          <button class="linkbtn" type="button" id="restoreNo">Dismiss</button>`);
+      } else {
+        pendingRestore = { names, noteKeys, imported, files };
+        restoreBar(`Restoring adds ${plural(names.length, "school")}, ${plural(noteKeys.length, "note")}
+          and ${plural(files.length, "file")}. Nothing you have now is removed.
+          <button class="btn" type="button" id="restoreGo">Restore</button>
+          <button class="linkbtn" type="button" id="restoreNo">Cancel</button>`);
+        document.getElementById("restoreGo").addEventListener("click", applyRestore);
+      }
+    }
+    document.getElementById("restoreNo").addEventListener("click", () => {
+      pendingRestore = null;
+      restoreBar("");
+    });
+  }
+
+  async function applyRestore() {
+    const r = pendingRestore;
+    pendingRestore = null;
+    if (!r) return;
+    restoreBar("Restoring…");
+    r.names.forEach((n) => saved.push(n));
+    persist();
+    r.noteKeys.forEach((k) => {
+      notes[k] = (notes[k] || "").trim() ? notes[k] + "\n\n" + r.imported[k] : r.imported[k];
+    });
+    persistNotes();
+    let failed = 0;
+    for (const f of r.files) {
+      try {
+        const blob = await (await fetch(f.data)).blob();
+        await putFile({ school: f.school, name: f.name, type: blob.type, size: blob.size, added: f.added || Date.now(), blob });
+      } catch (e) { failed++; }
+    }
+    go({ kind: "list" }, true);
+    if (failed) restoreBar(`Restored, but ${plural(failed, "file")} couldn't be stored.`);
   }
 
   // ---------- boot ----------
@@ -2096,11 +2546,6 @@
       const kind = el.getAttribute("data-nav");
       if (kind === "results") openResults(); else go({ kind });
     }));
-  document.getElementById("listBtn").addEventListener("click", () => { menuToggle(false); openDrawer(); });
-  document.getElementById("drawerClose").addEventListener("click", closeDrawer);
-  scrim.addEventListener("click", closeDrawer);
-  document.getElementById("exportMd").addEventListener("click", exportMarkdown);
-  document.getElementById("exportCsv").addEventListener("click", exportCsv);
 
   document.getElementById("searchBtn").addEventListener("click", searchOpen);
   document.getElementById("searchClose").addEventListener("click", searchClose);
@@ -2114,7 +2559,13 @@
 
   document.addEventListener("keydown", (e) => {
     const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName);
-    if (e.key === "Escape") { searchClose(); closeDrawer(); menuToggle(false); return; }
+    if (e.key === "Escape") {
+      const searching = searchScrim.classList.contains("on");
+      searchClose();
+      menuToggle(false);
+      if (!searching) closeFolder();
+      return;
+    }
     if (typing) return;
     if (e.key === "/" || ((e.metaKey || e.ctrlKey) && e.key === "k")) {
       e.preventDefault(); searchOpen();

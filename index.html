@@ -35,30 +35,13 @@
           <button type="button" role="menuitem" data-nav="fit">Find your fit</button>
           <button type="button" role="menuitem" data-nav="results" id="menuResults">Your schools</button>
           <button type="button" role="menuitem" data-nav="map">Explore by state</button>
-          <button type="button" role="menuitem" id="listBtn">My saved list <span class="cnt" id="listCount">0</span></button>
+          <button type="button" role="menuitem" data-nav="list">My saved list <span class="cnt" id="listCount">0</span></button>
         </div>
       </div>
     </div>
   </header>
 
   <main id="app"><div class="view"><p class="loading">Loading data…</p></div></main>
-
-  <!-- saved-list drawer -->
-  <div class="scrim" id="scrim"></div>
-  <aside class="drawer" id="drawer" aria-label="My target list" aria-hidden="true">
-    <div class="drawer-head">
-      <div>
-        <h2>My target list</h2>
-        <p id="drawerSub">Saved schools, grouped by state.</p>
-      </div>
-      <button class="iconbtn" id="drawerClose" type="button" aria-label="Close">&times;</button>
-    </div>
-    <div class="drawer-body" id="drawerBody"></div>
-    <div class="drawer-foot">
-      <button class="ghostbtn" id="exportMd" type="button">Export Markdown</button>
-      <button class="ghostbtn" id="exportCsv" type="button">Export CSV</button>
-    </div>
-  </aside>
 
   <!-- search palette -->
   <div class="search-scrim" id="searchScrim" role="dialog" aria-modal="true" aria-label="Search schools and states">
