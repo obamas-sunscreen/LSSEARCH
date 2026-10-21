@@ -2,22 +2,9 @@
 
 A personal tool for building a shortlist of law schools, organized by state.
 
-**Flow:** you land on **Find your fit**: enter your GPA, LSAT, career goals, and where you want to practice. You then get every ABA school sorted into Reach / Target / Safety / Far reach, listed beside a map. Point at a school and it's pinned on the map at its city; click it and a detail panel opens under the map with its numbers, your modelled admit / waitlist / deny split, and where its graduates end up, plus a link to the full school page. Add schools to **My saved list**: each one becomes a folder, filed by admission band, that opens to the site's read of the school beside your own notes and attached files. Everything stays in the browser (notes in localStorage, files in IndexedDB); **Back up** / **Restore** move it all as one JSON file, and the list still exports to Markdown or CSV. **Explore by state** (in the menu) is the whiteboard map of every state: hover one for its real strengths and weaknesses, click through to its schools.
+**Flow:** you land on **Find your fit**: enter your GPA, LSAT, career goals, and where you want to practice. You then get every ABA school sorted into Reach / Target / Safety / Far reach; click one for its full page. Add schools to **My saved list**: each one becomes a folder, filed by admission band, that opens to the site's read of the school beside your own notes and attached files. Everything stays in the browser (notes in localStorage, files in IndexedDB); **Back up** / **Restore** move it all as one JSON file, and the list still exports to Markdown or CSV. **Explore by state** (in the menu) is the whiteboard map of every state: hover one for its real strengths and weaknesses, click it and the map zooms in, dots every city with a law school, and lists those schools beside it (with your band for each once you've entered a GPA and LSAT). Pick a school and a pin drops on it, with a link through to its page. Back, Esc, or a click on open water zooms out.
 
 Press `/` (or `⌘K`) anywhere to jump straight to any of the 193 schools or 51 jurisdictions by name.
-
-**Map layers.** The chips above the map recolor it:
-
-| Layer | What the colour means | Needs |
-|---|---|---|
-| Overall | The blended state score, ranked against all 51 | — |
-| Your reach | Modelled admit chance at that state's **highest-ranked** school | GPA + LSAT |
-| Your fit | How the best-fitting school there ranks for your whole profile | a goal or target state |
-| Affordability | Cost of living and housing, inverted | — |
-| Legal market | Lawyer job density and average legal pay | — |
-| Schools | Count of ABA-accredited schools | — |
-
-*Your reach* is measured at the flagship on purpose. "Best odds anywhere in the state" sounds more useful but is nearly worthless: almost every state has some school that admits broadly, so a strong applicant sees 98% everywhere and the map goes flat — 8 distinct values across 51 jurisdictions at GPA 3.2 / LSAT 174, against 25 when measured at the flagship.
 
 ### State strengths and weaknesses
 
@@ -81,7 +68,7 @@ Everything lives in plain JSON you can edit in any text editor:
 - **`data/states.json`** — all 50 states plus DC, with cost-of-living, quality-of-life, and legal-industry figures, plus 1–5 scores. The youthful-active-lifestyle factor is **not** here — it lives at the city level (see below), because it varies too much within a state to be one number.
 - **`data/cities.json`** — the 148 law-school cities, each scored on youthful-active-lifestyle: a `social` scene signal (weighted heaviest), `outdoors`, and `walkability`, blended into a `lifestyleScore`, plus a blurb. Shown on each school's detail page for the city you'd actually live in.
 - **`data/schools.json`** — all 193 ABA-accredited schools in the 50 states + DC: median GPA, median LSAT, in-state / out-of-state tuition, a tier, a rank, and a write-up, plus two blocks pulled straight from the ABA (see below): `admissions` (applications, offers, acceptance rate, and 25th/50th/75th percentile GPA and LSAT) and `outcomes` (employment rate and the share of graduates going to BigLaw, mid-law, small firms, government, public interest, federal and state clerkships, business, and academia), with `topStates` giving the three states each school actually places graduates into.
-- **`data/us-states.json`** — the map geometry. You shouldn't need to touch this.
+- **`data/us-states.json`** — the map geometry: Census state boundaries at 1:10m from [us-atlas](https://github.com/topojson/us-atlas), with Alaska and Hawaii moved into insets. Rebuilt by `tools/build_geometry.py` (instructions at the top of that file); you shouldn't need to touch it.
 
 ### Refreshing the ABA data
 

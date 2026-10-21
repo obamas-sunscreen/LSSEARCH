@@ -29,9 +29,12 @@
   --on-accent: #fff;
 
   --safety: #1d8a4a;                /* green marker */
+  --safety-rgb: 29, 138, 74;
   --target: #1f57c3;
   --reach: #d4701a;                 /* orange marker */
+  --reach-rgb: 212, 112, 26;
   --far: #cf2f2b;                   /* red marker */
+  --far-rgb: 207, 47, 43;
   --pos: var(--safety);
   --neg: var(--far);
 
@@ -57,7 +60,7 @@
   --mid: .26s;
   --slow: .42s;
 
-  --topbar-h: 62px;
+  --topbar-h: 0px;
 }
 
 /* --- base ----------------------------------------------------------------- */
@@ -80,7 +83,6 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
 }
-::selection { background: rgba(255, 226, 64, .55); }   /* highlighter */
 button, input, select { font-family: inherit; color: inherit; }
 h1, h2, h3 { font-family: var(--marker); font-weight: 400; letter-spacing: .01em; }
 b, strong { font-weight: 640; }
@@ -97,88 +99,72 @@ b, strong { font-weight: 640; }
 }
 .errbox code { background: rgba(var(--ink-rgb), .07); padding: 1px 5px; border-radius: 4px; }
 
-/* --- chrome: top bar ------------------------------------------------------ */
-.topbar {
-  position: sticky; top: 0; z-index: 50;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  height: var(--topbar-h); padding: 0 22px;
-  background: rgba(247, 248, 246, .88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 2.5px solid var(--ink);
+/* --- chrome: menu ------------------------------------------------------- */
+.logo {
+  position: fixed; top: 8px; left: 14px; z-index: 50;
+  padding: 4px 8px;
+  color: var(--ink); line-height: 0; transform: rotate(-2deg);
 }
-.brand {
-  display: flex; align-items: center; gap: 11px;
-  background: none; border: none; padding: 4px 6px; margin-left: -6px;
-  border-radius: var(--r-sm); cursor: pointer; text-align: left;
+.logo svg {
+  width: 140px; height: 40px; overflow: visible;
+  fill: none; stroke: currentColor; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round;
 }
-.brand:hover .brand-name { color: var(--accent); }
-.brand-mark {
-  width: 26px; height: 26px; flex: none; border-radius: var(--r-sm);
-  border: 2px solid var(--accent); position: relative;
+.menu { position: fixed; top: 12px; right: 16px; z-index: 50; }
+.confetti { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none; }
+/* The logo belongs to the landing page only. */
+body:not([data-view="fit"]) .logo { display: none; }
+/* The saved list is a long page of folders: let the menu scroll away with it
+   rather than sit on top of the folders. */
+body[data-view="list"] .menu { position: absolute; }
+.menu-btn {
+  display: flex; align-items: center; gap: 4px;
+  padding: 8px 10px; background: none; border: none;
+  color: var(--ink); cursor: pointer; transition: color var(--fast) var(--ease);
 }
-.brand-mark::after {
-  content: ""; position: absolute; inset: 6px 5px;
-  border-left: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
-  border-radius: 0 0 0 3px;
-}
-.brand-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
-.brand-name { font-family: var(--marker); font-size: 20px; font-weight: 400; transition: color var(--fast) var(--ease); }
-.brand-sub {
-  font-size: 13px; color: var(--ink-faint);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-
-.topbar-actions { display: flex; align-items: center; gap: 9px; flex: none; }
-.tbtn {
-  display: inline-flex; align-items: center; gap: 8px;
-  height: 36px; padding: 0 14px;
-  background: none; color: var(--ink-soft);
-  border: 1.5px solid var(--line-strong); border-radius: var(--r-sm);
-  font-family: var(--hand); font-size: 16px; cursor: pointer;
-  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease),
-              background var(--fast) var(--ease), transform .08s var(--ease);
-}
-.tbtn:hover, .menu.on .tbtn { border-color: var(--accent); color: var(--ink); }
-.tbtn:active { transform: translateY(1px); }
-.tbtn svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
-.tbtn kbd {
-  font: inherit; font-size: 12.5px; line-height: 1;
-  padding: 3px 6px; border-radius: 5px;
-  background: var(--surface-sunk); color: var(--ink-faint); border: 1px solid var(--line);
-}
-.cnt {
-  min-width: 20px; text-align: center; font-family: var(--hand); font-size: 13px; line-height: 1.3;
-  padding: 0 6px; border-radius: var(--pill); background: var(--accent); color: var(--on-accent);
-}
+.menu-btn svg { width: 32px; height: 26px; fill: none; stroke: currentColor; stroke-width: 3.6; stroke-linecap: round; }
+/* Hover writes the logo, the menu lines and each item's letters in turn
+   in blue, red and green marker. */
+.logo:hover path:nth-child(3n+1), .menu-btn:hover path:nth-child(1), .menu.on .menu-btn path:nth-child(1),
+.menu-list button:not(:disabled):hover .c0 { stroke: var(--accent); color: var(--accent); }
+.logo:hover path:nth-child(3n+2), .menu-btn:hover path:nth-child(2), .menu.on .menu-btn path:nth-child(2),
+.menu-list button:not(:disabled):hover .c1 { stroke: var(--far); color: var(--far); }
+.logo:hover path:nth-child(3n), .menu-btn:hover path:nth-child(3), .menu.on .menu-btn path:nth-child(3),
+.menu-list button:not(:disabled):hover .c2 { stroke: var(--safety); color: var(--safety); }
+/* The saved count is just written in, in whatever the text around it is. */
+.cnt { font: inherit; color: inherit; }
 .cnt[hidden] { display: none; }
 
-/* top-bar menu */
-.menu { position: relative; }
+/* No card: the four items are written straight onto the board in black
+   marker. A paper-coloured halo keeps them legible over whatever is under. */
 .menu-list {
-  position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
-  min-width: 220px; padding: 6px;
-  background: var(--paper); border: 1.5px solid var(--line-strong); border-radius: var(--r);
-  box-shadow: var(--sh-3);
+  position: absolute; top: calc(100% + 4px); right: 0; z-index: 60;
+  display: flex; flex-direction: column; align-items: flex-end;
   opacity: 0; transform: translateY(-6px); pointer-events: none;
   transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
 }
 .menu.on .menu-list { opacity: 1; transform: none; pointer-events: auto; }
 .menu-list button {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
-  padding: 8px 12px; background: none; border: none; border-radius: var(--r-sm);
-  font-family: var(--hand); font-size: 18px; color: var(--ink); text-align: left; cursor: pointer;
+  display: flex; align-items: baseline; gap: 8px; white-space: nowrap;
+  padding: 4px 10px; background: none; border: none;
+  font-family: var(--marker); font-size: 21px; color: var(--ink); cursor: pointer;
+  text-shadow: 0 0 4px var(--paper), 0 0 8px var(--paper), 0 0 12px var(--paper);
 }
-.menu-list button:hover { background: var(--surface-sunk); color: var(--accent); }
-.menu-list button:disabled { color: var(--ink-faint); cursor: not-allowed; background: none; }
+.menu-list button:hover { text-decoration: underline 2px; text-underline-offset: 4px; }
+.menu-list button:disabled { color: var(--ink-faint); cursor: not-allowed; text-decoration: none; }
 
 /* --- layout --------------------------------------------------------------- */
-main { max-width: 1240px; margin: 0 auto; padding: 22px 22px 90px; }
+main { max-width: 1240px; margin: 0 auto; padding: 62px 22px 90px; }
 .view { animation: viewIn var(--mid) var(--ease-out); }
 @keyframes viewIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 .reading { max-width: 1060px; margin: 0 auto; }
+/* Results, state and school pages run wide, with a gutter that grows with the
+   window. 62px of top padding keeps the menu button clear. */
+main.roomy { max-width: 1440px; padding-left: clamp(22px, 6vw, 96px); padding-right: clamp(22px, 6vw, 96px); }
+/* At this width the school page's blocks run the full column, so nothing
+   bunches up on the left. */
+main.roomy .odds, main.roomy .lifestyle, main.roomy .writeup { max-width: none; }
+main.roomy .od, main.roomy .omodel { max-width: 780px; }   /* small print stays a readable line */
 
 .crumb { font-family: var(--hand); font-size: 16px; color: var(--ink-faint); margin-bottom: 18px; }
 .crumb .link { color: var(--accent); cursor: pointer; font-weight: 550; }
@@ -200,47 +186,40 @@ main { max-width: 1240px; margin: 0 auto; padding: 22px 22px 90px; }
 }
 
 /* --- shared: tracks ------------------------------------------------------- */
-/* One component for every bar in the app. `.track` is the rail; `.fill` grows
-   from the left, `.band` shades a 25th-75th window, `.pin` marks a position. */
+/* app.js draws every bar as SVG at its real size (see sketch()): an ink outline
+   gone round twice, coloured in with a zigzag of marker. The element just
+   reserves the space; the strokes take their colour from here. */
 .track {
-  position: relative; flex: 1; min-width: 0;
-  height: var(--track-h, 7px);
-  background: rgba(var(--ink-rgb), .12); border-radius: var(--pill);
+  position: relative; display: block; flex: 1; min-width: 0;
+  height: var(--track-h, 12px);
 }
-.track > .fill {
-  display: block; height: 100%; border-radius: var(--pill);
-  background: var(--accent-deep);
-  transition: width var(--slow) var(--ease-out);
+.track-sm { --track-h: 10px; }
+.track-lg { --track-h: 15px; }
+svg.hd {
+  position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
 }
-.track > .band {
-  position: absolute; top: 0; bottom: 0; left: 25%; right: 25%;
-  /* Reset the margin: the results-page group wrapper is also called `.band`, and
-     its margin-bottom over-constrains this one to a negative (clamped 0) height. */
-  margin: 0;
-  background: rgba(var(--accent-rgb), .42); border-radius: 2px;
-}
-.track > .pin {
-  position: absolute; top: 50%; width: 3px; height: calc(var(--track-h, 7px) + 6px);
-  margin-left: -1.5px; transform: translateY(-50%);
-  border-radius: var(--pill); background: var(--accent);
-  box-shadow: 0 0 0 1.5px var(--paper);
-}
-.track-sm { --track-h: 6px; }
-.track-lg { --track-h: 9px; }
+.hd-rail { stroke: var(--ink); stroke-width: 1.3; opacity: .7; }
+.hd-fill { stroke: var(--accent); stroke-width: 2; }
+.hd-hatch { stroke: var(--ink); stroke-width: 1.1; opacity: .45; }
+.hd-band { stroke: var(--accent); opacity: .5; }
+.hd-pin { stroke: var(--far); stroke-width: 2.6; }
 
 /* --- shared: tier badges -------------------------------------------------- */
+/* The tier is circled in marker, in a colour that fades from blue to grey down the tiers. */
 .tier {
-  display: inline-block; flex: none;
+  position: relative; display: inline-block; flex: none;
   font-size: 12px; font-weight: 680; letter-spacing: .03em;
-  padding: 3px 9px; border-radius: var(--pill); white-space: nowrap;
-  border: 1px solid transparent;
+  padding: 3px 9px; white-space: nowrap;
 }
-.tier-1 { background: var(--accent); color: var(--on-accent); }
-.tier-2 { background: rgba(var(--accent-rgb), .72); color: var(--on-accent); }
-.tier-3 { background: rgba(var(--accent-rgb), .16); color: var(--accent); }
-.tier-4 { background: rgba(var(--ink-rgb), .14); color: var(--ink); }
-.tier-5 { background: rgba(var(--ink-rgb), .08); color: var(--ink-soft); }
-.tier-6 { background: none; color: var(--ink-soft); border-color: var(--line-strong); }
+.tier .ring { stroke: currentColor; stroke-width: 2; }
+.tier .ring path { stroke-dashoffset: 0; opacity: 1; }
+.tier-1 { color: var(--accent); }
+.tier-2 { color: rgba(var(--accent-rgb), .8); }
+.tier-3 { color: rgba(var(--accent-rgb), .62); }
+.tier-4 { color: var(--ink); }
+.tier-5 { color: var(--ink-soft); }
+.tier-6 { color: var(--ink-faint); }
 
 .band-safety { color: var(--safety); }
 .band-target { color: var(--target); }
@@ -249,64 +228,114 @@ main { max-width: 1240px; margin: 0 auto; padding: 22px 22px 90px; }
 
 .saved-flag { font-size: 13px; color: var(--accent); font-weight: 640; white-space: nowrap; }
 
-/* --- fit page ------------------------------------------------------------ */
-.fitpage { max-width: 980px; }
-.page-title { font-size: 34px; margin: 0 0 4px; }
+/* --- fit page: the form is written on the board --------------------------- */
+/* One centred line of handwriting with two blanks in it; everything else is
+   folded under "add more". Answers go in blue marker on a drawn underline, and
+   anything chosen gets a marker ring round it. */
+.fitpage { max-width: 760px; margin: 0 auto; }
+/* Marker squiggles: the fit form's underlines and the lines between results. */
+:root {
+  --scrawl-ink:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C20 1.6 36 4.8 55 3.1S84 2.2 99 3.9' fill='none' stroke='%231d2230' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --scrawl-blue: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C20 1.6 36 4.8 55 3.1S84 2.2 99 3.9' fill='none' stroke='%231f57c3' stroke-width='2.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --scrawl-green: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C20 1.6 36 4.8 55 3.1S84 2.2 99 3.9' fill='none' stroke='%231d8a4a' stroke-width='2.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --scrawl-red:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C20 1.6 36 4.8 55 3.1S84 2.2 99 3.9' fill='none' stroke='%23cf2f2b' stroke-width='2.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  /* The same marker line, long enough to run under a whole row without stretching flat. */
+  --scrawl-long: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C20 1.6 36 4.8 55 3.1S84 2.2 100 3.9S131 4.6 150 2.9S183 1.8 200 3.5S232 4.9 250 3.2S284 1.9 300 3.6S333 4.5 350 3S383 2.1 399 3.7' fill='none' stroke='%231d2230' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+/* Sits the closed form (blanks, "add more", button: about 230px tall) in the middle of
+   the screen. Padding rather than flex centring, so opening "add more" grows downward
+   instead of shoving the blanks up. 62px is main's top padding. */
+.fit-hero { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px 48px; padding-top: max(24px, calc(50svh - 127px - 62px)); }
+.fit-hero .blank { width: 4.4ch; font-size: 52px; background-size: 100% 9px; }
 
-/* --- profile form --------------------------------------------------------- */
-.pf-lede { margin: 0 0 24px; color: var(--ink-soft); font-size: 13.5px; max-width: 620px; }
-.pf-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: 22px 32px;
+.more { margin: 30px auto 0; }
+.more > summary {
+  display: block; width: max-content; margin: 0 auto; padding: 4px 10px; list-style: none;
+  font-size: 19px; color: var(--ink-faint); cursor: pointer;
+  transition: color var(--fast) var(--ease);
 }
-.pf-field + .pf-field { margin-top: 18px; }
-.pf-grid > .pf-field { margin-top: 0; }   /* columns, not a stack */
-.pf-field > label, .pf-legend {
-  display: block; font-family: var(--hand); font-size: 19px;
-  color: var(--accent); margin-bottom: 8px;
+.more > summary::-webkit-details-marker { display: none; }
+.more > summary:hover, .more[open] > summary { color: var(--accent); }
+.more-plus {
+  display: inline-block; font-family: var(--marker); font-size: 22px; line-height: 1;
+  transition: transform var(--mid) var(--ease-out);
 }
-.pf-hint { font-size: 12px; color: var(--ink-faint); margin: 8px 0 0; line-height: 1.5; }
-.pf-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.pf-row > div { flex: 1 1 140px; min-width: 0; }
-.pf-row input, .pf-row select, .pf-add input {
-  width: 100%; min-width: 0; padding: 9px 11px;
-  font-size: 15px; background: var(--paper);
-  border: 1.5px solid var(--line-strong); border-radius: var(--r-sm);
-  font-variant-numeric: tabular-nums;
-  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
-}
-.pf-row input:focus, .pf-row select:focus, .pf-add input:focus {
-  outline: none; border-color: var(--accent); background: #fff;
-  box-shadow: 0 0 0 3px var(--accent-tint);
-}
-.pf-row input.bad { border-color: var(--far); background: rgba(207, 47, 43, .08); }
+.more[open] .more-plus { transform: rotate(45deg); }
+.more-set { color: var(--accent); }
+.more-body { margin-top: 26px; animation: viewIn var(--mid) var(--ease-out); }
+.more-block + .more-block { margin-top: 30px; }
 
-.chips { display: flex; flex-wrap: wrap; gap: 7px; }
-.chip {
-  padding: 3px 12px; font-family: var(--hand); font-size: 16px;
-  background: none; color: var(--ink-soft);
-  border: 1.5px solid var(--line-strong); border-radius: var(--pill); cursor: pointer;
-  transition: background var(--fast) var(--ease), color var(--fast) var(--ease),
-              border-color var(--fast) var(--ease), transform .08s var(--ease);
-}
-.chip:hover { border-color: var(--accent); color: var(--ink); }
-.chip:active { transform: scale(.96); }
-.chip.on { background: var(--accent-tint); border-color: var(--accent); color: var(--accent); }
-.chip.top { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.chip.rm::after { content: " ×"; color: var(--ink-faint); font-weight: 700; }
-.chip.rm:hover::after { color: var(--neg); }
-.chip.region { border-style: dashed; font-size: 15px; }
+.mad { margin: 0; font-size: 23px; line-height: 2.05; color: var(--ink); }
+.mad .nowrap { white-space: nowrap; }
+.sk-note { margin: 6px 0 0; font-size: 14px; color: var(--ink-faint); line-height: 1.45; }
 
-.sliders { display: flex; flex-direction: column; gap: 10px; }
-.sl-row { display: flex; align-items: center; gap: 12px; font-family: var(--hand); font-size: 16px; color: var(--ink-soft); }
-.sl-row > span:first-child { width: 104px; flex: none; }
-.sl-row input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; min-width: 0; }
-.sl-val { width: 62px; text-align: right; font-size: 15px; color: var(--ink-faint); flex: none; }
-
-.pf-actions {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);
+/* The blanks */
+.blank {
+  width: var(--w, 6ch); margin: 0 3px; padding: 0 4px;
+  font-family: var(--marker); font-size: 22px; line-height: 1.3; color: var(--accent); text-align: center;
+  background: var(--scrawl-ink) left bottom / 100% 7px no-repeat;
+  border: none; border-radius: 3px; outline: none;
+  appearance: none; -moz-appearance: textfield;
+  transition: background-color var(--fast) var(--ease);
 }
+.blank::-webkit-inner-spin-button, .blank::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.blank::placeholder { font-family: var(--hand); color: var(--ink-faint); opacity: .6; }
+.blank:focus { background-image: var(--scrawl-blue); }
+.blank.bad { background-image: var(--scrawl-red); color: var(--far); }
+.blank-grow { width: auto; min-width: var(--w); field-sizing: content; font-size: 20px; }   /* stretches to fit what's typed */
+
+/* Picked words are written in blue marker; the rest stay faint pencil-grey. */
+.words { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 4px; }
+.mad-small { font-size: 18px; color: var(--ink-soft); margin-top: 10px; }
+.heard { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 4px 0 0; }
+.heard:empty { display: none; }
+.heard-arrow { font-size: 20px; color: var(--ink-faint); }
+.heard-miss { font-size: 14px; color: var(--ink-faint); }
+
+.word, .tick span { position: relative; }
+.word {
+  padding: 4px 12px; background: none; border: none; cursor: pointer;
+  font-family: var(--hand); font-size: 20px; color: var(--ink-faint);
+  transition: color var(--fast) var(--ease);
+}
+.word:nth-child(3n+1) { transform: rotate(-1.5deg); }
+.word:nth-child(3n+2) { transform: translateY(3px) rotate(1deg); }
+.word:hover { color: var(--ink-soft); }
+.word.on { color: var(--accent); }
+
+.ring {
+  position: absolute; left: -5px; top: -4px; width: calc(100% + 10px); height: calc(100% + 8px);
+  overflow: visible; pointer-events: none;
+  fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round;
+}
+.ring path {
+  stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0;   /* opacity hides the round cap's dot */
+  transition: stroke-dashoffset var(--slow) var(--ease-out), opacity 0s var(--slow);
+}
+.on > .ring path, .tick input:checked + span .ring path {
+  stroke-dashoffset: 0; opacity: 1; transition: stroke-dashoffset var(--slow) var(--ease-out);
+}
+
+/* How much do I care: four words per row, the chosen one circled */
+.care { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+.care-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 16px; }
+.care-label { width: 150px; flex: none; font-size: 20px; }
+.care-opts { display: flex; flex-wrap: wrap; gap: 2px 8px; }
+.tick input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.tick span {
+  display: inline-block; padding: 3px 10px; cursor: pointer;
+  font-size: 17px; color: var(--ink-faint); transition: color var(--fast) var(--ease);
+}
+.tick:hover span { color: var(--ink); }
+.tick input:checked + span { color: var(--accent); }
+/* "Ignore" is the resting answer: it doesn't get circled, so four rows of it don't shout. */
+.tick input[value="0"]:checked + span { color: var(--ink-soft); }
+.tick input[value="0"]:checked + span .ring path { opacity: 0; }
+.tick input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.pf-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 34px; }
+.pf-actions .linkbtn { color: var(--far); text-decoration: none; }   /* erase it all: red marker */
+.pf-actions .linkbtn:hover { color: #a3221f; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 7px 20px; font-family: var(--hand); font-size: 19px;
@@ -326,93 +355,164 @@ main { max-width: 1240px; margin: 0 auto; padding: 22px 22px 90px; }
   color: var(--ink-faint); font-family: var(--hand); font-size: 16px; text-decoration: underline;
 }
 .linkbtn:hover { color: var(--ink); }
-.pf-status { font-size: 12.5px; color: var(--ink-faint); }
+/* Written like the blanks above it, but in green marker: the go button. */
+.btn-go {
+  display: inline-flex; align-items: center; gap: 10px; padding: 2px 8px 6px;
+  font-family: var(--marker); font-size: 26px; color: var(--safety);
+  background: var(--scrawl-ink) left bottom / 100% 8px no-repeat;
+  border: none; border-radius: 3px; cursor: pointer;
+  transition: color var(--fast) var(--ease), background-color var(--fast) var(--ease);
+}
+@media (hover: hover) {
+  .btn-go:hover:enabled { background-image: var(--scrawl-green); }
+}
+.btn-go:active { transform: translateY(1px); }
+.btn-go:disabled { color: var(--ink-faint); opacity: .5; cursor: not-allowed; background-color: transparent; background-image: var(--scrawl-ink); }
+.btn-go svg { width: 34px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
 /* --- home: the map on the whiteboard-------------------------------------- */
-/* The whole board fits one screen: the map's width is capped by the height
-   left over after the top bar and the tab row (the viewBox is 1.6:1). The
-   card gets its own slot beside the map, blank until you point at a state, so
-   it never covers one. */
+/* The map takes as much of the screen as its 1.6:1 viewBox can use: its
+   width is capped by the height left under the top bar, and main lets this
+   one view run past 1240px. The panel beside it is exactly the map's height
+   (height 0 + min-height 100% keeps it out of the row's sizing) and scrolls. */
+main.full { max-width: 1720px; }
 .board {
-  --map-w: min(100%, max(600px, calc((100vh - var(--topbar-h) - 150px) * 1.6)));
-  /* Equal gutters keep the bare map centred; the right one holds the card and
-     won't shrink below it, so when space runs short the left gives first. */
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, var(--map-w)) minmax(250px, 1fr);
-  grid-template-areas: ". map card" ". foot ." ". legend .";
-  column-gap: 24px; padding-top: 6px;
+  display: grid; justify-content: center; align-items: start;
+  grid-template-columns: minmax(0, max(560px, calc((100vh - var(--topbar-h) - 96px) * 1.6))) 310px;
+  column-gap: 22px; margin-top: 28px;
 }
-.mapwrap { grid-area: map; min-width: 0; }
-.mapfoot { grid-area: foot; }
-.legend-text { grid-area: legend; }
+.mapwrap { min-width: 0; }
+/* The map isn't cut off at its frame: zoomed in, the neighbouring states run
+   on to the edges of the screen, under the panel, the logo and the menu. At
+   full-country zoom there's nothing outside the frame to show. */
 svg.usmap { width: 100%; height: auto; display: block; overflow: visible; }
-svg.usmap path.live {
-  cursor: pointer; stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round;
-  transition: fill var(--slow) var(--ease), opacity var(--fast) var(--ease),
+.statecard { position: relative; z-index: 1; }
+svg.usmap.zoomed path.inset:not(.sel),
+svg.usmap.in-inset path.live:not(.inset) { display: none; }
+body { overflow-x: clip; }
+svg.usmap path {
+  vector-effect: non-scaling-stroke; stroke-linejoin: round;
+  transition: fill var(--fast) var(--ease), opacity var(--mid) var(--ease),
               stroke var(--fast) var(--ease), stroke-width var(--fast) var(--ease);
 }
-svg.usmap path.dead {
-  fill: var(--gray-state); stroke: var(--gray-state-stroke); stroke-width: .8;
-  pointer-events: none;
-}
-/* Dim the field while one state is under the pointer, so the read is unambiguous. */
-svg.usmap.probing path.live { opacity: .3; }
-svg.usmap path.live.hot,
-svg.usmap.probing path.live.hot { opacity: 1; stroke: var(--far); stroke-width: 3; }
-svg.usmap path.live.sel { opacity: 1; stroke: var(--far); stroke-width: 3; }
+/* Coloured in with four markers (app.js picks which, so neighbours never match):
+   a light wash of the marker inside, its code lettered in the full colour. */
+svg.usmap .m0 { --m: var(--far-rgb); }
+svg.usmap .m1 { --m: var(--accent-rgb); }
+svg.usmap .m2 { --m: var(--safety-rgb); }
+svg.usmap .m3 { --m: var(--reach-rgb); }
+svg.usmap path.live { cursor: pointer; fill: rgba(var(--m), .14); stroke: var(--ink); stroke-width: 1.5; }
+svg.usmap path.dead { fill: var(--gray-state); stroke: var(--gray-state-stroke); stroke-width: .8; pointer-events: none; }
+svg.usmap path.live.hot { fill: rgba(var(--m), .32); stroke: var(--ink); stroke-width: 2.6; }
+/* The browser's focus box would frame a state's whole bounding rectangle. */
+svg.usmap [tabindex] { outline: none; }
 svg.usmap path.live:focus-visible { outline: none; stroke: var(--accent); stroke-width: 2.6; }
+/* Zoomed in, the neighbours stay as context and the open state is the drawing. */
+svg.usmap.zoomed path.live:not(.sel) { opacity: .4; }
+svg.usmap.zoomed path.live.hot:not(.sel) { opacity: .7; }
+svg.usmap path.live.sel { fill: rgba(var(--m), .14); stroke: var(--ink); stroke-width: 2.6; }
+svg.usmap.zoomed .callout, svg.usmap.zoomed .callout-line { display: none; }
+
+/* State names, in the headings' marker. They're for finding a state, so they
+   step aside once you've zoomed into one. */
+svg.usmap .names { pointer-events: none; transition: opacity var(--mid) var(--ease); }
+svg.usmap.zoomed .names { opacity: 0; }
+.sname {
+  font-family: var(--marker); letter-spacing: .01em; text-anchor: middle;
+  fill: rgb(var(--m)); animation: dotIn var(--slow) var(--ease-out) both;
+}
+.sname-lead { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 2 2.5; vector-effect: non-scaling-stroke; }
 svg.usmap line.callout-line { stroke: var(--line-strong); stroke-width: 1.2; stroke-dasharray: 3 3; pointer-events: none; }
 svg.usmap g.callout { cursor: pointer; }
 svg.usmap g.callout circle {
-  stroke: var(--ink); stroke-width: 1.5;
-  transition: fill var(--slow) var(--ease), stroke var(--fast) var(--ease);
+  fill: rgba(var(--m), .14); stroke: var(--ink); stroke-width: 1.5;
+  transition: fill var(--fast) var(--ease), stroke var(--fast) var(--ease);
 }
-svg.usmap g.callout.hot circle { stroke: var(--far); stroke-width: 3; }
+svg.usmap g.callout.hot circle { fill: rgba(var(--m), .32); stroke: var(--ink); stroke-width: 2.6; }
 svg.usmap g.callout text {
   font-family: var(--hand); font-weight: 700; font-size: 12px; fill: var(--ink);
   paint-order: stroke; stroke: var(--paper); stroke-width: 3px;
   text-anchor: middle; pointer-events: none;
 }
 
-.statecard {
-  grid-area: card; align-self: center; max-width: 290px;
-  padding: 14px 16px 12px;
-  background: var(--paper);
-  border: 2px solid var(--ink); border-radius: var(--r);
-  opacity: 0; transform: translateY(4px); pointer-events: none;
-  transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
+/* A state's schools: a quiet dot per city until you pick one. */
+.cdot {
+  fill: var(--ink); stroke: var(--paper); cursor: pointer; opacity: .7;
+  animation: dotIn var(--mid) var(--ease-out) both;
+  transition: fill var(--fast) var(--ease), opacity var(--fast) var(--ease);
 }
-.statecard.on { opacity: 1; transform: none; }
-.statecard.on { pointer-events: auto; }
+.cdot.hot { fill: var(--accent); opacity: 1; }
+@keyframes dotIn { from { opacity: 0; } }
 
-.card-kicker { font-family: var(--hand); font-size: 15px; color: var(--accent); }
+/* The dropped pin. Its local origin is the tip, so the squash and the shadow
+   both grow out of the spot it lands on. */
+.droppin { pointer-events: none; }
+.dp-head { fill: var(--far); stroke: var(--ink); stroke-width: 2.2; vector-effect: non-scaling-stroke; }
+.dp-eye { fill: var(--paper); }
+.dp-shadow { fill: rgba(var(--ink-rgb), .22); }
+.dp-lbl rect { fill: var(--paper); stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.dp-name { font-family: var(--hand); font-weight: 700; font-size: 15px; fill: var(--ink); }
+.dp-city { font-size: 12px; fill: var(--ink-soft); }
+.dp-fall { transform-origin: 0 0; animation: pinFall 620ms var(--ease-out) both; }
+.dp-shadow { transform-origin: 0 0; animation: pinShadow 620ms var(--ease-out) both; }
+.dp-lbl { animation: pinLabel 220ms var(--ease-out) 420ms both; }
+@keyframes pinFall {
+  0%   { transform: translateY(-90px); opacity: 0; animation-timing-function: cubic-bezier(.5, 0, 1, .6); }
+  12%  { opacity: 1; }
+  55%  { transform: none; }
+  68%  { transform: scale(1.14, .8); }
+  82%  { transform: translateY(-7px); }
+  100% { transform: none; }
+}
+@keyframes pinShadow { 0% { transform: scale(.2); opacity: 0; } 55% { transform: none; opacity: 1; } }
+@keyframes pinLabel { from { opacity: 0; transform: translateY(4px); } }
+
+/* No box and no rule: the panel is just a column written on the board. */
+.statecard {
+  align-self: stretch; height: 0; min-height: 100%; overflow-y: auto; overscroll-behavior: contain;
+  padding: 6px 4px 12px 8px;
+}
+
+/* The four markers, for writing in colour; same order as the map's. */
+.mk0 { color: var(--far); }
+.mk1 { color: var(--accent); }
+.mk2 { color: var(--safety); }
+.mk3 { color: var(--reach); }
+
 .card-title { font-size: 26px; margin: 0; line-height: 1.1; }
 .card-meta { font-size: 12.5px; color: var(--ink-soft); margin: 3px 0 12px; }
 .card-meta b { color: var(--ink); font-variant-numeric: tabular-nums; }
 .statecard .ins-group { margin-top: 12px; }
 .statecard .ins-row { padding: 4px 0; }
 .card-hint { font-family: var(--hand); font-size: 15px; color: var(--ink-faint); margin: 12px 0 0; }
-
-.mapfoot {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: 12px 20px; margin-top: 18px;
+/* Nothing picked yet: the prompt sits in the middle of the empty column. */
+.card-idle {
+  position: relative; top: 50%; transform: translateY(-50%); margin: 0;
+  text-align: center; font-size: 19px; line-height: 1.45;
 }
-.modes { display: flex; flex-wrap: wrap; gap: 4px 6px; }
-.mode {
-  padding: 2px 10px; font-family: var(--hand); font-size: 18px;
-  background: none; color: var(--ink-faint);
-  border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer;
-  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
-}
-.mode:hover { color: var(--ink); }
-.mode[aria-pressed="true"] { color: var(--accent); border-bottom-color: var(--accent); }
-.mode:disabled { opacity: .4; cursor: not-allowed; }
-.mode:disabled:hover { color: var(--ink-faint); }
+.card-back { display: block; margin: 0 0 8px; font-size: 13px; }
+.card-more { display: block; margin: 12px 0 2px; font-size: 13px; }
 
-.maplegend { display: flex; align-items: center; gap: 10px; }
-.hatchkey { width: 216px; height: 25px; display: block; }
-.hatchkey rect { stroke: var(--ink); stroke-width: 1; }
-.legend-cap { font-family: var(--hand); font-size: 15px; color: var(--ink-faint); }
-.legend-text { font-size: 12.5px; color: var(--ink-faint); margin: 10px 0 0; max-width: 720px; }
+.cs-list { margin-top: 6px; }
+.cs-row {
+  display: block; padding: 8px; margin: 0 -8px;
+  border-bottom: 1px dashed var(--line); cursor: pointer;
+  transition: background var(--fast) var(--ease);
+}
+.cs-row:last-child { border-bottom: none; }
+.cs-row:hover, .cs-row.hot { background: var(--accent-tint); }
+.cs-row.on { background: var(--accent-tint); box-shadow: inset 3px 0 0 var(--far); }
+.cs-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.cs-open { display: none; margin-top: 6px; font-size: 13px; }
+.cs-row.on .cs-open { display: inline-block; }
+.cs-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.cs-name { font-size: 13.5px; font-weight: 600; line-height: 1.3; }
+.cs-odds { font-family: var(--hand); font-size: 14px; white-space: nowrap; }
+.cs-odds.band-safety { color: var(--safety); }
+.cs-odds.band-target { color: var(--target); }
+.cs-odds.band-reach { color: var(--reach); }
+.cs-odds.band-far { color: var(--far); }
+.cs-sub { display: block; font-size: 12px; color: var(--ink-soft); margin-top: 2px; font-variant-numeric: tabular-nums; }
 
 /* --- strengths / weaknesses (map card + state page) ---------------------- */
 .ins-h {
@@ -461,78 +561,6 @@ svg.usmap g.callout text {
 }
 .rf-val span { font-size: 12px; font-weight: 500; color: var(--ink-faint); letter-spacing: 0; }
 
-.card-cta {
-  display: block; width: 100%; margin-top: 12px;
-  padding: 6px; font-family: var(--hand); font-size: 18px;
-  background: var(--accent); color: var(--on-accent); border: none;
-  border-radius: var(--r-sm); cursor: pointer;
-}
-
-/* --- results: list beside a pinned map ------------------------------------ */
-.res {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 44%);
-  gap: 28px; align-items: start;
-}
-/* The map stays put while the list scrolls, or the pin you're hovering for
-   would be off screen. The detail panel takes whatever height is left. */
-.res-side {
-  position: sticky; top: calc(var(--topbar-h) + 14px);
-  display: flex; flex-direction: column; gap: 12px;
-  max-height: calc(100vh - var(--topbar-h) - 28px);
-}
-.res-map { position: relative; flex: none; }
-svg.usmap path.plain {
-  fill: var(--paper); stroke: rgba(var(--ink-rgb), .55); stroke-width: 1.1;
-  stroke-linejoin: round; pointer-events: none;
-}
-svg.usmap .dot { stroke: var(--paper); stroke-width: 1.5; opacity: .75; }
-svg.usmap .dot.band-safety { fill: var(--safety); }
-svg.usmap .dot.band-target { fill: var(--target); }
-svg.usmap .dot.band-reach { fill: var(--reach); }
-svg.usmap .dot.band-far { fill: var(--far); }
-
-/* A marker-drawn drop pin: a teardrop with its point on the city. */
-.mappin {
-  position: absolute; z-index: 2; pointer-events: none;
-  opacity: 0; transition: opacity var(--fast) var(--ease);
-}
-.mappin.on { opacity: 1; }
-.mappin i {
-  position: absolute; left: -11px; top: -30px; width: 22px; height: 22px;
-  background: var(--far); border: 2.5px solid var(--ink);
-  border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
-}
-.mappin i::after {
-  content: ""; position: absolute; inset: 5px;
-  background: var(--paper); border-radius: 50%;
-}
-.mappin span {
-  position: absolute; left: 16px; top: -40px; width: max-content; max-width: 240px;
-  padding: 3px 9px; font-size: 13px; line-height: 1.3; color: var(--ink-soft);
-  background: var(--paper); border: 2px solid var(--ink); border-radius: var(--r-sm);
-}
-.mappin span b { display: block; font-size: 14.5px; color: var(--ink); }
-.mappin.flip span { left: auto; right: 16px; }
-
-.res-detail {
-  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
-  border-top: 2px dashed var(--line-strong); padding-top: 12px;
-}
-.res-detail.on {
-  border: 2px solid var(--ink); border-radius: var(--r);
-  background: var(--paper); padding: 16px 18px;
-}
-.res-hint { font-size: 15px; color: var(--ink-faint); margin: 0; }
-.rd-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-.rd-head h3 { margin: 0; font-size: 22px; line-height: 1.15; }
-.rd-head .loc { font-size: 14px; color: var(--ink-soft); margin-top: 4px; display: flex; align-items: center; gap: 8px; }
-.rd-actions { display: flex; align-items: center; gap: 14px; margin: 12px 0 0; }
-/* The panel is narrow: two columns of stats, and the shared blocks run full width. */
-.res-detail .statblock { grid-template-columns: repeat(2, 1fr); margin: 16px 0; }
-.res-detail .oc-grid { grid-template-columns: repeat(2, 1fr); }
-.res-detail .odds, .res-detail .lifestyle { max-width: none; }
-
-.rrow.on { border-color: var(--ink); border-width: 2px; background: var(--paper); }
 .rrow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* --- results -------------------------------------------------------------- */
@@ -542,19 +570,19 @@ svg.usmap .dot.band-far { fill: var(--far); }
 
 .bandnav {
   position: sticky; top: var(--topbar-h); z-index: 20;
-  display: flex; flex-wrap: wrap; gap: 7px;
+  display: flex; flex-wrap: wrap; gap: 7px 26px;
   padding: 11px 0 12px; margin-bottom: 6px;
   background: rgba(247, 248, 246, .8);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
+/* Just words on the board, underlined in marker on hover. */
 .bandjump {
   display: inline-flex; align-items: baseline; gap: 6px;
-  padding: 3px 13px; font-family: var(--hand); font-size: 17px;
-  background: var(--paper); border: 1.5px solid var(--line-strong);
-  border-radius: var(--pill); cursor: pointer;
-  transition: border-color var(--fast) var(--ease), transform .08s var(--ease);
+  padding: 3px 0; font-family: var(--hand); font-size: 17px;
+  background: none; border: none; cursor: pointer;
+  transition: transform .08s var(--ease);
 }
-.bandjump:hover { border-color: var(--line-strong); }
+.bandjump:hover { text-decoration: underline 2px; text-underline-offset: 4px; }
 .bandjump:active { transform: translateY(1px); }
 .bandjump em { font-style: normal; color: var(--ink-faint); font-weight: 550; font-variant-numeric: tabular-nums; }
 
@@ -571,17 +599,20 @@ svg.usmap .dot.band-far { fill: var(--far); }
 }
 .band-more:hover { border-color: var(--accent); color: var(--accent); }
 
+/* No box: each school is just written on the board, and hovering one picks
+   its name out in blue marker. */
 .rrow {
   display: flex; align-items: center; gap: 16px;
-  background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--r);
-  padding: 13px 16px; margin-bottom: 7px; cursor: pointer; box-shadow: var(--sh-1);
-  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease),
-              transform var(--fast) var(--ease);
+  position: relative; padding: 13px 0; margin-bottom: 7px; cursor: pointer;
   animation: rowIn var(--mid) var(--ease-out) both;
 }
-.rrow:hover {
-  border-color: var(--accent); background: var(--surface-sunk); transform: translateY(-1px);
+/* The same marker line as under the GPA and LSAT blanks, between schools. */
+.rrow + .rrow::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -6px; height: 7px;
+  background: var(--scrawl-long) center / 100% 7px no-repeat;
 }
+.rname { transition: color var(--fast) var(--ease); }
+.rrow:hover .rname { color: var(--accent); }
 @keyframes rowIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 .rrow:nth-child(2) { animation-delay: .02s; }
 .rrow:nth-child(3) { animation-delay: .04s; }
@@ -623,11 +654,7 @@ svg.usmap .dot.band-far { fill: var(--far); }
 .state-sub { margin: 4px 0 0; color: var(--ink-soft); font-size: 13.5px; }
 .state-sub b { color: var(--ink); font-variant-numeric: tabular-nums; }
 
-.factor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
-.fcard {
-  background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--r);
-  padding: 17px; box-shadow: var(--sh-1);
-}
+.factor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 36px; margin: 24px 0 32px; }
 .fcard h3 { margin: 0 0 6px; font-size: 20px; color: var(--accent); }
 .fscore { font-size: 28px; font-weight: 680; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
 .fscore span { font-size: 14px; font-weight: 500; color: var(--ink-faint); letter-spacing: 0; }
@@ -638,40 +665,33 @@ svg.usmap .dot.band-far { fill: var(--far); }
 .drow b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
 .anchor-note { font-size: 13px; color: var(--ink-faint); margin-top: 10px; line-height: 1.5; }
 
-.school-list { display: flex; flex-direction: column; gap: 7px; }
+.school-list { display: flex; flex-direction: column; }
+/* Open rows on the board, split by the same marker line as the results list. */
 .srow {
   display: flex; align-items: center; gap: 14px;
-  background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--r);
-  padding: 13px 16px; cursor: pointer; box-shadow: var(--sh-1);
-  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease),
-              transform var(--fast) var(--ease);
+  position: relative; padding: 13px 0; margin-bottom: 7px; cursor: pointer;
   animation: rowIn var(--mid) var(--ease-out) both;
 }
-.srow:hover { border-color: var(--accent); background: var(--surface-sunk); transform: translateY(-1px); }
-.srow .sname { flex: 1 1 auto; min-width: 0; }
+.srow + .srow::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -6px; height: 7px;
+  background: var(--scrawl-long) center / 100% 7px no-repeat;
+}
+.srow .sname .n { transition: color var(--fast) var(--ease); }
+.srow:hover .sname .n { color: var(--accent); }
+/* `.sname` is also the map's state-name class: undo its marker lettering here. */
+.srow .sname { flex: 1 1 auto; min-width: 0; font-family: var(--hand); animation: none; }
 .srow .sname .n { font-weight: 620; font-size: 14.5px; }
 .srow .sname .c { font-size: 12px; color: var(--ink-faint); }
 .srow .stats { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .srow .stats b { color: var(--ink); font-weight: 640; }
 
 /* --- school view ---------------------------------------------------------- */
-.school-hero {
-  background: var(--surface); border: 1.5px solid var(--line-strong);
-  border-radius: var(--r); box-shadow: var(--sh-2); padding: 24px;
-}
 .h-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .h-top h2 { margin: 0 0 4px; font-size: 32px; }
 .h-top .loc { color: var(--ink-soft); font-size: 13.5px; }
-.h-side { display: flex; align-items: center; gap: 10px; flex: none; }
+.h-side { display: flex; align-items: center; gap: 28px; flex: none; }
 
-/* Cells are translucent, so the rules between them are drawn as shadows; the
-   ones that fall past the outer edge get clipped away by overflow. */
-.statblock {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  border: 1.5px solid var(--line); border-radius: var(--r-sm); overflow: hidden; margin: 22px 0;
-}
-.stat, .oc { box-shadow: 1px 0 0 var(--line), 0 1px 0 var(--line); }
-.stat { padding: 15px 17px; }
+.statblock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 24px; margin: 26px 0; }
 .stat .lbl { font-family: var(--hand); font-size: 15px; color: var(--ink-faint); }
 .stat .val { font-size: 20px; font-weight: 650; margin-top: 4px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .stat .rng { font-size: 13px; color: var(--ink-faint); margin-top: 2px; font-variant-numeric: tabular-nums; }
@@ -680,10 +700,7 @@ svg.usmap .dot.band-far { fill: var(--far); }
 .writeup { font-size: 15px; line-height: 1.65; color: var(--ink); max-width: 660px; margin: 0; }
 .gap-t { margin-top: 22px; }
 
-.odds {
-  margin-top: 20px; padding: 16px 18px; border-radius: 12px;
-  background: var(--surface); border: 1.5px dashed var(--line-strong); max-width: 570px;
-}
+.odds { margin-top: 20px; max-width: 570px; }
 .odds .oh { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .odds .oband { font-size: 20px; font-weight: 720; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
 .odds .od { font-size: 12.5px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6; }
@@ -696,37 +713,23 @@ svg.usmap .dot.band-far { fill: var(--far); }
 /* Admit / waitlist / deny split. The waitlist segment is hatched on purpose:
    the ABA publishes no waitlist figures, so that slice is a modelled band and
    shouldn't be read with the same confidence as the other two. */
-.obar { display: flex; height: 12px; border-radius: var(--pill); overflow: hidden; background: rgba(var(--ink-rgb), .1); margin-top: 16px; }
-.obar > span { display: block; height: 100%; transition: width var(--slow) var(--ease-out); }
-.obar .oa { background: var(--accent-deep); }
-.obar .ow { background: repeating-linear-gradient(135deg, rgba(var(--ink-rgb), .5) 0 4px, rgba(var(--ink-rgb), .18) 4px 8px); }
-.obar .odn { background: rgba(var(--ink-rgb), .08); }
+.obar { position: relative; height: 16px; margin-top: 16px; }
 .okeys { display: flex; gap: 18px; margin-top: 10px; flex-wrap: wrap; }
 .okey { font-size: 12.5px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
-.okey i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.okey i { position: relative; width: 12px; height: 10px; flex: none; }
 .okey b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 650; }
-.okey .ka { background: var(--accent-deep); }
-.okey .kw { background: repeating-linear-gradient(135deg, rgba(var(--ink-rgb), .5) 0 3px, rgba(var(--ink-rgb), .18) 3px 6px); }
-.okey .kd { background: rgba(var(--ink-rgb), .14); }
 .omodel { font-size: 13px; color: var(--ink-faint); margin-top: 7px; line-height: 1.5; }
 .oflag { font-size: 12.5px; color: var(--reach); margin-top: 9px; line-height: 1.5; }
 
 .outcomes { margin-top: 24px; }
-.oc-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  border: 1.5px solid var(--line); border-radius: var(--r-sm); overflow: hidden;
-}
-.oc { padding: 12px 14px; }
+.oc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 24px; }
 .oc .ov { font-size: 17px; font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .oc .ol { font-size: 12px; color: var(--ink-faint); margin-top: 1px; }
 .oc .op { font-size: 12px; color: var(--accent); font-weight: 680; margin-top: 3px; }
 .feeds { font-size: 13px; color: var(--ink-soft); margin-top: 12px; }
 .feeds b { color: var(--ink); font-weight: 620; font-variant-numeric: tabular-nums; }
 
-.lifestyle {
-  margin-top: 22px; padding: 17px 19px; background: var(--surface);
-  border: 1.5px dashed var(--line-strong); border-radius: var(--r); max-width: 570px;
-}
+.lifestyle { margin-top: 22px; max-width: 570px; }
 .life-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .life-score { font-size: 25px; font-weight: 700; letter-spacing: -.03em; color: var(--accent); font-variant-numeric: tabular-nums; }
 .life-score span { font-size: 13px; font-weight: 500; color: var(--ink-faint); letter-spacing: 0; }
@@ -735,23 +738,6 @@ svg.usmap .dot.band-far { fill: var(--far); }
 .life-row > span:first-child { width: 90px; flex: none; }
 .life-row b { width: 30px; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
 
-/* prev / next through whatever list you arrived from */
-.schoolnav {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  margin-top: 16px;
-}
-.navbtn {
-  display: inline-flex; align-items: center; gap: 7px; max-width: 46%;
-  padding: 6px 14px; font-family: var(--hand); font-size: 16px;
-  background: none; color: var(--ink-soft);
-  border: 1.5px solid var(--line-strong); border-radius: var(--r-sm); cursor: pointer;
-  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
-}
-.navbtn:hover { border-color: var(--accent); color: var(--ink); }
-.navbtn span {
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.navbtn:disabled { opacity: 0; pointer-events: none; }
 
 /* --- buttons ------------------------------------------------------------- */
 .iconbtn {
@@ -770,6 +756,22 @@ svg.usmap .dot.band-far { fill: var(--far); }
 }
 .ghostbtn:hover { background: var(--surface-sunk); border-color: var(--accent); }
 .ghostbtn:disabled { opacity: .45; cursor: not-allowed; }
+/* School-page actions: words on the board in blue marker, no box. */
+.markbtn {
+  flex: none; padding: 2px 2px 7px; font-family: var(--hand); font-size: 19px;
+  color: var(--accent); border: none; cursor: pointer;
+  background: var(--scrawl-blue) left bottom / 100% 7px no-repeat;
+}
+.markbtn:hover { color: var(--ink); }
+.markbtn.is-on { color: var(--ink-soft); background-image: none; }
+.markbtn.is-on:hover { color: var(--ink); }
+/* Back to the results in red marker, adding to the list in green. */
+.markbtn.mk-back { color: var(--far); background-image: var(--scrawl-red); }
+.markbtn.mk-add { color: var(--safety); background-image: var(--scrawl-green); }
+.markbtn.mk-add.is-on { background-image: none; }
+.markbtn.mk-back:hover, .markbtn.mk-add:hover { color: var(--ink); }
+.view-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.view-top .crumb { margin-bottom: 0; }
 
 /* --- my saved list: folders --------------------------------------------- */
 /* A filing drawer, after mosbyfiles.com: each saved school is a manila folder
@@ -793,8 +795,8 @@ svg.usmap .dot.band-far { fill: var(--far); }
 }
 .files-head h2 { margin: 0; font-size: 36px; }
 .files-sub { margin: 4px 0 0; color: var(--ink-soft); font-size: 14px; }
-.files-tools { display: flex; gap: 8px; flex-wrap: wrap; }
-.files-tools .ghostbtn { flex: none; padding: 5px 13px; font-size: 16px; }
+.files-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-right: 64px; } /* clear the fixed menu button */
+.files-tools .ghostbtn { flex: none; padding: 5px 13px; font-size: 16px; border: none; }
 .restore-bar {
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
   margin: -8px 0 24px; padding: 12px 16px; font-size: 15px;
@@ -922,76 +924,16 @@ svg.usmap .dot.band-far { fill: var(--far); }
 .fl-size { flex: none; font-size: 13px; color: var(--ink-faint); }
 .fl-empty { margin: 4px 0 0; font-size: 14px; color: var(--ink-faint); }
 
-/* --- search palette ------------------------------------------------------- */
-.search-scrim {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(var(--ink-rgb), .26); backdrop-filter: blur(3px);
-  display: flex; align-items: flex-start; justify-content: center;
-  padding: 12vh 20px 20px;
-  opacity: 0; pointer-events: none; transition: opacity var(--fast) var(--ease);
-}
-.search-scrim.on { opacity: 1; pointer-events: auto; }
-.search-box {
-  width: 100%; max-width: 560px;
-  background: var(--paper); border: 1.5px solid var(--line-strong); border-radius: var(--r-lg);
-  box-shadow: var(--sh-3); overflow: hidden;
-  transform: translateY(-10px) scale(.985);
-  transition: transform var(--mid) var(--ease-out);
-}
-.search-scrim.on .search-box { transform: none; }
-.search-field { display: flex; align-items: center; gap: 11px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
-.search-field svg { width: 16px; height: 16px; flex: none; fill: none; stroke: var(--ink-faint); stroke-width: 1.7; stroke-linecap: round; }
-.search-field input {
-  flex: 1; min-width: 0; border: none; outline: none; background: none;
-  font-size: 16px; padding: 2px 0;
-}
-.search-field input::placeholder { color: var(--ink-faint); }
-.search-field .iconbtn { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; }
-.search-results { max-height: min(52vh, 420px); overflow-y: auto; padding: 6px; }
-.sr-group {
-  font-size: 12px; text-transform: uppercase; letter-spacing: .08em;
-  color: var(--ink-faint); font-weight: 700; padding: 10px 10px 5px;
-}
-.sr-item {
-  display: flex; align-items: center; gap: 11px; width: 100%;
-  padding: 9px 10px; background: none; border: none; border-radius: 8px;
-  cursor: pointer; text-align: left;
-}
-.sr-item[aria-selected="true"] { background: var(--accent-tint); }
-.sr-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
-.sr-name { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sr-name mark { background: var(--accent-tint); color: inherit; border-radius: 3px; padding: 0 1px; }
-.sr-sub { font-size: 13px; color: var(--ink-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sr-kind {
-  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
-  color: var(--ink-faint); flex: none;
-}
-.sr-empty { padding: 26px 12px; text-align: center; color: var(--ink-faint); font-size: 13px; }
-.sr-foot {
-  padding: 9px 14px; border-top: 1px solid var(--line);
-  font-size: 13px; color: var(--ink-faint); display: flex; gap: 14px; flex-wrap: wrap;
-}
-.sr-foot kbd {
-  font: inherit; font-size: 12px; padding: 2px 5px; border-radius: 4px;
-  background: var(--surface-sunk); border: 1px solid var(--line);
-}
-
 /* --- responsive ----------------------------------------------------------- */
-/* Too narrow for a side slot: the card drops under the tabs instead. */
+/* Too narrow for a side panel: it drops under the map and grows to fit. */
 @media (max-width: 960px) {
-  .board { grid-template-columns: minmax(0, 1fr); grid-template-areas: "map" "foot" "legend" "card"; }
-  .statecard { max-width: 520px; }
-  .statecard { display: none; margin-top: 16px; transform: none; }
-  .statecard.on { display: block; }
-}
-/* Rows lose their median tiles first, then the map moves above the list. */
-@media (max-width: 1280px) {
-  .res .subs { display: none; }
-}
-@media (max-width: 900px) {
-  .res { grid-template-columns: 1fr; }
-  .res-side { position: static; max-height: none; order: -1; }
-  .res-detail { max-height: none; overflow: visible; }
+  .board { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+  .statecard {
+    height: auto; min-height: 0; overflow: visible;
+    padding: 16px 0 0; border-left: none; border-top: 2px dashed var(--line-strong);
+  }
+  .board { margin-top: 10px; }
+  .card-idle { top: 0; transform: none; }
 }
 @media (max-width: 860px) {
   .factor-grid { grid-template-columns: 1fr; }
@@ -1000,21 +942,12 @@ svg.usmap .dot.band-far { fill: var(--far); }
   .statblock { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
-  main { padding: 16px 14px 70px; }
-  .topbar { padding: 0 14px; }
-  .brand-sub { display: none; }
-  .brand { min-width: 0; }
-  .brand-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 17px; }
-  .tbtn-search .tbtn-label, .tbtn kbd { display: none; }
-  .tbtn { padding: 0 12px; }
+  main { padding: 62px 14px 70px; }
   .oc-grid { grid-template-columns: repeat(2, 1fr); }
-  .statblock { grid-template-columns: 1fr; }
   .subs { display: none; }               /* rows keep the name, why line, and odds */
   .pchip { min-width: 78px; }
   .pchip .pcv { font-size: 17px; }
-  .rrow { gap: 10px; padding: 12px 13px; }
-  .school-hero { padding: 18px; }
-  .search-scrim { padding: 8vh 12px 12px; }
+  .rrow { gap: 10px; padding: 12px 0; }
   .files-head h2 { font-size: 28px; }
   .folder { transform: rotateX(6deg); margin-top: -58px; }
   .folder:hover, .folder:focus-visible { transform: translateY(-8px); }
@@ -1023,6 +956,12 @@ svg.usmap .dot.band-far { fill: var(--far); }
   .ofolder-body { padding: 16px 14px 18px; }
   .ofolder-top h2 { font-size: 26px; }
   .page { padding: 14px 14px 18px; }
+  .fit-hero { gap: 16px 28px; }
+  .fit-hero .blank { font-size: 42px; }
+  .mad { font-size: 20px; }
+  .care-label { width: 100%; }
+  .care-opts { gap: 2px 2px; }
+  .tick span { padding: 3px 6px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

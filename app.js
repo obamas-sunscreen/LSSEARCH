@@ -2,7 +2,6 @@
 (function () {
   const LS_KEY = "lawSchoolShortlist";
   const PROFILE_KEY = "lawSchoolProfile";
-  const UI_KEY = "lawSchoolUI";
 
   const app = document.getElementById("app");
   const CAN_HOVER = window.matchMedia("(hover: hover)").matches;
@@ -24,7 +23,6 @@
   }
   function persist() {
     try { localStorage.setItem(LS_KEY, JSON.stringify(saved)); } catch (e) {}
-    document.getElementById("listCount").textContent = saved.length;
     const badge = document.getElementById("menuCount");
     badge.textContent = saved.length;
     badge.hidden = !saved.length;
@@ -77,19 +75,6 @@
     persist();
   }
 
-  // Small bag of view preferences — which map layer you were on, whether the fit
-  // panel was open. Never worth an error if storage is unavailable.
-  let ui = { mapMode: "overall" };
-  function loadUI() {
-    try {
-      const raw = localStorage.getItem(UI_KEY);
-      if (raw) ui = Object.assign(ui, JSON.parse(raw));
-    } catch (e) {}
-  }
-  function persistUI() {
-    try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch (e) {}
-  }
-
   // ---------- helpers ----------
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -120,7 +105,7 @@
     return "tier-5"; // T60/T70/T80/T90/T100
   }
   function tierBadge(tier) {
-    return `<span class="tier ${tierClass(tier)}">${esc(tier || "—")}</span>`;
+    return `<span class="tier ${tierClass(tier)}">${esc(tier || "—")}${RING}</span>`;
   }
   function tierRank(t) {
     const order = ["T14", "T20", "T30", "T50", "T60", "T70", "T80", "T90", "T100", "Regional"];
@@ -168,6 +153,51 @@
     "Mountain": ["Colorado", "Idaho", "Montana", "Utah", "Wyoming"],
     "West Coast": ["Alaska", "California", "Hawaii", "Oregon", "Washington"],
   };
+
+  const STATE_CODES = "AL Alabama AK Alaska AZ Arizona AR Arkansas CA California CO Colorado CT Connecticut DE Delaware DC District_of_Columbia FL Florida GA Georgia HI Hawaii ID Idaho IL Illinois IN Indiana IA Iowa KS Kansas KY Kentucky LA Louisiana ME Maine MD Maryland MA Massachusetts MI Michigan MN Minnesota MS Mississippi MO Missouri MT Montana NE Nebraska NV Nevada NH New_Hampshire NJ New_Jersey NM New_Mexico NY New_York NC North_Carolina ND North_Dakota OH Ohio OK Oklahoma OR Oregon PA Pennsylvania RI Rhode_Island SC South_Carolina SD South_Dakota TN Tennessee TX Texas UT Utah VT Vermont VA Virginia WA Washington WV West_Virginia WI Wisconsin WY Wyoming"
+    .split(" ").reduce((m, v, i, a) => (i % 2 ? m : Object.assign(m, { [v]: a[i + 1].replace(/_/g, " ") })), {});
+
+  // The one state someone typed: a two-letter code, a name, "DC", or failing
+  // that the nearest spelling a slip or two away.
+  function resolveState(text) {
+    const t = text.trim();
+    if (!t) return "";
+    if (t.length === 2 && STATE_CODES[t.toUpperCase()]) return STATE_CODES[t.toUpperCase()];
+    const low = t.toLowerCase().replace(/\./g, "");
+    if (low === "washington dc" || low === "dc") return "District of Columbia";
+    const limit = low.length < 5 ? 1 : low.length < 10 ? 2 : 3;
+    let best = "", bestD = limit + 1;
+    Object.keys(stateByName).forEach((s) => {
+      const d = editDistance(low, s.toLowerCase());
+      if (d < bestD) { best = s; bestD = d; }
+    });
+    return best;
+  }
+  // States that fit what's typed so far, for picking from as you go: names that
+  // start with it, then names with a later word that does ("york" → New York),
+  // then the closest spelling if it's a typo. A two-letter code leads.
+  function suggestStates(text, max = 4) {
+    const low = text.trim().toLowerCase();
+    if (!low) return [];
+    const names = Object.keys(stateByName), fixed = resolveState(text);
+    const starts = names.filter((s) => s.toLowerCase().startsWith(low));
+    const inner = names.filter((s) => s.toLowerCase().split(" ").slice(1).some((w) => w.startsWith(low)));
+    const code = low.length === 2 && fixed ? [fixed] : [];
+    return [...new Set([...code, ...starts, ...inner, ...(fixed ? [fixed] : [])])].slice(0, max);
+  }
+  // Typing slips between two strings; swapping two neighbouring letters counts as one.
+  function editDistance(a, b) {
+    let before = [], prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+    for (let i = 1; i <= a.length; i++) {
+      const cur = [i];
+      for (let j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+        if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) cur[j] = Math.min(cur[j], before[j - 2] + 1);
+      }
+      before = prev; prev = cur;
+    }
+    return prev[b.length];
+  }
 
   const blankProfile = () => ({
     gpa: null, lsat: null, goals: {}, states: [], residency: "",
@@ -625,138 +655,9 @@
     });
   }
 
-  // ---------- hatching + map layers ----------------------------------------
-  // States are shaded the way you'd shade them on a whiteboard: diagonal marker
-  // strokes, packed tighter and drawn heavier as the active measure rises. Hand
-  // shading only has so many legible steps, so the ranking is cut into six;
-  // the exact figure is on the hover card.
-  const HATCH = [
-    { gap: 13, w: 1.1 },
-    { gap: 10, w: 1.3 },
-    { gap: 7.5, w: 1.5 },
-    { gap: 5.5, w: 1.7 },
-    { gap: 4.2, w: 1.9 },
-    { gap: 3.2, w: 2.1 },
-  ];
-  const hatchFill = (k) => `url(#hatch-${k})`;
-  function hatchDefs() {
-    return HATCH.map((h, k) =>
-      `<pattern id="hatch-${k}" patternUnits="userSpaceOnUse" width="${h.gap}" height="${h.gap}"` +
-      ` patternTransform="rotate(-45)"><rect width="${h.gap}" height="${h.gap}" fill="rgba(31,87,195,${(0.03 * k).toFixed(2)})"/>` +
-      `<line x1="0" y1="0" x2="0" y2="${h.gap}" stroke="#1f57c3" stroke-width="${h.w}" stroke-opacity=".85"/></pattern>`).join("");
-  }
-
-  // With a profile set, the map answers "where should I be looking?" rather than
-  // "which states score well in general". A state is worth what its best school
-  // is worth to you, ranked against the other states the same way.
-  let stateFit = null;      // state name -> 0..1, or null when there's no profile
-  let bestByState = {};     // state name -> the result behind that number
-  function buildStateFit(results) {
-    bestByState = {};
-    if (!results || !results.length) { stateFit = null; return; }
-    results.forEach((r) => {
-      const cur = bestByState[r.school.state];
-      if (!cur || r.fit > cur.fit) bestByState[r.school.state] = r;
-    });
-    const vals = Object.values(bestByState).map((r) => r.fit).sort((a, b) => a - b);
-    const table = {};
-    Object.keys(bestByState).forEach((k) => { table[k] = pctIn(vals, bestByState[k].fit); });
-    stateFit = table;
-  }
-
-  // How far your two numbers alone reach into each state, measured at its
-  // flagship — the highest-ranked school there.
-  //
-  // The obvious metric, "best odds anywhere in the state", is useless: almost
-  // every state has some school that admits broadly, so a strong applicant sees
-  // 98% nearly everywhere and the map goes flat (8 distinct values across 51
-  // jurisdictions at GPA 3.2 / LSAT 174). Measured at the flagship the same
-  // applicant gets 25, and it stays informative for weaker profiles too.
-  let reachByState = {};
-  function buildStateReach() {
-    reachByState = {};
-    if (!profileReady()) return;
-    Object.keys(schoolsByState).forEach((st) => {
-      const flagship = schoolsByState[st].slice().sort((a, b) => {
-        const ar = a.rank == null ? Infinity : a.rank;
-        const br = b.rank == null ? Infinity : b.rank;
-        return ar - br || (b.medianLSAT || 0) - (a.medianLSAT || 0);
-      })[0];
-      const o = flagship && admitOdds(flagship);
-      if (o) reachByState[st] = { p: o.pAdmit, school: flagship };
-    });
-  }
-
-  const MAP_MODES = [
-    {
-      key: "overall", label: "Overall",
-      value: (n, st) => st.overall,
-      fmt: (v) => v.toFixed(2) + "/5",
-      legend: (n) => `Shading ranks each state's blend of affordability, quality of life and legal market against all ${n} jurisdictions.`,
-    },
-    {
-      key: "reach", label: "Your reach", needs: "numbers",
-      value: (n) => (reachByState[n] ? reachByState[n].p : null),
-      fmt: (v) => Math.round(v * 100) + "% at the flagship",
-      legend: () => `Denser shading means a better modelled chance at that state's highest-ranked school, on your two numbers alone. Measured at the flagship rather than at the easiest school in the state, which nearly everyone gets into.`,
-    },
-    {
-      key: "fit", label: "Your fit", needs: "prefs",
-      value: (n) => (stateFit ? stateFit[n] : null),
-      fmt: (v) => ordinal(Math.max(1, Math.round(v * 100))) + " pct",
-      legend: () => `Shading shows how the best-fitting school in each state ranks for your profile. Blank states have nothing that matched.`,
-    },
-    {
-      key: "cost", label: "Affordability",
-      value: (n, st) => st.affordability && st.affordability.score,
-      fmt: (v) => v.toFixed(1) + "/5",
-      legend: () => `Denser shading means cheaper to live in — the C2ER cost-of-living and housing indices, inverted.`,
-    },
-    {
-      key: "market", label: "Legal market",
-      value: (n, st) => st.legalIndustry && st.legalIndustry.score,
-      fmt: (v) => v.toFixed(1) + "/5",
-      legend: () => `Denser shading means more lawyer jobs per 1,000 and higher average legal pay (BLS OES, May 2025).`,
-    },
-    {
-      key: "schools", label: "Schools",
-      value: (n) => (schoolsByState[n] || []).length,
-      fmt: (v) => plural(v, "school"),
-      legend: () => `Denser shading means more ABA-accredited law schools inside the state.`,
-    },
-  ];
-  const activeMode = () => MAP_MODES.find((m) => m.key === ui.mapMode) || MAP_MODES[0];
-  // A layer is locked until the profile carries what it needs to mean anything.
-  const modeLocked = (m) =>
-    (m.needs === "numbers" && !profileReady()) || (m.needs === "prefs" && !stateFit);
-  const lockReason = (m) => m.needs === "prefs"
-    ? "Name a career goal or a target state to unlock"
-    : "Enter a GPA and LSAT to unlock";
-
-  let fillByState = {};
-  let valueByState = {};
-  function buildFillTable() {
-    const mode = activeMode();
-    valueByState = {};
-    Object.keys(stateByName).forEach((n) => {
-      const v = mode.value(n, stateByName[n]);
-      if (v != null && isFinite(v)) valueByState[n] = v;
-    });
-    const vals = Object.values(valueByState).sort((a, b) => a - b);
-    fillByState = {};
-    Object.keys(stateByName).forEach((n) => {
-      const v = valueByState[n];
-      // Blank board means "no data on this layer"; even the weakest state with a
-      // value gets the sparsest strokes. Transparent, not none, so it still
-      // takes the pointer.
-      fillByState[n] = v == null ? "transparent"
-        : hatchFill(Math.min(HATCH.length - 1, Math.floor(pctIn(vals, v) * HATCH.length)));
-    });
-  }
-
   // ---------- projection + map build ----------
-  // Fitted once to the geometry's bounds, then shared by both maps and by the
-  // school pins, so a pin always lands where its city is drawn.
+  // Fitted once to the geometry's bounds, then shared by the map and its city
+  // pins, so a pin always lands where its city is drawn.
   let projection = null;
   function mapProjection() {
     if (projection) return projection;
@@ -803,32 +704,125 @@
       lon = HI_INSET[0] + (lon - HI_REAL[0]) * (HI_INSET[2] - HI_INSET[0]) / (HI_REAL[2] - HI_REAL[0]);
       lat = HI_INSET[1] + (lat - HI_REAL[1]) * (HI_INSET[3] - HI_INSET[1]) / (HI_REAL[3] - HI_REAL[1]);
     }
-    return mapProjection().project(lon, lat);
+    // Through the same wobble as the outlines, so a coastal city moves with its coast.
+    return wobble(...mapProjection().project(lon, lat));
   }
 
-  // `plain` draws bare outlines for the results map, where the pins are the point.
-  function buildMapSVG(plain) {
+  // Drawn by hand, not plotted: every outline wanders a little, the way a
+  // marker line does. The wobble is a smooth function of position, so two
+  // states sharing a border bend it identically, and it's baked into the path
+  // once. (It used to be an SVG filter, which re-rendered the whole map on
+  // every frame of a zoom — about 10fps.)
+  const WOBBLE = 1.3, STEP = 7;   // map units: amplitude, and the longest unbent run
+  const wobble = (x, y) => [
+    x + WOBBLE * (Math.sin(x * .071 + y * .043 + 1.3) + .6 * Math.sin(x * .023 - y * .067 + 4.1)) / 1.6,
+    y + WOBBLE * (Math.sin(x * .052 - y * .061 + 2.2) + .6 * Math.sin(y * .029 - x * .037 + .7)) / 1.6,
+  ];
+  // Long straight borders (Colorado is four points) are cut into short runs
+  // first, or the wobble would only move their corners.
+  function wobbleRing(pts) {
+    const out = [];
+    pts.forEach((p, i) => {
+      const q = pts[(i + 1) % pts.length];
+      const n = Math.max(1, Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / STEP));
+      for (let t = 0; t < n; t++) {
+        if (i === pts.length - 1 && t > 0) break;   // the closing edge is drawn by Z
+        out.push(wobble(p[0] + (q[0] - p[0]) * t / n, p[1] + (q[1] - p[1]) * t / n));
+      }
+    });
+    return out;
+  }
+
+  // Each state's extent and drawn outline in map units, filled in by
+  // buildMapSVG: the zoom frames the box, the state names are fitted to the rings.
+  let stateBox = {}, stateRings = {};
+  // The map is coloured in like a marker drawing: four markers, and no two
+  // states that share a border in the same one. (Three can't do it: Nevada's
+  // five neighbours form a ring, and an odd ring needs a fourth colour.)
+  const MARKERS = 4;
+  let markerOf = null;
+
+  // Neighbours: walk every outline in short steps and note which states pass
+  // through each small cell. Finds all 109 shared borders, Four Corners included.
+  function neighbours() {
+    const CELL = 1.5, cells = {}, near = {};
+    Object.keys(stateRings).forEach((name) => {
+      near[name] = new Set();
+      stateRings[name].forEach((r) => r.forEach((p, i) => {
+        const q = r[(i + 1) % r.length], steps = Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / .75);
+        for (let t = 0; t < steps; t++) {
+          const k = Math.floor((p[0] + (q[0] - p[0]) * t / steps) / CELL) + "," +
+            Math.floor((p[1] + (q[1] - p[1]) * t / steps) / CELL);
+          (cells[k] = cells[k] || new Set()).add(name);
+        }
+      }));
+    });
+    Object.values(cells).forEach((s) => s.forEach((a) => s.forEach((b) => { if (a !== b) near[a].add(b); })));
+    return near;
+  }
+
+  // Backtracking, always taking next the state with the fewest markers left
+  // open to it, and trying the least-used marker first so the colours mix evenly.
+  function colourStates() {
+    if (markerOf) return markerOf;
+    const near = neighbours(), names = Object.keys(near), out = {}, used = new Array(MARKERS).fill(0);
+    const open = (n) => [...used.keys()].filter((c) => ![...near[n]].some((o) => out[o] === c));
+    const solve = () => {
+      const left = names.filter((n) => out[n] == null);
+      if (!left.length) return true;
+      const n = left.reduce((a, b) => (open(b).length < open(a).length ||
+        (open(b).length === open(a).length && near[b].size > near[a].size) ? b : a));
+      for (const c of open(n).sort((a, b) => used[a] - used[b] || a - b)) {
+        out[n] = c; used[c]++;
+        if (solve()) return true;
+        delete out[n]; used[c]--;
+      }
+      return false;
+    };
+    solve();
+    return (markerOf = out);
+  }
+
+  // Alaska and Hawaii are moved-in pieces, not neighbours of anything; a zoomed
+  // view, which runs on past its frame, mustn't show them beside Arizona.
+  const INSETS = new Set(["Alaska", "Hawaii"]);
+
+  function buildMapSVG() {
     const geo = DATA.geo;
     const { project, VBW, VBH } = mapProjection();
     let paths = "", overlays = "";
-    const liveNames = new Set(Object.keys(stateByName));
+    const drawn = [];
     for (const name in geo) {
       let d = "", sx = 0, sy = 0, n = 0;
+      const box = [Infinity, Infinity, -Infinity, -Infinity];
+      stateRings[name] = [];
       for (const ring of geo[name]) {
         if (!ring.length) continue;
-        d += ring.map((p, i) => {
-          const [x, y] = project(p[0], p[1]);
+        const pts = wobbleRing(ring.map((p) => project(p[0], p[1])));
+        stateRings[name].push(pts);
+        d += pts.map(([x, y], i) => {
           sx += x; sy += y; n++;
+          if (x < box[0]) box[0] = x;
+          if (y < box[1]) box[1] = y;
+          if (x > box[2]) box[2] = x;
+          if (y > box[3]) box[3] = y;
           return (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1);
         }).join(" ") + " Z ";
       }
-      if (plain || !liveNames.has(name)) {
-        paths += `<path class="${plain ? "plain" : "dead"}" d="${d.trim()}"></path>`;
+      stateBox[name] = box;
+      drawn.push({ name, d: d.trim(), sx, sy, n });
+    }
+    // Colouring needs every outline, so the paths are written in a second pass.
+    const marker = colourStates();
+    for (const { name, d, sx, sy, n } of drawn) {
+      if (!stateByName[name]) {
+        paths += `<path class="dead" d="${d}"></path>`;
         continue;
       }
 
-      paths += `<path class="live" data-state="${esc(name)}" tabindex="0" role="button"` +
-        ` aria-label="${esc(name)}" fill="${fillByState[name]}" d="${d.trim()}"></path>`;
+      const inset = INSETS.has(name) ? " inset" : "";
+      paths += `<path class="live m${marker[name]}${inset}" data-state="${esc(name)}" tabindex="0" role="button"` +
+        ` aria-label="${esc(name)}" d="${d}"></path>`;
 
       // DC renders a couple of pixels wide — unhittable. Give it a labelled
       // callout dot out over the Atlantic, wired to the same handlers.
@@ -836,25 +830,281 @@
         const cx = sx / n, cy = sy / n, tx = cx + 46, ty = cy + 26;
         overlays +=
           `<line class="callout-line" x1="${cx.toFixed(1)}" y1="${cy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}"></line>` +
-          `<g class="callout" data-state="${esc(name)}" tabindex="0" role="button" aria-label="District of Columbia">` +
-          `<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="11" fill="${fillByState[name]}"></circle>` +
+          `<g class="callout m${marker[name]}" data-state="${esc(name)}" tabindex="0" role="button" aria-label="District of Columbia">` +
+          `<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="11"></circle>` +
           `<text x="${tx.toFixed(1)}" y="${(ty + 3.6).toFixed(1)}">DC</text></g>`;
       }
     }
-    // Drawn by hand, not plotted: a slow, low-frequency wobble bends every
-    // outline and hatch stroke the way a marker line wanders.
-    const marker = `<filter id="marker" x="-2%" y="-2%" width="104%" height="104%">
-      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter>`;
-    const label = plain ? "US map of the schools in your list" : "US map of states scored for law school fit";
-    return `<svg class="usmap" viewBox="0 0 ${VBW} ${VBH}" role="img" aria-label="${label}">` +
-      `<defs>${marker}${plain ? "" : hatchDefs()}</defs><g filter="url(#marker)">${paths}</g>${overlays}</svg>`;
+    return `<svg class="usmap" viewBox="0 0 ${VBW} ${VBH}" role="img" aria-label="US map — pick a state to see its law schools">` +
+      `<g>${paths}</g>${overlays}<g class="names" aria-hidden="true"></g><g class="pins"></g></svg>`;
   }
 
+  // ---------- state names ----------
+  // Each state's postal code, lettered in the same marker as the headings, at
+  // its roomiest interior point. One size everywhere; a state too small for it
+  // takes a smaller one, and one too small even for that (RI, DE…) gets its
+  // code written out in the ocean beside it with a leader line, the way DC is.
+  const CODE_SIZE = 15, READABLE = 8.5, OUT_SIZE = 10;   // map units
+  // Placed by eye where the roomiest point doesn't sit where you'd letter it
+  // (California's is down by the Tehachapis). Map units, right and down.
+  const NAME_NUDGE = { "North Carolina": [0, -4], California: [-10, -28], Michigan: [-7, 0], Illinois: [5, 0] };
+  let nameLayout = null;
+
+  // Even-odd point-in-polygon, and the distance to the nearest edge.
+  function insideRings(rings, x, y) {
+    let inside = false;
+    for (const r of rings) {
+      for (let i = 0, k = r.length - 1; i < r.length; k = i++) {
+        const [x1, y1] = r[i], [x2, y2] = r[k];
+        if ((y1 > y) !== (y2 > y) && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1) inside = !inside;
+      }
+    }
+    return inside;
+  }
+  function edgeDistance(rings, x, y) {
+    let best = Infinity;
+    for (const r of rings) {
+      for (let i = 0, k = r.length - 1; i < r.length; k = i++) {
+        const [x1, y1] = r[k], dx = r[i][0] - x1, dy = r[i][1] - y1;
+        const t = Math.max(0, Math.min(1, ((x - x1) * dx + (y - y1) * dy) / (dx * dx + dy * dy || 1)));
+        best = Math.min(best, Math.hypot(x - x1 - t * dx, y - y1 - t * dy));
+      }
+    }
+    return best;
+  }
+
+  // The interior point farthest from any edge: a coarse grid over the box,
+  // then a finer one around the winner.
+  function roomiest(rings, box) {
+    let best = null, bd = -1;
+    const search = (x0, y0, w, h, n) => {
+      for (let i = 0; i <= n; i++) {
+        for (let k = 0; k <= n; k++) {
+          const x = x0 + w * i / n, y = y0 + h * k / n;
+          if (!insideRings(rings, x, y)) continue;
+          const d = edgeDistance(rings, x, y);
+          if (d > bd) { bd = d; best = [x, y]; }
+        }
+      }
+    };
+    const w = box[2] - box[0], h = box[3] - box[1];
+    search(box[0], box[1], w, h, 24);
+    if (best) search(best[0] - w / 24, best[1] - h / 24, w / 12, h / 12, 12);
+    return best && { x: best[0], y: best[1], r: bd };
+  }
+
+  // The stretch of land a horizontal line at y crosses around x.
+  function spanAt(rings, x, y) {
+    const xs = [];
+    for (const r of rings) {
+      for (let i = 0, k = r.length - 1; i < r.length; k = i++) {
+        const [x1, y1] = r[i], [x2, y2] = r[k];
+        if ((y1 > y) !== (y2 > y)) xs.push(x1 + (y - y1) * (x2 - x1) / (y2 - y1));
+      }
+    }
+    xs.sort((a, b) => a - b);
+    for (let i = 0; i + 1 < xs.length; i += 2) if (xs[i] <= x && x <= xs[i + 1]) return [xs[i], xs[i + 1]];
+    return [x, x];
+  }
+
+  // How wide a run of text is at size 10, in the marker font.
+  function measurer(svg) {
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("class", "sname");
+    t.setAttribute("font-size", "10");
+    svg.appendChild(t);
+    return {
+      width: (s) => { t.textContent = s; return t.getComputedTextLength(); },
+      done: () => t.remove(),
+    };
+  }
+
+  function layoutNames(svg) {
+    const m = measurer(svg), out = [], outside = [];
+    Object.keys(stateByName).forEach((name) => {
+      if (name === "District of Columbia") return;   // has its own callout
+      const rings = stateRings[name], box = stateBox[name];
+      // Alaska's and Hawaii's island chains would pull the box's search off the mainland.
+      const c = rings && roomiest(rings, box);
+      if (!c) return;
+      // Centred either on the stretch of land through that point or on the
+      // point itself, whichever fits bigger; sized to the narrowest of three
+      // lines across the text's height.
+      const [a0, b0] = spanAt(rings, c.x, c.y);
+      const fits = (w10, fs, x) => {
+        const room = Math.min(...[-.34, 0, .34].map((f) => {
+          const [a, b] = spanAt(rings, x, c.y + f * fs);
+          return Math.min(x - a, b - x) * 2;
+        }));
+        return w10 * fs / 10 <= room * .9 && fs <= c.r * 2.4;
+      };
+      const place = (text, lo, hi) => {
+        const w10 = m.width(text);
+        for (let fs = hi; fs >= lo; fs -= 0.5) {
+          for (const x of [(a0 + b0) / 2, c.x]) {
+            if (fits(w10, fs, x)) {
+              const [nx, ny] = NAME_NUDGE[name] || [0, 0];
+              out.push({ name, text, x: x + nx, y: c.y + ny, fs });
+              return true;
+            }
+          }
+        }
+        return false;
+      };
+      const abbr = stateByName[name].abbr;
+      if (!place(abbr, READABLE, CODE_SIZE)) outside.push({ name, text: abbr, ax: c.x, ay: c.y });
+    });
+
+    // Callouts sit just past the coast at their own height, then get pushed
+    // apart so none overlap each other or DC's circle.
+    // The coast is the last land crossed going east from a state at that
+    // height, looking no further than its near neighbours.
+    const live = Object.keys(stateByName).map((n) => stateRings[n]).filter(Boolean);
+    const coastAt = (y, from) => {
+      let mx = from;
+      live.forEach((rings) => rings.forEach((r) => {
+        for (let i = 0, k = r.length - 1; i < r.length; k = i++) {
+          const [x1, y1] = r[i], [x2, y2] = r[k];
+          if ((y1 > y) === (y2 > y)) continue;
+          const x = x1 + (y - y1) * (x2 - x1) / (y2 - y1);
+          if (x > mx && x < from + 90) mx = x;
+        }
+      }));
+      return mx;
+    };
+    const dc = app.querySelector("svg.usmap g.callout circle");
+    const taken = dc ? [[+dc.getAttribute("cy") - 13, +dc.getAttribute("cy") + 13]] : [];
+    outside.sort((a, b) => a.ay - b.ay).forEach((o) => {
+      let y = o.ay;
+      for (const [a, b] of taken.sort((p, q) => p[0] - q[0])) {
+        if (y + OUT_SIZE * .7 > a && y - OUT_SIZE * .7 < b) y = b + OUT_SIZE * .75;
+      }
+      taken.push([y - OUT_SIZE * .7, y + OUT_SIZE * .7]);
+      const x = Math.max(coastAt(y, o.ax), coastAt(o.ay, o.ax)) + 20;
+      const w = m.width(o.text) * OUT_SIZE / 10;
+      out.push({ name: o.name, text: o.text, x: x + w / 2, y, fs: OUT_SIZE, w, ax: o.ax, ay: o.ay });
+    });
+    m.done();
+    return out;
+  }
+
+  // Layout waits for the marker font: measured in the fallback, every fit is wrong.
+  function drawNames(svg) {
+    const layer = svg.querySelector("g.names");
+    const paint = () => {
+      if (!svg.isConnected) return;
+      nameLayout = nameLayout || layoutNames(svg);
+      layer.innerHTML = nameLayout.map((l) =>
+        (l.ax == null ? "" : `<line class="sname-lead" x1="${l.ax.toFixed(1)}" y1="${l.ay.toFixed(1)}"
+            x2="${(l.x - l.w / 2 - 2).toFixed(1)}" y2="${l.y.toFixed(1)}"></line>`) +
+        `<text class="sname m${markerOf[l.name]}${l.ax == null ? "" : " out"}" x="${l.x.toFixed(1)}" y="${(l.y + l.fs * .36).toFixed(1)}"
+          font-size="${l.fs}">${esc(l.text)}</text>`).join("");
+    };
+    if (nameLayout) paint();
+    else document.fonts.load(`10px "Permanent Marker"`).then(paint, paint);
+  }
+
+  // ---------- drawn by hand: bars ----------
+  // Every bar is drawn as SVG at its real pixel size, so the marker
+  // keeps one weight and the hatching one slant however wide the thing gets.
+  // The wobble is seeded from what's drawn, so a redraw lands the same strokes.
+  //   .track[data-fill]   a rail scribbled in from the left
+  //   .track[data-pin]    a rail, their 25th-75th hatched in the middle, a tick for you
+  //   [data-split]        admit / waitlist / deny, scribbled / hatched / left blank
+  const DRAWN = ".track, [data-split]";
+  const fx = (n) => n.toFixed(1);
+
+  function seeded(str) {
+    let s = [...str].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) || 1;
+    return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
+  }
+
+  // One quick stroke from a to b: bowed a little, and overshooting the ends the
+  // way a line by hand never quite lands on the corner.
+  function handLine(r, x1, y1, x2, y2, wob) {
+    const j = (k) => (r() - .5) * k;
+    const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+    const ux = (x2 - x1) / len, uy = (y2 - y1) / len;
+    const over = Math.min(4, len * .05);
+    const ax = x1 - ux * over * r() + j(wob), ay = y1 - uy * over * r() + j(wob);
+    const bx = x2 + ux * over * r() + j(wob), by = y2 + uy * over * r() + j(wob);
+    const bend = j(wob * 1.8 + len * .012);
+    const mx = (ax + bx) / 2 - uy * bend, my = (ay + by) / 2 + ux * bend;
+    return `M${fx(ax)} ${fx(ay)}Q${fx(mx)} ${fx(my)} ${fx(bx)} ${fx(by)}`;
+  }
+
+  // A box gone round twice, never twice the same way.
+  function handBox(r, x, y, w, h, wob) {
+    let d = "";
+    for (let pass = 0; pass < 2; pass++) {
+      d += handLine(r, x, y, x + w, y, wob) + handLine(r, x + w, y, x + w, y + h, wob) +
+        handLine(r, x + w, y + h, x, y + h, wob) + handLine(r, x, y + h, x, y, wob);
+    }
+    return d;
+  }
+
+  // Colouring in with a marker: one zigzag stroke, back and forth on a slant,
+  // spilling a hair past the top and bottom.
+  function scribble(r, x0, x1, y0, y1, gap, dir = 1) {
+    if (x1 - x0 < 1.5) return "";
+    const slant = (y1 - y0) * .6 * dir, clamp = (x) => Math.max(x0, Math.min(x1, x));
+    let d = "", x = x0 - Math.max(0, slant), bottom = true;
+    while (x <= x1 + Math.abs(slant)) {
+      const y = bottom ? y1 + (r() - .3) * 1.4 : y0 - (r() - .3) * 1.4;
+      const px = clamp(bottom ? x : x + slant);
+      d += `${d ? "L" : "M"}${fx(px)} ${fx(y)}`;
+      if (!bottom) x += gap * (.8 + r() * .4);
+      bottom = !bottom;
+    }
+    return d;
+  }
+
+  function sketch(el) {
+    const w = el.clientWidth, h = el.clientHeight;
+    if (!w || !h) return;
+    const r = seeded(el.className + JSON.stringify(el.dataset) + w);
+    const path = (cls, d) => (d ? `<path class="${cls}" d="${d}"/>` : "");
+    let ink = "";
+    if (el.dataset.split) {
+      const [a, wt] = el.dataset.split.split(",").map((v) => (+v / 100) * w);
+      const tiny = h < 12;
+      ink = path("hd-fill", scribble(r, 0, a, 1, h - 1, tiny ? 2.6 : 4)) +
+        path("hd-hatch", scribble(r, a, a + wt, 1, h - 1, tiny ? 3.2 : 6, -1)) +
+        path("hd-rail", handBox(r, 0, 0, w, h, tiny ? .4 : .9) +
+          [a, a + wt].filter((x) => x > 2 && x < w - 2)
+            .map((x) => handLine(r, x, 0, x, h, .6)).join(""));
+    } else {
+      ink = path("hd-rail", handBox(r, 0, 0, w, h, .8));
+      if (el.dataset.fill != null) {
+        ink = path("hd-fill", scribble(r, 0, +el.dataset.fill * w, 1, h - 1, Math.max(3, h * .38))) + ink;
+      } else if (el.dataset.pin != null) {
+        const x = +el.dataset.pin * w;
+        ink = path("hd-hatch hd-band", scribble(r, w * .25, w * .75, 1, h - 1, Math.max(3.5, h * .5))) + ink +
+          path("hd-pin", handLine(r, x, -5, x + 1, h + 5, .5) + handLine(r, x - 1, -4, x, h + 4, .5));
+      }
+    }
+    const old = el.querySelector(":scope > svg.hd");
+    if (old) old.remove();
+    el.insertAdjacentHTML("afterbegin",
+      `<svg class="hd" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${ink}</svg>`);
+  }
+
+  // Draw whatever arrives in #app, and redraw it whenever its size changes:
+  // fonts landing, a window resize, a panel opening.
+  const sketchSize = new ResizeObserver((entries) => entries.forEach((e) => sketch(e.target)));
+  const drawnIn = (n) => (n.nodeType !== 1 ? [] : [...(n.matches(DRAWN) ? [n] : []), ...n.querySelectorAll(DRAWN)]);
+  new MutationObserver((muts) => muts.forEach((m) => {
+    m.addedNodes.forEach((n) => drawnIn(n).forEach((el) => sketchSize.observe(el)));
+    m.removedNodes.forEach((n) => drawnIn(n).forEach((el) => sketchSize.unobserve(el)));
+  })).observe(app, { childList: true, subtree: true });
+
   // ---------- views + history ----------
-  // The map wants the full 1240px; a list of rows read at that width leaves a
-  // dead gap down the middle, so every other view gets a narrower column.
+  // Results, state and school pages ask for `wide` and spread across the screen;
+  // the rest keep a reading column. The map asks for more again (`full`), and
+  // renderHome sets that itself.
   function setView(html, wide) {
+    app.classList.remove("full");
+    app.classList.toggle("roomy", !!wide);
     app.innerHTML = `<div class="view${wide ? "" : " reading"}">${html}</div>`;
     window.scrollTo({ top: 0, behavior: "auto" });
   }
@@ -870,7 +1120,9 @@
   let resultsScroll = 0;
 
   const RENDERERS = {
-    map: () => renderHome(),
+    // Moving between states (or back out) on a map that's already up zooms it
+    // in place; arriving from another view draws it fresh.
+    map: (v) => (app.querySelector(".board") ? focusState(v.name, true) : renderHome(v.name)),
     fit: () => renderFit(),
     results: () => renderResults(),
     state: (v) => renderState(v.name),
@@ -879,12 +1131,14 @@
   };
 
   function go(view, replace) {
-    const y = window.scrollY;
-    if (currentView && currentView.kind === "results") resultsScroll = y;
+    const y = window.scrollY, from = currentView;
+    if (from && from.kind === "results") resultsScroll = y;
     currentView = view;
     history[replace ? "replaceState" : "pushState"](view, "");
-    RENDERERS[view.kind](view);
-    if (replace) window.scrollTo({ top: y, behavior: "auto" });
+    if (replace) {
+      render(view);
+      window.scrollTo({ top: y, behavior: "auto" });
+    } else panTo(from, view);
   }
 
   window.addEventListener("popstate", (e) => {
@@ -892,9 +1146,16 @@
     if (skipPop) { skipPop = false; return; }
     if (currentView && currentView.kind === "results") resultsScroll = window.scrollY;
     const view = e.state && RENDERERS[e.state.kind] ? e.state : { kind: "map" };
+    const from = currentView;
     currentView = view;
-    RENDERERS[view.kind](view);
+    panTo(from, view);
   });
+
+  // The body carries the view's kind so the CSS can adjust the chrome per page.
+  function render(view) {
+    document.body.dataset.view = view.kind;
+    RENDERERS[view.kind](view);
+  }
 
   // Re-render the current view in place so ✓ flags stay accurate. Home is
   // skipped: it carries no per-school flags, and rebuilding it would blow away
@@ -929,120 +1190,108 @@
       el.addEventListener("click", () => go(crumbLinks[+el.getAttribute("data-crumb")].view)));
   }
 
-  // The ordered list you arrived from, so a school page can step to the next one
-  // without making you go back out to find it.
-  let navList = [];
 
   // ---------- fit page ----------
+  // The form is two blanks on the board, a GPA and an LSAT, with everything
+  // else folded away under "add more". Anything you pick there is written in
+  // blue marker.
+  let moreOpen = false;   // survives re-renders, not reloads
   const SL_WORDS = ["Ignore", "A little", "Matters", "Priority"];
+  const RING = `<svg class="ring" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M9 21C5 9 38 3 61 4c25 1 37 10 34 20-3 11-35 14-57 12C15 34 2 27 9 14c4-7 15-10 24-10"/></svg>`;
+
+
+  const ARROW = `<span class="heard-arrow" aria-hidden="true">→</span>`;
+  const pickWord = (label, attr, value, on) => `<button type="button" class="word${on ? " on" : ""}" ${attr}="${esc(value)}"
+    aria-pressed="${on}">${esc(label)}</button>`;
+  const regionOn = (r) => {
+    const known = (REGIONS[r] || []).filter((s) => stateByName[s]);
+    return known.length > 0 && known.every((s) => profile.states.indexOf(s) !== -1);
+  };
+  const stateWordsHTML = () => profile.states
+    .map((s) => `<button type="button" class="word on" data-unstate="${esc(s)}" aria-label="Remove ${esc(s)}">${esc(s)}</button>`)
+    .join("");
 
   function renderFit() {
-    const goalChips = GOALS.map((g) => {
-      const w = profile.goals[g.key] || 0;
-      const cls = w >= 2 ? "chip top" : w === 1 ? "chip on" : "chip";
-      return `<button type="button" class="${cls}" data-goal="${g.key}">${w >= 2 ? "★ " : ""}${esc(g.label)}</button>`;
-    }).join("");
 
-    const regionChips = Object.keys(REGIONS)
-      .map((r) => `<button type="button" class="chip region" data-region="${esc(r)}">+ ${esc(r)}</button>`)
-      .join("");
-
-    const allStates = Object.keys(stateByName).sort();
-    const stateOpts = allStates.map((s) => `<option value="${esc(s)}"></option>`).join("");
-    const residencyOpts = allStates
-      .map((s) => `<option value="${esc(s)}"${profile.residency === s ? " selected" : ""}>${esc(s)}</option>`)
-      .join("");
-
-    const sliders = FACTORS.map((f) => {
+    const careRows = FACTORS.map((f) => {
       const v = profile.factors[f.key] || 0;
-      return `<div class="sl-row">
-          <span>${esc(f.label)}</span>
-          <input type="range" min="0" max="3" step="1" value="${v}" data-factor="${f.key}"
-                 aria-label="${esc(f.label)}">
-          <span class="sl-val" data-slval="${f.key}">${SL_WORDS[v]}</span>
+      const opts = SL_WORDS.map((w, i) => `<label class="tick"><input type="radio" name="pf-${f.key}"
+          value="${i}" data-factor="${f.key}"${i === v ? " checked" : ""}><span>${w}${RING}</span></label>`).join("");
+      return `<div class="care-row" role="radiogroup" aria-label="${esc(f.label)}">
+          <span class="care-label">${esc(f.label)}</span><span class="care-opts">${opts}</span>
         </div>`;
     }).join("");
 
+    const num = (v) => (v == null ? "" : v);
+
     setView(`
       <section class="fitpage" id="fitForm">
-            <h2 class="page-title">Find your fit</h2>
-            <p class="pf-lede">Your numbers and what you want out of the degree, matched against
-              every ABA school's own reported admissions spread and employment outcomes.</p>            <div class="pf-grid">
-              <div>
-                <div class="pf-field">
-                  <label for="pfGpa">Your numbers</label>
-                  <div class="pf-row">
-                    <div><input id="pfGpa" type="number" step="0.01" min="1" max="4.33"
-                      placeholder="GPA" aria-label="GPA" value="${profile.gpa == null ? "" : profile.gpa}"></div>
-                    <div><input id="pfLsat" type="number" step="1" min="120" max="180"
-                      placeholder="LSAT" aria-label="LSAT" value="${profile.lsat == null ? "" : profile.lsat}"></div>
-                  </div>
-                  <p class="pf-hint">Placed against each school's reported 25th/50th/75th percentiles.</p>
-                </div>
-                <div class="pf-field">
-                  <label for="pfMaxTuition">Cost</label>
-                  <div class="pf-row">
-                    <div><input id="pfMaxTuition" type="number" step="1000" min="0"
-                      placeholder="Max tuition/yr" aria-label="Maximum tuition per year"
-                      value="${profile.maxTuition == null ? "" : profile.maxTuition}"></div>
-                    <div>
-                      <select id="pfResidency" aria-label="State residency">
-                        <option value="">Residency — none</option>
-                        ${residencyOpts}
-                      </select>
-                    </div>
-                  </div>
-                  <p class="pf-hint">Residency picks the in-state price where it applies.</p>
-                </div>
-                <div class="pf-field">
-                  <span class="pf-legend">What else matters</span>
-                  <div class="sliders">${sliders}</div>
-                </div>
-              </div>
+        <div class="fit-hero">
+          <input class="blank" id="pfGpa" type="number" step="0.01" min="1" max="4.33"
+            placeholder="GPA" aria-label="GPA" value="${num(profile.gpa)}">
+          <input class="blank" id="pfLsat" type="number" step="1" min="120" max="180"
+            placeholder="LSAT" aria-label="LSAT" value="${num(profile.lsat)}">
+        </div>
 
-              <div class="pf-field">
-                <label>Career goals</label>
-                <div class="chips" id="pfGoals">${goalChips}</div>
-                <p class="pf-hint">Click once for <b>matters</b>, twice for <b>★ priority</b>. Scored on
-                  each school's actual ABA employment outcomes, not its rank.</p>
-              </div>
+        <details class="more" id="pfMore"${moreOpen ? " open" : ""}>
+          <summary><span class="more-plus" aria-hidden="true">+</span> add more
+            <span class="more-set" id="pfMoreSet"></span></summary>
+          <div class="more-body">
+            <div class="more-block">
+              <p class="mad">I'd pay up to <span class="nowrap">$<input class="blank" id="pfMaxTuition" type="number" step="1000" min="0"
+                  placeholder="no limit" aria-label="Maximum tuition per year" style="--w:6.4ch"
+                  value="${num(profile.maxTuition)}"></span> a year in tuition, and I'm a resident of
+                <input class="blank blank-grow" id="pfResidency" type="text" placeholder="your state" style="--w:8ch"
+                  aria-label="State residency" aria-describedby="pfResHint" autocomplete="address-level1"
+                  value="${esc(profile.residency)}">.</p>
+              <p class="heard" id="pfResHint"></p>
+            </div>
 
-              <div class="pf-field">
-                <label for="pfStateAdd">Where you want to practise</label>
-                <div class="chips" style="margin-bottom:8px">${regionChips}</div>
-                <div class="pf-add"><input id="pfStateAdd" list="pfStateList" placeholder="Add a state…"></div>
-                <datalist id="pfStateList">${stateOpts}</datalist>
-                <div class="chips" id="pfStates" style="margin-top:8px">${stateChipsHTML()}</div>
-                <p class="pf-hint">Schools that <i>feed</i> a market count too, not just ones sitting in it.</p>
-              </div>
+            <div class="more-block">
+              <p class="mad">After graduating, I'd like to end up in…</p>
+              <div class="words" id="pfGoals">${GOALS.map((g) => pickWord(g.label, "data-goal", g.key, !!profile.goals[g.key])).join("")}</div>
             </div>
-            <div class="pf-actions">
-              <button class="btn" id="pfGo" type="button">Show my schools</button>
-              <button class="linkbtn" id="pfReset" type="button">Clear</button>
-              <span class="pf-status" id="pfStatus"></span>
+
+            <div class="more-block">
+              <p class="mad">…somewhere around…</p>
+              <div class="words" id="pfRegions">${Object.keys(REGIONS).map((r) => pickWord(r, "data-region", r, regionOn(r))).join("")}</div>
+              <p class="mad mad-small">or a state: <input class="blank blank-grow" id="pfStateAdd" type="text" placeholder="type one"
+                  style="--w:7ch" aria-label="Add a state" aria-describedby="pfStateHint"></p>
+              <p class="heard" id="pfStateHint"></p>
+              <div class="words" id="pfStates">${stateWordsHTML()}</div>
             </div>
+
+            <div class="more-block">
+              <p class="mad">And how much do I care about…</p>
+              <div class="care">${careRows}</div>
+            </div>
+          </div>
+        </details>
+
+        <div class="pf-actions">
+          <button class="btn-go" id="pfGo" type="button">Show my schools
+            <svg viewBox="0 0 34 16" aria-hidden="true"><path d="M2 9c8-3 18 2 28-1M23 2.5l8 5.5-7 6"/></svg></button>
+          <button class="linkbtn" id="pfReset" type="button">erase it all</button>
+        </div>
       </section>`);
     wireFit();
   }
 
-  const stateChipsHTML = () => profile.states
-    .map((s) => `<button type="button" class="chip on rm" data-unstate="${esc(s)}">${esc(s)}</button>`)
-    .join("");
+  // How many of the four folded-away questions have an answer.
+  const moreAnswered = () => [
+    profile.maxTuition != null || !!profile.residency,
+    Object.values(profile.goals).some((w) => w > 0),
+    profile.states.length > 0,
+    Object.values(profile.factors).some((w) => w > 0),
+  ].filter(Boolean).length;
 
-  function updateGoStatus() {
-    const status = document.getElementById("pfStatus");
+  function updateFitControls() {
+    const set = document.getElementById("pfMoreSet");
+    if (set) { const n = moreAnswered(); set.textContent = n ? `· ${n} of 4 filled in` : ""; }
+    const reset = document.getElementById("pfReset");
+    if (reset) reset.hidden = profile.gpa == null && profile.lsat == null && !moreAnswered();
     const btn = document.getElementById("pfGo");
-    if (!status || !btn) return;
-    if (!profileReady()) {
-      btn.disabled = true;
-      status.textContent = "Enter a GPA and LSAT to rank schools.";
-    } else if (!hasPreferences()) {
-      btn.disabled = false;
-      status.textContent = "No preferences set — results will rank on placement alone.";
-    } else {
-      btn.disabled = false;
-      status.textContent = "";
-    }
+    if (btn) btn.disabled = !profileReady();
   }
 
   function wireFit() {
@@ -1060,70 +1309,105 @@
           profile[key] = ok ? v : null;
         }
         persistProfile();
-        updateGoStatus();
+        updateFitControls();
       });
     };
     numField("pfGpa", "gpa", parseFloat, 1, 4.33);
     numField("pfLsat", "lsat", (v) => parseInt(v, 10), 120, 180);
     numField("pfMaxTuition", "maxTuition", (v) => parseInt(v, 10), 0, 500000);
+    ["pfGpa", "pfLsat"].forEach((id) => document.getElementById(id).addEventListener("keydown", (e) => {
+      if (e.key === "Enter") openResults();
+    }));
+    document.getElementById("pfMore").addEventListener("toggle", (e) => { moreOpen = e.target.open; });
 
-    document.getElementById("pfResidency").addEventListener("change", (e) => {
-      profile.residency = e.target.value; persistProfile();
+    // Residency is typed. While typing, show which state it's being read as;
+    // on leaving the field, swap in the proper spelling.
+    const resIn = document.getElementById("pfResidency");
+    const resHint = document.getElementById("pfResHint");
+    resIn.addEventListener("input", () => {
+      const typed = resIn.value.trim();
+      profile.residency = resolveState(typed);
+      resIn.classList.toggle("bad", !!typed && !profile.residency);
+      resHint.innerHTML = !typed || profile.residency.toLowerCase() === typed.toLowerCase() ? ""
+        : profile.residency ? `${ARROW}<span class="heard-miss">${esc(profile.residency)}</span>`
+        : `<span class="heard-miss">That isn't a state I recognise.</span>`;
+      persistProfile(); updateFitControls();
+    });
+    resIn.addEventListener("change", () => {
+      if (profile.residency) { resIn.value = profile.residency; resHint.innerHTML = ""; }
     });
 
-    // Goals cycle none -> matters -> priority -> none.
+    // Goals and regions: one tap writes them in blue, another rubs them out.
     form.querySelectorAll("[data-goal]").forEach((el) => {
       el.addEventListener("click", () => {
         const k = el.getAttribute("data-goal");
-        const next = ((profile.goals[k] || 0) + 1) % 3;
-        if (next) profile.goals[k] = next; else delete profile.goals[k];
-        el.className = next >= 2 ? "chip top" : next === 1 ? "chip on" : "chip";
-        el.textContent = (next >= 2 ? "★ " : "") + GOALS.find((g) => g.key === k).label;
-        persistProfile(); updateGoStatus();
+        if (profile.goals[k]) delete profile.goals[k]; else profile.goals[k] = 1;
+        el.classList.toggle("on", !!profile.goals[k]);
+        el.setAttribute("aria-pressed", !!profile.goals[k]);
+        persistProfile(); updateFitControls();
       });
     });
 
     const redrawStates = () => {
-      document.getElementById("pfStates").innerHTML = stateChipsHTML();
-      wireStateChips();
-      persistProfile(); updateGoStatus();
-    };
-    function wireStateChips() {
-      form.querySelectorAll("[data-unstate]").forEach((el) => {
-        el.addEventListener("click", () => {
-          profile.states = profile.states.filter((s) => s !== el.getAttribute("data-unstate"));
-          redrawStates();
-        });
+      document.getElementById("pfStates").innerHTML = stateWordsHTML();
+      form.querySelectorAll("[data-region]").forEach((el) => {
+        const on = regionOn(el.getAttribute("data-region"));
+        el.classList.toggle("on", on); el.setAttribute("aria-pressed", on);
       });
-    }
-    wireStateChips();
-
+      persistProfile(); updateFitControls();
+    };
+    document.getElementById("pfStates").addEventListener("click", (e) => {
+      const el = e.target.closest("[data-unstate]");
+      if (!el) return;
+      profile.states = profile.states.filter((s) => s !== el.getAttribute("data-unstate"));
+      redrawStates();
+    });
     form.querySelectorAll("[data-region]").forEach((el) => {
       el.addEventListener("click", () => {
-        const known = (REGIONS[el.getAttribute("data-region")] || []).filter((s) => stateByName[s]);
-        const allOn = known.every((s) => profile.states.indexOf(s) !== -1);
-        if (allOn) profile.states = profile.states.filter((s) => known.indexOf(s) === -1);
+        const r = el.getAttribute("data-region");
+        const known = REGIONS[r].filter((s) => stateByName[s]);
+        if (regionOn(r)) profile.states = profile.states.filter((s) => known.indexOf(s) === -1);
         else known.forEach((s) => { if (profile.states.indexOf(s) === -1) profile.states.push(s); });
         redrawStates();
       });
     });
 
-    const addInput = document.getElementById("pfStateAdd");
-    const commitState = () => {
-      const v = addInput.value.trim();
-      const hit = Object.keys(stateByName).find((s) => s.toLowerCase() === v.toLowerCase());
-      if (hit && profile.states.indexOf(hit) === -1) { profile.states.push(hit); redrawStates(); }
-      if (hit) addInput.value = "";
+    // Adding a state by name: the states that fit what's typed so far are offered
+    // under the blank, one tap (or Enter, for the first) adds it. Leaving the
+    // field adds it too, if what's there spells out a state.
+    const addIn = document.getElementById("pfStateAdd");
+    const addHint = document.getElementById("pfStateHint");
+    let offered = [];
+    const addState = (name) => {
+      if (!name) return;
+      if (profile.states.indexOf(name) === -1) profile.states.push(name);
+      addIn.value = ""; addHint.innerHTML = ""; offered = [];
+      addIn.classList.remove("bad");
+      redrawStates();
     };
-    addInput.addEventListener("change", commitState);
-    addInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); commitState(); } });
+    addIn.addEventListener("input", () => {
+      const typed = addIn.value.trim();
+      offered = suggestStates(typed).filter((s) => profile.states.indexOf(s) === -1);
+      addIn.classList.toggle("bad", !!typed && !suggestStates(typed).length);   // red only if it fits no state at all
+      addHint.innerHTML = offered.length ? ARROW + offered.map((s) =>
+        `<button type="button" class="word" data-addstate="${esc(s)}">${esc(s)}</button>`).join("") : "";
+    });
+    // mousedown would take focus off the blank first, and its change handler would
+    // add whatever half-word is typed before the click lands.
+    addHint.addEventListener("mousedown", (e) => { if (e.target.closest("[data-addstate]")) e.preventDefault(); });
+    addHint.addEventListener("click", (e) => {
+      const el = e.target.closest("[data-addstate]");
+      if (el) { addState(el.getAttribute("data-addstate")); addIn.focus(); }
+    });
+    addIn.addEventListener("change", () => addState(resolveState(addIn.value)));
+    addIn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); addState(offered[0] || resolveState(addIn.value)); }
+    });
 
     form.querySelectorAll("[data-factor]").forEach((el) => {
-      el.addEventListener("input", () => {
-        const k = el.getAttribute("data-factor");
-        profile.factors[k] = parseInt(el.value, 10) || 0;
-        form.querySelector(`[data-slval="${k}"]`).textContent = SL_WORDS[profile.factors[k]];
-        persistProfile(); updateGoStatus();
+      el.addEventListener("change", () => {
+        profile.factors[el.getAttribute("data-factor")] = parseInt(el.value, 10) || 0;
+        persistProfile(); updateFitControls();
       });
     });
 
@@ -1131,12 +1415,10 @@
     document.getElementById("pfReset").addEventListener("click", () => {
       profile = blankProfile();
       persistProfile();
-      stateFit = null;
-      if (ui.mapMode === "fit") { ui.mapMode = "overall"; persistUI(); }
       go({ kind: "fit" }, true);
     });
 
-    updateGoStatus();
+    updateFitControls();
   }
 
   function openResults() {
@@ -1145,126 +1427,385 @@
     // the last one, or which of its bands you'd expanded.
     resultsScroll = 0;
     expandedBands = {};
-    resultsSel = null;
     go({ kind: "results" });
   }
 
+  // Every page has its own spot on one big whiteboard, so moving between pages
+  // pans the camera, and Back pans the same way in reverse. Going deeper heads
+  // right; the fit trail sits up top, the map trail below it, the list off left.
+  function spot(v) {
+    if (v.kind === "school") return [2, v.fit ? 1 : 3];
+    return { fit: [0, 0], results: [1, 1], map: [0, 2], state: [1, 3], list: [-1, 1] }[v.kind];
+  }
+  // Set by the arrow keys for the next pan: the board still decides up or down,
+  // but the camera always heads the way the key points.
+  let panSide = 0;
+
+  // Render the new page and, if it replaced the old one, pan over to it: the old
+  // page slides off one screen per axis and the new one comes in, already up on
+  // the board, while the old smudges drift past with them. The glare stays put,
+  // the way a reflection would. Moving around the map in place, or arriving with
+  // no page before, just renders.
+  function panTo(from, view) {
+    const old = app.firstElementChild;
+    const r = old && old.getBoundingClientRect();
+    render(view);
+    const fresh = app.firstElementChild;
+    if (!from || !old || old.isConnected || REDUCED.matches) return;
+
+    const a = spot(from), b = spot(view);
+    let dx = Math.sign(b[0] - a[0]), dy = Math.sign(b[1] - a[1]);
+    if (!dx && !dy) dx = 1;       // one school to the next, written just along from it
+    if (panSide) { dx = panSide; dy = dy || 1; panSide = 0; }
+    fresh.style.animation = "none";
+    // Pin the old page where it sat on screen; the new one has already scrolled.
+    Object.assign(old.style, {
+      position: "fixed", top: r.top + "px", left: r.left + "px", width: r.width + "px",
+      margin: "0", pointerEvents: "none", animation: "none",
+    });
+    app.appendChild(old);
+
+    // A full screen per axis keeps the repeating smudges seamless when the pan ends.
+    const x = -dx * window.innerWidth, y = -dy * window.innerHeight;
+    const opts = { duration: 700, easing: "cubic-bezier(0, 0, .25, 1)" };
+    const root = document.documentElement.style;
+    root.overflowX = "clip";
+    old.animate([{ transform: "none" }, { transform: `translate(${x}px, ${y}px)` }], opts);
+    fresh.animate([{ transform: `translate(${-x}px, ${-y}px)` }, { transform: "none" }], opts);
+    document.body.animate([
+      { backgroundPosition: "0 0, 0 0, 0 0" },
+      { backgroundPosition: `0 0, ${x}px ${y}px, ${x}px ${y}px` },
+    ], opts).onfinish = () => {
+      old.remove();
+      root.overflowX = "";
+    };
+  }
+
+  const SKIP_INK = ["pointerdown", "wheel", "keydown", "touchstart"];
+
+  // The pieces a hand would write, in reading order: anything carrying its own
+  // text is written whole, and bars, fields and drawings are one stroke each.
+  function inkPieces(el, out = []) {
+    for (const c of el.children) {
+      const own = [...c.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+      if (own || c.matches(".track, svg, input, select, textarea, img")) out.push(c);
+      else inkPieces(c, out);
+    }
+    return out;
+  }
+
+  // Writes out whatever's on screen, piece by piece, as if in marker. A real hand
+  // would take far longer, so the pace is squeezed to fit three seconds at most,
+  // and any click, scroll or key skips to the end.
+  function writeUp(view) {
+    view.style.visibility = "";
+    const strokes = [];
+    for (let el of inkPieces(view)) {
+      const box = el.getBoundingClientRect();
+      if (!box.width || !box.height || box.bottom < 0 || box.top > window.innerHeight) continue;
+      // Folded-away content (the closed "add more") still has a size; don't write it.
+      if (!el.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
+      el = inkOnly(el);
+      if (!el) continue;
+      strokes.push({ el, ...strokeFrames(el) });
+    }
+    if (!strokes.length) return;
+    const ink = strokes.reduce((t, s) => t + s.len, 0);
+    const lift = Math.min(60, 800 / strokes.length);      // pen off the board between pieces
+    const speed = Math.max(0.8, ink / (3000 - lift * strokes.length));   // px per ms
+
+    const anims = [];
+    let at = 0;
+    strokes.forEach(({ el, frames, len }) => {
+      const duration = len / speed;
+      anims.push(el.animate(frames, { duration, delay: at, fill: "backwards" }));
+      at += duration + lift;
+    });
+
+    const done = () => {
+      anims.forEach((a) => a.finish());
+      SKIP_INK.forEach((t) => window.removeEventListener(t, done));
+    };
+    SKIP_INK.forEach((t) => window.addEventListener(t, done, { passive: true }));
+    anims[anims.length - 1].finished.then(done, () => {});
+  }
+
+  // Text sitting on its own box (a folder tab, a filled button) is written onto
+  // the box rather than dragging it in: the letters get wrapped in a plain span
+  // and that's what gets uncovered. A flex or grid box would lay out differently
+  // with a wrapper, so it just appears whole, and so does anything you can't wrap.
+  function inkOnly(el) {
+    if (el.matches(".track, svg, input, select, textarea, img")) return el;
+    const cs = getComputedStyle(el);
+    const boxed = parseFloat(cs.borderTopWidth) || parseFloat(cs.borderBottomWidth) ||
+      !/^(transparent|rgba\(0, 0, 0, 0\))$/.test(cs.backgroundColor);
+    if (!boxed) return el;
+    if (/flex|grid/.test(cs.display)) return null;
+    const span = document.createElement("span");
+    span.append(...el.childNodes);
+    el.append(span);
+    return span;
+  }
+
+  // Clip keyframes that uncover an element's text a line at a time, left to
+  // right at an even pace, the way a marker crosses the board. Something with
+  // no text (a range bar) is one stroke across its box.
+  function strokeFrames(el) {
+    const box = el.getBoundingClientRect();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    // Text and inline children come back as overlapping fragments; fold them into
+    // lines. A bar's empty marker spans aren't text, so a bar is just its box.
+    const lines = [];
+    const text = el.textContent.trim() && !(el instanceof SVGElement);
+    for (const r of text ? range.getClientRects() : []) {
+      if (!r.width) continue;
+      const l = lines.find((l) => r.top < l.bottom - 2 && r.bottom > l.top + 2);
+      if (l) Object.assign(l, { left: Math.min(l.left, r.left), right: Math.max(l.right, r.right),
+        top: Math.min(l.top, r.top), bottom: Math.max(l.bottom, r.bottom) });
+      else lines.push({ left: r.left, right: r.right, top: r.top, bottom: r.bottom });
+    }
+    if (!lines.length) lines.push({ left: box.left, right: box.right, top: box.top, bottom: box.bottom });
+    lines.sort((a, b) => a.top - b.top);
+
+    // Every line before this one is written, and this one is written up to x.
+    // The pad leaves room for marker strokes that spill past the text box.
+    const P = 8, W = box.width;
+    const clip = (i, x) => {
+      const t = i ? lines[i - 1].bottom - box.top : -P, b = lines[i].bottom - box.top + P;
+      return `polygon(${-P}px ${-P}px, ${W + P}px ${-P}px, ${W + P}px ${t}px, ${x}px ${t}px, ${x}px ${b}px, ${-P}px ${b}px)`;
+    };
+    const len = lines.reduce((t, l) => t + l.right - l.left, 0) || 1;
+    const frames = [];
+    let done = 0;
+    lines.forEach((l, i) => {
+      frames.push({ offset: done / len, clipPath: clip(i, l.left - box.left) });
+      done += l.right - l.left;
+      frames.push({ offset: done / len, clipPath: clip(i, l.right - box.left) });
+    });
+    return { frames, len };
+  }
+
   // ---------- home: the map on the board ----------
-  // Nothing but the map until you point at a state; then a card is written
-  // into the blank slot beside it. On touch a tap pins the card instead.
-  let cardPinned = null;    // state the card holds when nothing is hovered (touch only)
+  // The whole country until you click a state. Then the map closes in on it,
+  // drops a pin on every city with a law school, and the panel beside it lists
+  // them. Before that, pointing at a state writes its card into the panel.
+  let mapFocus = null;      // the state the map is zoomed into, or null
+  let zoomFrame = 0;
 
-  function renderHome() {
-    // Personalised colouring only once there's a profile worth colouring by.
-    buildStateFit(profileReady() && hasPreferences() ? scoreAll() : null);
-    buildStateReach();
-    if (modeLocked(activeMode())) ui.mapMode = "overall";
-    buildFillTable();
-
-    const modes = MAP_MODES.map((m) => {
-      const off = modeLocked(m);
-      return `<button class="mode" type="button" data-mode="${m.key}"
-        aria-pressed="${m.key === ui.mapMode}"${off ? ` disabled title="${lockReason(m)}"` : ""}>${esc(m.label)}</button>`;
-    }).join("");
-
+  function renderHome(name) {
     setView(`
       <div class="board">
         <div class="mapwrap">${buildMapSVG()}</div>
         <aside class="statecard" id="stateCard" aria-live="polite"></aside>
-        <div class="mapfoot">
-          <div class="modes" role="group" aria-label="Map layer">${modes}</div>
-          <div class="maplegend">
-            <span class="legend-cap">Lower</span>
-            <svg class="hatchkey" viewBox="0 0 ${HATCH.length * 26} 18" aria-hidden="true">${HATCH.map((h, k) =>
-              `<rect x="${k * 26 + 2}" y="2" width="22" height="14" rx="2" fill="${hatchFill(k)}"></rect>`).join("")}</svg>
-            <span class="legend-cap">Higher</span>
-          </div>
-        </div>
-        <p class="legend-text" id="legendText"></p>
       </div>`, true);
-
+    app.classList.add("full");
+    drawNames(app.querySelector("svg.usmap"));
     wireMap();
-    paintLegend();
-    cardShow(cardPinned);
+    focusState(name, false);
   }
 
-  function paintLegend() {
-    const text = document.getElementById("legendText");
-    if (!text) return;
-    text.textContent = activeMode().legend(Object.keys(stateByName).length);
-  }
-
-  function setMode(key) {
-    const mode = MAP_MODES.find((m) => m.key === key);
-    if (!mode || modeLocked(mode)) return;
-    ui.mapMode = key; persistUI();
-    buildFillTable();
-    app.querySelectorAll("svg path.live").forEach((el) => {
-      el.setAttribute("fill", fillByState[el.getAttribute("data-state")]);
-    });
-    app.querySelectorAll("svg g.callout circle").forEach((el) => {
-      el.setAttribute("fill", fillByState[el.parentNode.getAttribute("data-state")]);
-    });
-    app.querySelectorAll("[data-mode]").forEach((el) =>
-      el.setAttribute("aria-pressed", el.getAttribute("data-mode") === key));
-    paintLegend();
-    cardShow(cardPinned);
-  }
+  const openState = (name) => { if (name !== mapFocus) go({ kind: "map", name }); };
+  const leaveState = () => { if (mapFocus) go({ kind: "map" }); };
 
   function wireMap() {
     const svg = app.querySelector("svg.usmap");
-    if (!svg) return;
-
-    app.querySelectorAll("[data-mode]").forEach((el) =>
-      el.addEventListener("click", () => setMode(el.getAttribute("data-mode"))));
-
     const targets = app.querySelectorAll("svg path.live, svg g.callout");
     targets.forEach((el) => {
       const name = el.getAttribute("data-state");
-
       const enter = () => {
-        svg.classList.add("probing");
         targets.forEach((t) => t.classList.toggle("hot", t === el));
-        cardShow(name);
+        if (!mapFocus) panelShow(name);
       };
       el.addEventListener("mouseenter", enter);
       el.addEventListener("focus", enter);
-
-      // Desktop: a click drills straight in. Touch: the first tap fills the card,
-      // and the card's own button takes you into the state.
-      el.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (CAN_HOVER) go({ kind: "state", name });
-        else { cardPinned = name; enter(); }
-      });
+      el.addEventListener("click", (e) => { e.stopPropagation(); openState(name); });
       el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go({ kind: "state", name }); }
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openState(name); }
       });
     });
 
     const clear = () => {
-      svg.classList.remove("probing");
       targets.forEach((t) => t.classList.remove("hot"));
-      cardShow(cardPinned);
+      if (!mapFocus) panelShow();
     };
     svg.addEventListener("mouseleave", clear);
-    // Touch: tapping open water lets go of the pinned state.
-    svg.addEventListener("click", () => { cardPinned = null; clear(); });
+    // Open water zooms back out.
+    svg.addEventListener("click", leaveState);
     targets.forEach((el) =>
       el.addEventListener("blur", () => { if (!app.contains(document.activeElement)) clear(); }));
   }
 
-  function cardShow(name) {
+  // Frame a state with a margin, at the map's own aspect so nothing stretches,
+  // and never closer than MIN_VIEW map units across — Rhode Island or DC at
+  // full zoom would be three blocks of coastline and no context.
+  const MIN_VIEW = 110;
+  function viewFor(name) {
+    const { VBW, VBH } = mapProjection();
+    const b = name && stateBox[name];
+    if (!b) return [0, 0, VBW, VBH];
+    let w = Math.max((b[2] - b[0]) * 1.3, MIN_VIEW), h = (b[3] - b[1]) * 1.3;
+    if (w / h < VBW / VBH) w = h * VBW / VBH; else h = w * VBH / VBW;
+    return [(b[0] + b[2] - w) / 2, (b[1] + b[3] - h) / 2, w, h];
+  }
+
+  const setViewBox = (svg, v) => svg.setAttribute("viewBox", v.map((n) => n.toFixed(2)).join(" "));
+
+  function focusState(name, animate) {
+    const svg = app.querySelector("svg.usmap");
+    if (!svg) return;
+    mapFocus = stateByName[name] ? name : null;
+    svg.classList.toggle("zoomed", !!mapFocus);
+    svg.classList.toggle("in-inset", INSETS.has(mapFocus));
+    app.querySelectorAll("svg [data-state]").forEach((el) => {
+      el.classList.remove("hot");
+      el.classList.toggle("sel", el.getAttribute("data-state") === mapFocus);
+    });
+    mapSel = null;
+    drawDots(svg, null);
+    panelShow();
+
+    const to = viewFor(mapFocus);
+    cancelAnimationFrame(zoomFrame);
+    if (!animate || REDUCED.matches) { setViewBox(svg, to); drawDots(svg, mapFocus); return; }
+    const vb = svg.viewBox.baseVal, from = [vb.x, vb.y, vb.width, vb.height];
+    const t0 = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / 560);
+      const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(2 - 2 * t, 3) / 2;
+      setViewBox(svg, from.map((v, i) => v + (to[i] - v) * e));
+      if (t < 1) zoomFrame = requestAnimationFrame(step);
+      else drawDots(svg, mapFocus);
+    };
+    zoomFrame = requestAnimationFrame(step);
+  }
+
+  // Where a state's schools are, before you've picked one: a quiet dot per
+  // city, no labels — DC's six schools are one dot. Dots and the pin hold one
+  // on-screen size at any zoom: they're drawn in screen pixels and scaled
+  // back into map units by k.
+  let mapSel = null;        // the school whose pin is down
+  const pxScale = (svg) => svg.viewBox.baseVal.width / svg.clientWidth;
+
+  // The outlines are simplified, so a city right on the water (Malibu,
+  // Honolulu, Bristol RI) can come out a few hundred metres offshore. Such a
+  // point is pulled to the nearest stretch of its state's coast, a hair inland.
+  const landXY = {};
+  function onLand(sc) {
+    const key = sc.city + "|" + sc.state;
+    if (key in landXY) return landXY[key];
+    let xy = schoolXY(sc);
+    const path = xy && app.querySelector(`svg.usmap path[data-state="${CSS.escape(sc.state)}"]`);
+    if (!path) return xy;
+    const pt = path.ownerSVGElement.createSVGPoint();
+    pt.x = xy[0]; pt.y = xy[1];
+    if (!path.isPointInFill(pt)) {
+      let best = null, bd = Infinity;
+      for (let at = 0, len = path.getTotalLength(); at <= len; at += 0.25) {
+        const q = path.getPointAtLength(at), d = (q.x - xy[0]) ** 2 + (q.y - xy[1]) ** 2;
+        if (d < bd) { bd = d; best = q; }
+      }
+      const d = Math.sqrt(bd) || 1;
+      xy = [best.x + (best.x - xy[0]) / d * 0.6, best.y + (best.y - xy[1]) / d * 0.6];
+    }
+    return (landXY[key] = xy);
+  }
+
+  function cityGroups(name) {
+    const by = {};
+    sortSchools(schoolsByState[name] || []).forEach((sc) => {
+      const xy = onLand(sc);
+      if (!xy) return;
+      (by[sc.city] = by[sc.city] || { city: sc.city, xy, schools: [] }).schools.push(sc);
+    });
+    return Object.values(by);
+  }
+
+  function drawDots(svg, name) {
+    const layer = svg.querySelector("g.pins");
+    layer.innerHTML = "";
+    if (!name) return;
+    const k = pxScale(svg), groups = cityGroups(name);
+    layer.innerHTML = groups.map((g) =>
+      `<circle class="cdot" data-city="${esc(g.city)}" cx="${g.xy[0].toFixed(2)}" cy="${g.xy[1].toFixed(2)}"
+        r="${(5 * k).toFixed(3)}" stroke-width="${(1.5 * k).toFixed(3)}"></circle>`).join("") +
+      `<g class="droppin"></g>`;
+    layer.querySelectorAll(".cdot").forEach((dot, i) => {
+      const g = groups[i];
+      dot.addEventListener("mouseenter", () => markCity(g.city));
+      dot.addEventListener("mouseleave", () => markCity(null));
+      // A dot picks its city's top school; the rest are right under it in the list.
+      dot.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectSchool(g.schools[0].name);
+        const row = app.querySelector(`.cs-row[data-school="${CSS.escape(g.schools[0].name)}"]`);
+        if (row) row.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    });
+  }
+
+  // Picking a school drops its pin; picking it again lifts it.
+  function selectSchool(name) {
+    mapSel = mapSel === name ? null : name;
+    app.querySelectorAll(".cs-row").forEach((r) => {
+      const on = r.getAttribute("data-school") === mapSel;
+      r.classList.toggle("on", on);
+      r.setAttribute("aria-expanded", on);
+    });
+    dropPin(mapSel);
+  }
+
+  // The pin falls onto the school's city, lands with a little squash, and then
+  // its label is written in. Its label goes on whichever side has room.
+  function dropPin(name) {
+    const svg = app.querySelector("svg.usmap");
+    const slot = svg && svg.querySelector("g.droppin");
+    if (!slot) return;
+    const sc = name && schoolByName[name], xy = sc && onLand(sc);
+    if (!xy) { slot.innerHTML = ""; return; }
+    const st = stateByName[sc.state], k = pxScale(svg), vb = svg.viewBox.baseVal;
+    slot.innerHTML = `
+      <g transform="translate(${xy[0].toFixed(2)} ${xy[1].toFixed(2)}) scale(${k.toFixed(4)})">
+        <ellipse class="dp-shadow" rx="9" ry="3"></ellipse>
+        <g class="dp-fall">
+          <path class="dp-head" d="M0 0C-4-7-11-12-11-20a11 11 0 1 1 22 0c0 8-7 13-11 20z"></path>
+          <circle class="dp-eye" cx="0" cy="-20" r="4.4"></circle>
+        </g>
+        <g class="dp-lbl"><rect rx="6"></rect>
+          <text><tspan class="dp-name">${esc(sc.name)}</tspan><tspan class="dp-city">${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)}</tspan></text></g>
+      </g>`;
+    const text = slot.querySelector("text"), rect = slot.querySelector("rect");
+    const [nameT, cityT] = text.querySelectorAll("tspan");
+    const w = Math.max(nameT.getComputedTextLength(), cityT.getComputedTextLength()) + 20, h = 44;
+    const sx = (xy[0] - vb.x) / k, sy = (xy[1] - vb.y) / k;
+    const lx = sx + 16 + w > svg.clientWidth ? -16 - w : 16;
+    const ly = sy - 50 < 0 ? 4 : -50;
+    rect.setAttribute("x", lx); rect.setAttribute("y", ly);
+    rect.setAttribute("width", w); rect.setAttribute("height", h);
+    nameT.setAttribute("x", lx + 10); nameT.setAttribute("y", ly + 19);
+    cityT.setAttribute("x", lx + 10); cityT.setAttribute("y", ly + 36);
+  }
+
+  // A dot and its schools in the panel light up together, whichever you point at.
+  function markCity(city) {
+    app.querySelectorAll(".cdot").forEach((d) => d.classList.toggle("hot", d.getAttribute("data-city") === city));
+    app.querySelectorAll(".cs-row").forEach((r) =>
+      r.classList.toggle("hot", r.getAttribute("data-city") === city));
+  }
+
+  // Written the way you'd letter a whiteboard with a fistful of markers:
+  // each word picks up the next one.
+  const markerWords = (text) => text.split(" ")
+    .map((w, i) => `<span class="mk${i % MARKERS}">${esc(w)}</span>`).join(" ");
+
+  function panelShow(hover) {
     const card = document.getElementById("stateCard");
     if (!card) return;
-    app.querySelectorAll("svg path.live").forEach((el) =>
-      el.classList.toggle("sel", !!name && el.getAttribute("data-state") === name));
-    const on = !!name && !!stateByName[name];
-    card.classList.toggle("on", on);
-    if (!on) return;
-    card.innerHTML = stateCardHTML(name);
-    const open = card.querySelector("[data-open-state]");
-    if (open) open.addEventListener("click", () => go({ kind: "state", name }));
+    if (mapFocus) { card.innerHTML = focusHTML(mapFocus); wirePanel(card); return; }
+    card.innerHTML = hover && stateByName[hover] ? stateCardHTML(hover)
+      : `<p class="card-hint card-idle">${markerWords(CAN_HOVER
+        ? "Click a state to zoom in and see its law schools."
+        : "Tap a state to zoom in and see its law schools.")}</p>`;
   }
 
   // The three factor scores, for every state, always. Strengths and weaknesses
@@ -1276,7 +1817,7 @@
       <div class="rf-cell">
         <div class="rf-lbl">${label}</div>
         <div class="rf-val">${score.toFixed(1)}<span>/5</span></div>
-        <div class="track track-sm"><span class="fill" style="width:${(score / 5) * 100}%"></span></div>
+        <div class="track track-sm" data-fill="${(score / 5).toFixed(3)}"></div>
       </div>`;
     return `<div class="card-facts">
         ${cell("Afford", st.affordability.score)}
@@ -1306,23 +1847,66 @@
     const st = stateByName[name];
     const ins = INSIGHTS[name] || { strengths: [], weaknesses: [] };
     const n = (schoolsByState[name] || []).length;
-    const v = valueByState[name];
 
     const flat = !ins.strengths.length && !ins.weaknesses.length
       ? `<p class="ins-flat">Middle of the pack on every measure.</p>` : "";
 
     return `
-      <div class="card-kicker">${esc(activeMode().label)} · ${v == null ? "no data" : esc(activeMode().fmt(v))}</div>
-      <h2 class="card-title">${esc(name)}</h2>
+      <h2 class="card-title mk${markerOf[name]}">${esc(name)}</h2>
       <div class="card-meta">${n ? plural(n, "law school") : "No law school"} · overall <b>${st.overall.toFixed(2)}</b>/5</div>
       ${cardFacts(st)}
       ${insGroup("up", ins.strengths.slice(0, 3), true)}
       ${insGroup("dn", ins.weaknesses.slice(0, 3), true)}
       ${flat}
-      ${CAN_HOVER
-        ? `<p class="card-hint">Click the state to see its schools</p>`
-        : `<button class="card-cta" type="button" data-open-state="${esc(name)}">
-            ${n ? `See all ${plural(n, "school")}` : `Open ${esc(name)}`} →</button>`}`;
+      <p class="card-hint">Click to see its schools</p>`;
+  }
+
+  // The zoomed-in panel: the state's numbers, then every school in it, each
+  // with your odds once there's a GPA and LSAT to read them from.
+  function focusHTML(name) {
+    const st = stateByName[name];
+    const schools = sortSchools(schoolsByState[name] || []);
+    const rows = schools.map((sc) => {
+      const adm = admissionRead(sc);
+      return `
+        <div class="cs-row" role="button" tabindex="0" aria-expanded="false" data-school="${esc(sc.name)}" data-city="${esc(sc.city)}">
+          <span class="cs-top">
+            <span class="cs-name">${esc(sc.name)}</span>
+            ${adm ? `<span class="cs-odds ${adm.cls}">${adm.label}</span>` : ""}
+          </span>
+          <span class="cs-sub">${esc(sc.city)} · ${esc(sc.tier || "—")}${sc.rank == null ? "" : " · #" + sc.rank}
+            · LSAT ${sc.medianLSAT} · GPA ${sc.medianGPA.toFixed(2)}${isSaved(sc.name) ? ' · <span class="saved-flag">✓ on list</span>' : ""}</span>
+          <button class="linkbtn cs-open" type="button">Open school page →</button>
+        </div>`;
+    }).join("");
+    return `
+      <button class="linkbtn card-back" type="button" data-leave>← All states</button>
+      <h2 class="card-title mk${markerOf[name]}">${esc(name)}</h2>
+      <div class="card-meta">${schools.length ? plural(schools.length, "law school") : "No law school"} · overall <b>${st.overall.toFixed(2)}</b>/5</div>
+      ${cardFacts(st)}
+      <div class="cs-list">${rows || `<p class="ins-flat">${esc(name)} has no ABA-accredited law school.</p>`}</div>
+      <button class="linkbtn card-more" type="button" data-open-state>Full ${esc(name)} breakdown →</button>`;
+  }
+
+  function wirePanel(card) {
+    card.querySelector("[data-leave]").addEventListener("click", leaveState);
+    card.querySelector("[data-open-state]").addEventListener("click", () => go({ kind: "state", name: mapFocus }));
+    card.querySelectorAll(".cs-row").forEach((el) => {
+      const city = el.getAttribute("data-city");
+      const name = el.getAttribute("data-school");
+      el.addEventListener("click", () => selectSchool(name));
+      el.addEventListener("keydown", (e) => {
+        if (e.target === el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); selectSchool(name); }
+      });
+      el.querySelector(".cs-open").addEventListener("click", (e) => {
+        e.stopPropagation();
+        go({ kind: "school", name });
+      });
+      el.addEventListener("mouseenter", () => markCity(city));
+      el.addEventListener("focus", () => markCity(city));
+      el.addEventListener("mouseleave", () => markCity(null));
+      el.addEventListener("blur", () => markCity(null));
+    });
   }
 
   // ---------- results ----------
@@ -1343,8 +1927,7 @@
       return `<div class="sub"><div class="sv" style="color:var(--ink-faint)">—</div><div class="sl">${label}</div></div>`;
     }
     const track = pos == null ? ""
-      : `<div class="track track-sm"><span class="band"></span>
-           <span class="pin" style="left:${Math.max(3, Math.min(97, 50 + pos * 25)).toFixed(1)}%"></span></div>`;
+      : `<div class="track track-sm" data-pin="${(Math.max(3, Math.min(97, 50 + pos * 25)) / 100).toFixed(3)}"></div>`;
     let diff = "";
     if (mine != null) {
       const d = mine - med;
@@ -1380,7 +1963,7 @@
     const lsatMed = a.lsat50 != null ? a.lsat50 : s.medianLSAT;
     const gpaMed = a.gpa50 != null ? a.gpa50 : s.medianGPA;
     return `
-      <div class="rrow${s.name === resultsSel ? " on" : ""}" data-school="${esc(s.name)}" role="button" tabindex="0">
+      <div class="rrow" data-school="${esc(s.name)}" role="button" tabindex="0">
         <div class="rmain">
           <div class="rname">${esc(s.name)}${isSaved(s.name) ? ' <span class="saved-flag">✓ on list</span>' : ""}</div>
           <div class="rloc">${esc(s.city)}, ${esc(s.state)} · ${esc(s.tier || "—")}${s.rank == null ? "" : " · #" + s.rank}</div>
@@ -1395,11 +1978,7 @@
       </div>`;
   }
 
-  // The results page: your list on the left, a map on the right that pins
-  // whichever school the pointer is on. Clicking a row locks the pin and opens
-  // that school's detail in the panel under the map.
-  let resultsSel = null;   // school whose detail panel is open
-
+  // The results page: one list, hardest band first. A row opens the school.
   function renderResults() {
     const results = scoreAll();
     const groups = [[], [], [], []];
@@ -1408,8 +1987,6 @@
     // Hardest first, the way you'd split applications: reach, target, safety,
     // then far reach last so nothing quietly drops off the list.
     const order = [2, 1, 0, 3];
-    // Step order has to match reading order, or "next" jumps around the list.
-    navList = order.reduce((acc, bi) => acc.concat(groups[bi].map((r) => r.school.name)), []);
 
     let jumps = "", body = "";
     order.forEach((bi) => {
@@ -1441,64 +2018,35 @@
       bits.push(profile.states.length > 4 ? `${profile.states.length} states` : profile.states.join(", "));
     }
 
-    // Every listed school is a dot in its band's colour; the hovered or
-    // selected one also gets a pin. Schools sharing a city share a dot.
-    const dots = {};
-    results.forEach((r) => {
-      const xy = schoolXY(r.school);
-      if (!xy) return;
-      const k = xy[0].toFixed(0) + "," + xy[1].toFixed(0);
-      // Keep the most attainable band at a shared spot — the dot you can act on.
-      if (!dots[k] || r.adm.band < dots[k].band) dots[k] = { xy, band: r.adm.band };
-    });
-    const dotSVG = Object.values(dots).map((d) =>
-      `<circle class="dot ${BAND_CLS[d.band]}" cx="${d.xy[0].toFixed(1)}" cy="${d.xy[1].toFixed(1)}" r="5"></circle>`).join("");
-    const mapSVG = buildMapSVG(true).replace("</svg>", `<g class="dots">${dotSVG}</g></svg>`);
-
     setView(`
-      <div class="res">
-        <div class="res-list">
-          <div class="res-head">
-            <h2>${plural(results.length, "school")} ranked for you</h2>
-            <p>${esc(bits.join("  ·  "))} · <button class="linkbtn" id="editProfile" type="button">edit</button></p>
-          </div>
-          <div class="bandnav">${jumps}</div>
-          ${body}
-          <p class="footnote">
-            The LSAT and GPA figures are each school's own reported medians, with the tick
-            marking where your number falls inside their 25th–75th percentile spread. The
-            percentage is a modelled chance of admission on your two numbers alone, built
-            from each school's acceptance rate, its reported spread, and its yield — it has
-            no knowledge of your essays, work history, or softs, and nothing in it is fitted
-            to real admission results, because no school publishes them. The band label is
-            just a name for that percentage. Waitlist is the softest figure on the page: the
-            ABA collects no waitlist data at all, so that share is a modelled band around the
-            decision boundary rather than anything reported. Ranking within a band uses your
-            stated goals and geography — the line under each school names the outcomes doing
-            the work. Employment figures describe the class of 2024.
-          </p>
-        </div>
-        <aside class="res-side">
-          <div class="res-map">
-            ${mapSVG}
-            <div class="mappin" id="mapPin" aria-hidden="true"><i></i><span></span></div>
-          </div>
-          <div class="res-detail" id="resDetail" aria-live="polite"></div>
-        </aside>
-      </div>`, true);
+      <div class="res-head">
+        <h2>Your schools</h2>
+        <p>${esc(bits.join("  ·  "))} · <button class="linkbtn" id="editProfile" type="button">edit</button></p>
+      </div>
+      <div class="bandnav">${jumps}</div>
+      ${body}
+      <p class="footnote">
+        The LSAT and GPA figures are each school's own reported medians, with the tick
+        marking where your number falls inside their 25th–75th percentile spread. The
+        percentage is a modelled chance of admission on your two numbers alone, built
+        from each school's acceptance rate, its reported spread, and its yield — it has
+        no knowledge of your essays, work history, or softs, and nothing in it is fitted
+        to real admission results, because no school publishes them. The band label is
+        just a name for that percentage. Waitlist is the softest figure on the page: the
+        ABA collects no waitlist data at all, so that share is a modelled band around the
+        decision boundary rather than anything reported. Ranking within a band uses your
+        stated goals and geography — the line under each school names the outcomes doing
+        the work. Employment figures describe the class of 2024.
+      </p>`, true);
     window.scrollTo({ top: resultsScroll, behavior: "auto" });
 
-    const list = app.querySelector(".res-list");
     app.querySelectorAll("[data-school]").forEach((el) => {
-      const name = el.getAttribute("data-school");
-      el.addEventListener("mouseenter", () => pinTo(name));
-      el.addEventListener("focus", () => pinTo(name));
-      el.addEventListener("click", () => selectSchool(name));
+      const open = () => go({ kind: "school", name: el.getAttribute("data-school"), fit: true });
+      el.addEventListener("click", open);
       el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectSchool(name); }
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
       });
     });
-    list.addEventListener("mouseleave", () => pinTo(resultsSel));
     app.querySelectorAll("[data-expand]").forEach((el) =>
       el.addEventListener("click", () => {
         expandedBands[el.getAttribute("data-expand")] = true;
@@ -1510,81 +2058,6 @@
         if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
       }));
     document.getElementById("editProfile").addEventListener("click", () => go({ kind: "fit" }));
-
-    pinTo(resultsSel);
-    showDetail(resultsSel);
-  }
-
-  // Positioned in percent of the map box, so it tracks the SVG at any width.
-  function pinTo(name) {
-    const pin = document.getElementById("mapPin");
-    if (!pin) return;
-    const sc = name && schoolByName[name];
-    const xy = sc && schoolXY(sc);
-    pin.classList.toggle("on", !!xy);
-    if (!xy) return;
-    const { VBW, VBH } = mapProjection();
-    pin.style.left = (xy[0] / VBW * 100) + "%";
-    pin.style.top = (xy[1] / VBH * 100) + "%";
-    const st = stateByName[sc.state];
-    const label = pin.querySelector("span");
-    label.innerHTML = `<b>${esc(sc.name)}</b>${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)}`;
-    // Flip the label to the pin's left whenever it would run off the map —
-    // measured, because how far it runs depends on the map's rendered width.
-    pin.classList.remove("flip");
-    const edge = pin.parentNode.getBoundingClientRect().right;
-    if (label.getBoundingClientRect().right > edge) pin.classList.add("flip");
-  }
-
-  function selectSchool(name) {
-    resultsSel = resultsSel === name ? null : name;
-    app.querySelectorAll(".rrow").forEach((el) =>
-      el.classList.toggle("on", el.getAttribute("data-school") === resultsSel));
-    pinTo(resultsSel);
-    showDetail(resultsSel);
-    // Stacked layout: the panel sits above the list, so bring it into view.
-    if (resultsSel && !window.matchMedia("(min-width: 901px)").matches) {
-      app.querySelector(".res-side").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  function showDetail(name) {
-    const box = document.getElementById("resDetail");
-    if (!box) return;
-    const sc = name && schoolByName[name];
-    box.classList.toggle("on", !!sc);
-    if (!sc) {
-      box.innerHTML = `<p class="res-hint">${CAN_HOVER ? "Point at" : "Tap"} a school to pin it on the map.
-        Click one for its numbers, your odds and where its graduates end up.</p>`;
-      return;
-    }
-    const st = stateByName[sc.state];
-    const added = isSaved(sc.name);
-    box.innerHTML = `
-      <div class="rd-head">
-        <div>
-          <h3>${esc(sc.name)}</h3>
-          <div class="loc">${esc(sc.city)}, ${esc(st ? st.abbr : sc.state)} ${tierBadge(sc.tier)}</div>
-        </div>
-        <button class="iconbtn" id="rdClose" type="button" aria-label="Close">&times;</button>
-      </div>
-      <div class="rd-actions">
-        <button class="btn ${added ? "btn-quiet" : ""}" id="rdSave" type="button">${added ? "✓ On my list" : "Add to my list"}</button>
-        <button class="linkbtn" id="rdOpen" type="button">Full school page →</button>
-      </div>
-      ${schoolStatsHTML(sc)}
-      ${schoolOddsHTML(sc)}
-      ${schoolOutcomesHTML(sc)}
-      <div class="writeup-h gap-t">How it stacks up</div>
-      <p class="writeup">${esc(sc.writeup)}</p>`;
-    box.scrollTop = 0;
-    document.getElementById("rdClose").addEventListener("click", () => selectSchool(sc.name));
-    document.getElementById("rdOpen").addEventListener("click", () =>
-      go({ kind: "school", name: sc.name, fit: true }));
-    document.getElementById("rdSave").addEventListener("click", () => {
-      toggleSaved(sc.name);
-      rerender();
-    });
   }
 
   // ---------- state view ----------
@@ -1593,14 +2066,13 @@
       <div class="fcard">
         <h3>${title}</h3>
         <div class="fscore">${score.toFixed(1)}<span> / 5</span></div>
-        <div class="track"><span class="fill" style="width:${Math.round((score / 5) * 100)}%"></span></div>
+        <div class="track" data-fill="${(score / 5).toFixed(3)}"></div>
         <div class="fdetail">${detailRows}</div>
         ${extra || ""}
       </div>`;
   }
 
   function renderState(name) {
-    hideCursorTag();
     const s = stateByName[name];
     if (!s) { go({ kind: "map" }, true); return; }
     const aff = s.affordability, qol = s.qualityOfLife, leg = s.legalIndustry;
@@ -1617,8 +2089,6 @@
       `<div class="drow"><span>Avg legal salary</span><b>${money(leg.avgLegalSalary)}</b></div>`;
 
     const schools = sortSchools(schoolsByState[name] || []);
-    navList = schools.map((sc) => sc.name);
-
     const rows = schools.map((sc) => `
       <div class="srow" data-school="${esc(sc.name)}">
         <div class="sname">
@@ -1656,9 +2126,9 @@
       </div>
       ${insBlock}
       <div class="section-h">Law schools in ${esc(name)} (${schools.length})</div>
-      <div class="school-list">${rows || `<div class="empty card">
+      <div class="school-list">${rows || `<div class="empty">
         ${esc(name)} has no ABA-accredited law school — the only state that doesn't.<br>
-        Its scores are here so you can still weigh it against the others.</div>`}</div>`);
+        Its scores are here so you can still weigh it against the others.</div>`}</div>`, true);
 
     wireCrumb();
     app.querySelectorAll(".srow").forEach((el) =>
@@ -1709,13 +2179,11 @@
       if (pos == null) return "";
       const left = Math.max(2, Math.min(98, 50 + pos * 25));
       return `<div class="pctline"><span>${label}</span>
-        <span class="track track-lg"><span class="band"></span>
-          <span class="pin" style="left:${left.toFixed(1)}%"></span></span>
+        <span class="track track-lg" data-pin="${(left / 100).toFixed(3)}"></span>
         <span class="pv"><b>${value}</b></span></div>`;
     };
     return adm ? (() => {
       const p = splitPct(adm.odds);
-      const seg = (cls, v) => (v <= 0 ? "" : `<span class="${cls}" style="width:${v}%"></span>`);
       return `
       <div class="odds">
         <div class="oh">
@@ -1724,11 +2192,11 @@
         </div>
         ${marker("LSAT", adm.lsatPos, profile.lsat)}
         ${marker("GPA", adm.gpaPos, profile.gpa)}
-        <div class="obar">${seg("oa", p.admit)}${seg("ow", p.wait)}${seg("odn", p.deny)}</div>
+        <div class="obar" data-split="${p.admit},${p.wait},${p.deny}"></div>
         <div class="okeys">
-          <span class="okey"><i class="ka"></i>Admit <b>${p.admit}%</b></span>
-          <span class="okey"><i class="kw"></i>Waitlist <b>${p.wait}%</b></span>
-          <span class="okey"><i class="kd"></i>Deny <b>${p.deny}%</b></span>
+          <span class="okey"><i data-split="100,0,0"></i>Admit <b>${p.admit}%</b></span>
+          <span class="okey"><i data-split="0,100,0"></i>Waitlist <b>${p.wait}%</b></span>
+          <span class="okey"><i data-split="0,0,100"></i>Deny <b>${p.deny}%</b></span>
         </div>
         <div class="omodel">Waitlist is hatched because it's modelled, not reported —
           the ABA publishes no waitlist figures for any school.</div>
@@ -1766,7 +2234,7 @@
     const city = cityByKey[sc.city + "|" + sc.state];
     const lifeBar = (label, v) =>
       `<div class="life-row"><span>${label}</span>
-         <span class="track"><span class="fill" style="width:${(v / 5) * 100}%"></span></span>
+         <span class="track" data-fill="${(v / 5).toFixed(3)}"></span>
          <b>${v}/5</b></div>`;
 
     return city ? `
@@ -1789,22 +2257,11 @@
     const st = stateByName[sc.state];
     const added = isSaved(sc.name);
 
-    // Step through whatever list brought you here, so comparing two schools
-    // doesn't mean bouncing back out to find the second one.
-    const idx = navList.indexOf(sc.name);
-    const step = (delta, label) => {
-      const target = idx === -1 ? null : navList[idx + delta];
-      return `<button class="navbtn" type="button" ${target ? `data-step="${esc(target)}"` : "disabled"}>
-        ${delta < 0 ? "←" : ""}<span>${target ? esc(target) : label}</span>${delta > 0 ? "→" : ""}</button>`;
-    };
-    const navBlock = idx === -1 ? "" : `
-      <div class="schoolnav">
-        ${step(-1, "")}
-        ${step(1, "")}
-      </div>`;
-
     setView(`
-      ${crumbHTML(currentView, sc.name)}
+      <div class="view-top">
+        ${crumbHTML(currentView, sc.name)}
+        ${currentView.fit ? `<button class="markbtn mk-back" type="button" id="backResults">← Your schools</button>` : ""}
+      </div>
       <div class="school-hero">
         <div class="h-top">
           <div>
@@ -1813,7 +2270,7 @@
           </div>
           <div class="h-side">
             ${tierBadge(sc.tier)}
-            <button class="btn ${added ? "btn-quiet" : ""}" id="toggleBtn" type="button">
+            <button class="markbtn mk-add${added ? " is-on" : ""}" id="toggleBtn" type="button">
               ${added ? "✓ On my list" : "Add to my list"}
             </button>
           </div>
@@ -1824,17 +2281,15 @@
         <p class="writeup">${esc(sc.writeup)}</p>
         ${schoolOutcomesHTML(sc)}
         ${schoolLifestyleHTML(sc)}
-      </div>
-      ${navBlock}`);
+      </div>`, true);
 
     wireCrumb();
+    const back = app.querySelector("#backResults");
+    if (back) back.addEventListener("click", () => go({ kind: "results" }));
     app.querySelector("#toggleBtn").addEventListener("click", () => {
       toggleSaved(sc.name);
       rerender();
     });
-    app.querySelectorAll("[data-step]").forEach((el) =>
-      el.addEventListener("click", () =>
-        go({ kind: "school", name: el.getAttribute("data-step"), fit: fitOrigin(currentView) })));
   }
 
   // ---------- my saved list: a drawer of folders ----------
@@ -2028,7 +2483,6 @@
   function renderList(v) {
     const bands = savedBands();
     const total = bands.reduce((a, g) => a + g.list.length, 0);
-    navList = bands.reduce((acc, g) => acc.concat(g.list.map((s) => s.name)), []);
     const open = v.open && isSaved(v.open) ? schoolByName[v.open] : null;
     if (v.open && !open) { v = currentView = { kind: "list" }; history.replaceState(v, ""); }
 
@@ -2045,12 +2499,11 @@
     setView(`
       <div class="files${open ? " is-open" : ""}">
         <div class="files-stack">
-          ${crumbHTML(v, "My saved list")}
           <div class="files-head">
             <div>
               <h2>My saved list</h2>
               <p class="files-sub">${total
-                ? plural(total, "folder") + (profileReady() ? ", filed by your odds." : ". Add a GPA and LSAT on Find your fit to file them by your odds.")
+                ? plural(total, "folder") + "."
                 : "Nothing saved yet."}</p>
             </div>
             <div class="files-tools">
@@ -2067,7 +2520,6 @@
         <div class="files-open" id="filesOpen">${open ? openFolderHTML(open, 0) : ""}</div>
       </div>`, true);
 
-    wireCrumb();
     app.querySelectorAll(".folder").forEach((el) =>
       el.addEventListener("click", () => openFolder(el.getAttribute("data-folder"), +el.getAttribute("data-tab"))));
     document.getElementById("exportMd").addEventListener("click", exportMarkdown);
@@ -2218,123 +2670,6 @@
       done();
       folderBusy = false;
     }
-  }
-
-  // ---------- search ----------
-  const searchScrim = document.getElementById("searchScrim");
-  const searchInput = document.getElementById("searchInput");
-  const searchResults = document.getElementById("searchResults");
-  let searchHits = [], searchSel = 0;
-
-  function searchOpen() {
-    searchScrim.classList.add("on");
-    searchInput.value = "";
-    runSearch("");
-    setTimeout(() => searchInput.focus(), 30);
-  }
-  function searchClose() {
-    searchScrim.classList.remove("on");
-    searchInput.blur();
-  }
-
-  // Substring match, ranked: whole-name prefix, then word-start, then anywhere in
-  // the name, then a hit on the city or state. Enough for 244 rows.
-  function findMatches(q) {
-    const s = q.trim().toLowerCase();
-    if (!s) return [];
-    const out = [];
-
-    Object.keys(stateByName).forEach((n) => {
-      const low = n.toLowerCase();
-      const i = low.indexOf(s);
-      const abbrHit = stateByName[n].abbr.toLowerCase() === s;
-      if (i === -1 && !abbrHit) return;
-      out.push({
-        kind: "state", name: n, hit: i,
-        sub: `${plural((schoolsByState[n] || []).length, "school")} · ${stateByName[n].abbr}`,
-        score: abbrHit ? -1 : i === 0 ? 0 : wordStart(low, s) ? 1 : 2,
-      });
-    });
-
-    Object.values(schoolByName).forEach((sc) => {
-      const low = sc.name.toLowerCase();
-      const i = low.indexOf(s);
-      const locHit = i === -1 && (sc.city + " " + sc.state).toLowerCase().indexOf(s) !== -1;
-      if (i === -1 && !locHit) return;
-      out.push({
-        kind: "school", name: sc.name, hit: i,
-        sub: `${sc.city}, ${sc.state} · ${sc.tier || "—"}${sc.rank == null ? "" : " · #" + sc.rank}`,
-        score: locHit ? 4 : i === 0 ? 0.5 : wordStart(low, s) ? 1.5 : 3,
-      });
-    });
-
-    return out.sort((a, b) => a.score - b.score || a.name.localeCompare(b.name)).slice(0, 9);
-  }
-  const wordStart = (hay, needle) =>
-    hay.split(/[\s\-–,.'()]+/).some((w) => w.indexOf(needle) === 0);
-
-  function markMatch(text, q) {
-    const i = text.toLowerCase().indexOf(q.trim().toLowerCase());
-    if (i === -1 || !q.trim()) return esc(text);
-    const n = q.trim().length;
-    return esc(text.slice(0, i)) + "<mark>" + esc(text.slice(i, i + n)) + "</mark>" + esc(text.slice(i + n));
-  }
-
-  function runSearch(q) {
-    searchHits = findMatches(q);
-    searchSel = 0;
-    if (!q.trim()) {
-      searchResults.innerHTML = `<div class="sr-empty">Type a school, a city, or a state.</div>`;
-      return;
-    }
-    if (!searchHits.length) {
-      searchResults.innerHTML = `<div class="sr-empty">Nothing matched “${esc(q)}”.</div>`;
-      return;
-    }
-    paintSearch();
-  }
-
-  function paintSearch() {
-    const q = searchInput.value;
-    let html = "", lastKind = "";
-    searchHits.forEach((h, i) => {
-      if (h.kind !== lastKind) {
-        html += `<div class="sr-group">${h.kind === "state" ? "States" : "Schools"}</div>`;
-        lastKind = h.kind;
-      }
-      html += `<button class="sr-item" type="button" role="option" data-i="${i}"
-          aria-selected="${i === searchSel}">
-          <span class="sr-main">
-            <span class="sr-name">${markMatch(h.name, q)}</span>
-            <span class="sr-sub">${esc(h.sub)}</span>
-          </span>
-          <span class="sr-kind">${h.kind === "state" ? "state" : "school"}</span>
-        </button>`;
-    });
-    html += `<div class="sr-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span>
-      <span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></div>`;
-    searchResults.innerHTML = html;
-    searchResults.querySelectorAll("[data-i]").forEach((el) =>
-      el.addEventListener("click", () => pickSearch(+el.getAttribute("data-i"))));
-  }
-
-  function moveSearch(delta) {
-    if (!searchHits.length) return;
-    searchSel = (searchSel + delta + searchHits.length) % searchHits.length;
-    searchResults.querySelectorAll("[data-i]").forEach((el) => {
-      const on = +el.getAttribute("data-i") === searchSel;
-      el.setAttribute("aria-selected", on);
-      if (on) el.scrollIntoView({ block: "nearest" });
-    });
-  }
-
-  function pickSearch(i) {
-    const h = searchHits[i];
-    if (!h) return;
-    searchClose();
-    go(h.kind === "state"
-      ? { kind: "state", name: h.name }
-      : { kind: "school", name: h.name, fit: fitOrigin(currentView) });
   }
 
   // ---------- exports ----------
@@ -2497,7 +2832,6 @@
 
       buildPercentiles();
       buildInsights();
-      loadUI();
 
       profile = loadProfile();
       // Drop saved geography for states that aren't in the data.
@@ -2509,13 +2843,15 @@
       saved = saved.filter((n) => schoolByName[n]);
       persist();
 
-      const nJur = Object.keys(stateByName).length;
-      const nSch = Object.keys(schoolByName).length;
-      document.getElementById("brandSub").textContent =
-        `${nJur - 1} states and DC · ${nSch} ABA-accredited schools`;
-      searchInput.placeholder = `Search ${nSch} schools and ${nJur} states…`;
-
       go({ kind: "fit" }, true);
+      // Opening (or reloading) the site is the one time the landing page gets
+      // written up. Wait for the marker fonts so the strokes are measured right.
+      if (!REDUCED.matches) {
+        const view = app.firstElementChild;
+        view.style.animation = "none";     // its fade-in starts at zero opacity, which reads as unwritable
+        view.style.visibility = "hidden";
+        document.fonts.ready.then(() => writeUp(view));
+      }
     } catch (err) {
       app.innerHTML = `<div class="view"><div class="errbox">
         <b>Couldn't load the data.</b><br>
@@ -2527,7 +2863,6 @@
   }
 
   // ---------- persistent wiring ----------
-  document.getElementById("brandBtn").addEventListener("click", () => go({ kind: "fit" }));
   const menu = document.getElementById("menu");
   const menuBtn = document.getElementById("menuBtn");
   function menuToggle(open) {
@@ -2547,28 +2882,109 @@
       if (kind === "results") openResults(); else go({ kind });
     }));
 
-  document.getElementById("searchBtn").addEventListener("click", searchOpen);
-  document.getElementById("searchClose").addEventListener("click", searchClose);
-  searchScrim.addEventListener("click", (e) => { if (e.target === searchScrim) searchClose(); });
-  searchInput.addEventListener("input", () => runSearch(searchInput.value));
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowDown") { e.preventDefault(); moveSearch(1); }
-    else if (e.key === "ArrowUp") { e.preventDefault(); moveSearch(-1); }
-    else if (e.key === "Enter") { e.preventDefault(); pickSearch(searchSel); }
+  // Each letter gets its own span so hover can colour them in turn; spaces
+  // don't take a colour.
+  menu.querySelectorAll(".menu-list button").forEach((b) =>
+    [...b.childNodes].forEach((n) => {
+      if (n.nodeType !== 3) return;
+      let i = 0;
+      const word = document.createElement("span");
+      word.append(...[...n.textContent].map((ch) => {
+        if (!ch.trim()) return ch;
+        const sp = document.createElement("span");
+        sp.className = "c" + (i++ % 3);
+        sp.textContent = ch;
+        return sp;
+      }));
+      n.replaceWith(word);
+    }));
+
+  // The logo only shows on the landing page, so a click has nowhere to go:
+  // it throws marker-coloured confetti in from every edge of the screen.
+  function confetti() {
+    if (REDUCED.matches) return;
+    const cv = document.createElement("canvas");
+    const dpr = window.devicePixelRatio || 1;
+    const W = innerWidth, H = innerHeight;
+    cv.className = "confetti";
+    cv.width = W * dpr; cv.height = H * dpr;
+    document.body.appendChild(cv);
+    const ctx = cv.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const css = getComputedStyle(document.documentElement);
+    const colors = ["--accent", "--far", "--safety", "--reach"].map((v) => css.getPropertyValue(v).trim());
+    const reach = Math.hypot(W, H) / 38;
+    const bits = Array.from({ length: 240 }, () => {
+      // A random spot on the screen's edge, aimed roughly at the middle.
+      let p = Math.random() * 2 * (W + H), x, y;
+      if (p < W) { x = p; y = 0; }
+      else if ((p -= W) < H) { x = W; y = p; }
+      else if ((p -= H) < W) { x = p; y = H; }
+      else { x = 0; y = p - W; }
+      const a = Math.atan2(H / 2 - y, W / 2 - x) + (Math.random() - .5) * 1.2;
+      const v = reach * (.3 + Math.random() * .6) * (y === H ? 1.4 : 1);
+      return {
+        x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+        w: 6 + Math.random() * 6, h: 3 + Math.random() * 4,
+        r: Math.random() * 6, vr: (Math.random() - .5) * .4,
+        c: colors[Math.floor(Math.random() * colors.length)],
+      };
+    });
+    const start = performance.now();
+    let last = start;
+    (function frame(t) {
+      // Steps are in 60fps frames so the throw looks the same on any display.
+      const k = Math.min((t - last) / 16.7, 3), drag = Math.pow(.975, k);
+      last = t;
+      ctx.clearRect(0, 0, W, H);
+      let live = 0;
+      for (const b of bits) {
+        b.vx *= drag; b.vy = b.vy * drag + .2 * k;
+        b.x += b.vx * k + Math.sin(b.r) * .6 * k; b.y += b.vy * k; b.r += b.vr * k;
+        if (b.y > H + 20) continue;
+        live++;
+        ctx.save();
+        ctx.translate(b.x, b.y); ctx.rotate(b.r);
+        ctx.scale(1, Math.cos(b.r * 1.7));
+        ctx.fillStyle = b.c;
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        ctx.restore();
+      }
+      if (live && t - start < 6000) requestAnimationFrame(frame); else cv.remove();
+    })(start);
+  }
+  document.getElementById("logo").addEventListener("click", (e) => {
+    e.preventDefault();
+    confetti();
   });
 
+  // ← and → step through the menu's pages in order, skipping Your schools
+  // until there are numbers to rank on. A state page counts as the map; a
+  // school page sits outside the order. Never while typing or picking.
+  const PAGES = ["fit", "results", "map", "list"];
+  function stepPage(dir) {
+    const kind = currentView && (currentView.kind === "state" ? "map" : currentView.kind);
+    let i = PAGES.indexOf(kind);
+    if (i === -1) return false;
+    do i += dir; while (PAGES[i] === "results" && !profileReady());
+    if (i < 0 || i >= PAGES.length) return false;
+    menuToggle(false);
+    closeFolder();
+    panSide = dir;
+    if (PAGES[i] === "results") openResults(); else go({ kind: PAGES[i] });
+    panSide = 0;                  // in case nothing panned (reduced motion)
+    return true;
+  }
+
   document.addEventListener("keydown", (e) => {
-    const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName);
     if (e.key === "Escape") {
-      const searching = searchScrim.classList.contains("on");
-      searchClose();
       menuToggle(false);
-      if (!searching) closeFolder();
-      return;
+      closeFolder();
+      if (currentView && currentView.kind === "map") leaveState();
     }
-    if (typing) return;
-    if (e.key === "/" || ((e.metaKey || e.ctrlKey) && e.key === "k")) {
-      e.preventDefault(); searchOpen();
+    if ((e.key === "ArrowRight" || e.key === "ArrowLeft") && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey
+        && !e.target.closest("input, textarea, select, [contenteditable]")) {
+      if (stepPage(e.key === "ArrowRight" ? 1 : -1)) e.preventDefault();
     }
   });
 
