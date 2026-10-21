@@ -1,0 +1,197 @@
+Stanford University|California|1
+University of Chicago|Illinois|2
+Yale University|Connecticut|2
+University of Pennsylvania (Carey)|Pennsylvania|4
+University of Virginia|Virginia|4
+Harvard University|Massachusetts|6
+Duke University|North Carolina|7
+New York University|New York|7
+Columbia University|New York|9
+Northwestern University (Pritzker)|Illinois|9
+University of Michigan--Ann Arbor|Michigan|9
+Vanderbilt University|Tennessee|12
+Cornell University|New York|13
+University of California--Los Angeles|California|13
+Washington University in St. Louis|Missouri|13
+University of California, Berkeley|California|16
+University of Texas--Austin|Texas|16
+Georgetown University|District of Columbia|18
+University of North Carolina--Chapel Hill|North Carolina|18
+Boston College|Massachusetts|20
+University of Notre Dame|Indiana|20
+Texas A&M University|Texas|22
+University of Minnesota|Minnesota|22
+Boston University|Massachusetts|24
+Brigham Young University (Clark)|Utah|24
+George Washington University|District of Columbia|26
+University of Georgia|Georgia|26
+University of Southern California (Gould)|California|26
+University of Wisconsin--Madison|Wisconsin|26
+Ohio State University (Moritz)|Ohio|30
+Wake Forest University|North Carolina|30
+George Mason University (Scalia)|Virginia|32
+University of Iowa|Iowa|32
+Baylor University|Texas|34
+Florida State University|Florida|34
+University of California--Irvine|California|34
+University of Florida (Levin)|Florida|34
+Washington and Lee University|Virginia|34
+William & Mary Law School|Virginia|34
+Emory University|Georgia|40
+University of Alabama|Alabama|40
+Fordham University|New York|42
+Southern Methodist University (Dedman)|Texas|42
+Arizona State University (O'Connor)|Arizona|44
+University of Utah (Quinney)|Utah|44
+Pepperdine University (Caruso)|California|46
+University of Illinois Urbana-Champaign|Illinois|46
+University of Kansas|Kansas|46
+Indiana University--Bloomington (Maurer)|Indiana|49
+Temple University (Beasley)|Pennsylvania|49
+Villanova University (Widger)|Pennsylvania|49
+University of California--Davis|California|52
+University of Washington|Washington|52
+University of Colorado--Boulder|Colorado|54
+University of Houston Law Center|Texas|54
+University of San Diego|California|54
+University of Tennessee--Knoxville|Tennessee|57
+University of Connecticut|Connecticut|58
+Marquette University|Wisconsin|59
+University of Missouri|Missouri|59
+Yeshiva University (Cardozo)|New York|59
+Pennsylvania State University Dickinson Law|Pennsylvania|62
+St. John's University|New York|62
+The University of Oklahoma|Oklahoma|62
+University of Maryland (Carey)|Maryland|62
+University of Nebraska--Lincoln|Nebraska|62
+University of Richmond|Virginia|62
+University of South Carolina|South Carolina|62
+Wayne State University|Michigan|62
+Loyola Law School|California|70
+Loyola University Chicago|Illinois|70
+Seton Hall University|New Jersey|70
+The Catholic University of America|District of Columbia|70
+Tulane University|Louisiana|70
+University of Arizona (Rogers)|Arizona|70
+University of Kentucky (Rosenberg)|Kentucky|70
+University of Miami|Florida|70
+Florida International University|Florida|77
+Georgia State University|Georgia|77
+Northeastern University|Massachusetts|77
+University of Pittsburgh|Pennsylvania|77
+Drexel University (Kline)|Pennsylvania|82
+University at Buffalo--SUNY|New York|82
+University of Cincinnati|Ohio|82
+Belmont University|Tennessee|85
+Duquesne University (Kline)|Pennsylvania|85
+Louisiana State University--Baton Rouge (Hebert)|Louisiana|85
+Texas Tech University|Texas|85
+University of California--San Francisco (formerly UC Hastings)|California|85
+University of Montana (Blewett)|Montana|90
+Drake University|Iowa|91
+Regent University|Virginia|91
+Saint Louis University|Missouri|91
+Stetson University|Florida|91
+University of Denver (Sturm)|Colorado|91
+University of Hawaii--Manoa (Richardson)|Hawaii|91
+University of Maine School of Law|Maine|91
+University of Nevada--Las Vegas (Boyd)|Nevada|91
+University of Oregon|Oregon|91
+Case Western Reserve University|Ohio|100
+Rutgers University|New Jersey|100
+Syracuse University|New York|100
+University of Arkansas--Fayetteville|Arkansas|100
+University of Missouri--Kansas City|Missouri|100
+Brooklyn Law School|New York|105
+Illinois Institute of Technology (Chicago-Kent)|Illinois|105
+University of St. Thomas|Minnesota|105
+American University (Washington)|District of Columbia|108
+Mercer University (George)|Georgia|108
+Michigan State University|Michigan|108
+Washburn University|Kansas|108
+Chapman University (Fowler)|California|112
+Lewis & Clark College (Northwestern)|Oregon|112
+New York Law School|New York|112
+University of Dayton|Ohio|112
+University of Wyoming|Wyoming|112
+Hofstra University (Deane)|New York|117
+Howard University|District of Columbia|117
+University of New Mexico|New Mexico|117
+Albany Law School|New York|120
+University of Tulsa|Oklahoma|120
+Samford University (Cumberland)|Alabama|122
+University of South Dakota (Knudson)|South Dakota|122
+Indiana University Indianapolis (McKinney)|Indiana|124
+University of Louisville (Brandeis)|Kentucky|124
+University of Mississippi (Ole Miss)|Mississippi|124
+West Virginia University|West Virginia|124
+Seattle University|Washington|128
+South Texas College of Law Houston|Texas|128
+Suffolk University|Massachusetts|128
+Campbell University (Wiggins)|North Carolina|131
+DePaul University|Illinois|131
+Northern Kentucky University (Chase)|Kentucky|131
+University of Akron|Ohio|131
+Loyola University New Orleans|Louisiana|135
+Cleveland State University|Ohio|136
+Quinnipiac University|Connecticut|136
+University of Baltimore|Maryland|136
+University of New Hampshire (Pierce)|New Hampshire|136
+University of Arkansas--Little Rock (Bowen)|Arkansas|140
+University of Memphis (Humphreys)|Tennessee|140
+Pace University (Haub)|New York|142
+University of Detroit Mercy|Michigan|142
+Creighton University|Nebraska|144
+Elon University|North Carolina|144
+Gonzaga University|Washington|144
+Liberty University|Virginia|144
+University of Idaho|Idaho|148
+University of Toledo|Ohio|149
+Santa Clara University|California|150
+St. Mary's University|Texas|150
+Mitchell Hamline School of Law|Minnesota|152
+University of the Pacific (McGeorge)|California|152
+Vermont Law School|Vermont|154
+Widener University--Delaware|Delaware|154
+Oklahoma City University|Oklahoma|156
+University of North Dakota|North Dakota|156
+University of San Francisco|California|156
+University of North Texas--Dallas|Texas|159
+Western New England University|Massachusetts|159
+Mississippi College|Mississippi|161
+Northern Illinois University|Illinois|161
+Southwestern Law School|California|161
+Ave Maria School of Law|Florida|164
+Faulkner University (Jones)|Alabama|164
+Touro University (Fuchsberg)|New York|164
+University of Illinois Chicago|Illinois|167
+New England Law Boston|Massachusetts|168
+St. Thomas University|Florida|168
+Willamette University School of Law|Oregon|168
+CUNY School of Law|New York|171
+Charleston School of Law|South Carolina|171
+Roger Williams University|Rhode Island|171
+University of Massachusetts--Dartmouth|Massachusetts|171
+Appalachian School of Law||175-194
+Atlanta's John Marshall Law School||175-194
+Barry University||175-194
+California Western School of Law||175-194
+Capital University||175-194
+Cooley Law School||175-194
+Florida A&M University||175-194
+Inter-American University||175-194
+Lincoln Memorial University (Duncan)||175-194
+North Carolina Central University||175-194
+Nova Southeastern University (Broad)||175-194
+Ohio Northern University (Pettit)||175-194
+Pontifical Catholic University of Puerto Rico||175-194
+Southern Illinois University--Carbondale||175-194
+Southern University Law Center||175-194
+Texas Southern University (Marshall)||175-194
+University of Puerto Rico||175-194
+University of the District of Columbia (Clarke)||175-194
+Western State College of Law at Westcliff University||175-194
+Widener University--Pennsylvania (Commonwealth)||175-194
+Golden Gate University||Unranked
+Jacksonville University||Unranked
+Wilmington University||Unranked

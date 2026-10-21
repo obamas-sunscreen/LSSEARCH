@@ -11,6 +11,9 @@
   let schoolsByState = {};     // state name -> [schools]
   let schoolByName = {};       // school name -> school
   let cityByKey = {};          // "city|state" -> city lifestyle record
+  let RENAMED = {};            // a school's former name -> its current one
+  let VINTAGE = {};            // which class / year each data category describes
+  const current = (n) => RENAMED[n] || n;
   let saved = loadSaved();
 
   // ---------- persistence ----------
@@ -68,6 +71,26 @@
   const putFile = (rec) => fileStore("readwrite", (s) => s.add(rec));
   const dropFile = (id) => fileStore("readwrite", (s) => s.delete(id));
 
+  // Everything you keep is filed under a school's name, so when a school is renamed
+  // (its old name lands in `formerNames`) carry the list, notes and files across.
+  function migrateRenames() {
+    if (!Object.keys(RENAMED).length) return;
+    saved = saved.map(current).filter((n, i, all) => all.indexOf(n) === i);
+    persist();
+    let moved = false;
+    Object.keys(notes).forEach((old) => {
+      if (!RENAMED[old]) return;
+      const now = RENAMED[old];
+      notes[now] = (notes[now] || "").trim() ? notes[now] + "\n\n" + notes[old] : notes[old];
+      delete notes[old];
+      moved = true;
+    });
+    if (moved) persistNotes();
+    allFiles().then((files) => files.filter((f) => RENAMED[f.school]).forEach((f) =>
+      fileStore("readwrite", (s) => s.put(Object.assign(f, { school: RENAMED[f.school] })))
+    )).catch(() => {}); // no IndexedDB (private window): nothing stored to move
+  }
+
   function isSaved(name) { return saved.indexOf(name) !== -1; }
   function toggleSaved(name) {
     const i = saved.indexOf(name);
@@ -101,14 +124,14 @@
     if (tier === "T20") return "tier-2";
     if (tier === "T30") return "tier-3";
     if (tier === "T50") return "tier-4";
-    if (tier === "Regional") return "tier-6";
+    if (tier === "Regional" || tier === "Unranked") return "tier-6";
     return "tier-5"; // T60/T70/T80/T90/T100
   }
   function tierBadge(tier) {
     return `<span class="tier ${tierClass(tier)}">${esc(tier || "—")}${RING}</span>`;
   }
   function tierRank(t) {
-    const order = ["T14", "T20", "T30", "T50", "T60", "T70", "T80", "T90", "T100", "Regional"];
+    const order = ["T14", "T20", "T30", "T50", "T60", "T70", "T80", "T90", "T100", "Regional", "Unranked"];
     const i = order.indexOf(t);
     return i === -1 ? 999 : i;
   }
@@ -1126,7 +1149,7 @@
     fit: () => renderFit(),
     results: () => renderResults(),
     state: (v) => renderState(v.name),
-    school: (v) => renderSchool(v.name),
+    school: (v) => renderSchool(current(v.name)),
     list: (v) => renderList(v),
   };
 
@@ -2036,7 +2059,9 @@
         ABA collects no waitlist data at all, so that share is a modelled band around the
         decision boundary rather than anything reported. Ranking within a band uses your
         stated goals and geography — the line under each school names the outcomes doing
-        the work. Employment figures describe the class of 2024.
+        the work. Every school figure is from the ABA's own 509 reports: admissions describe
+        the ${esc((VINTAGE.admissions || "latest entering class").toLowerCase())}, and employment
+        the ${esc((VINTAGE.outcomes || "latest class").toLowerCase())}.
       </p>`, true);
     window.scrollTo({ top: resultsScroll, behavior: "auto" });
 
@@ -2081,8 +2106,10 @@
       `<div class="drow"><span>Cost-of-living index</span><b>${aff.costOfLivingIndex}</b></div>` +
       `<div class="drow"><span>Housing index</span><b>${aff.housingIndex}</b></div>`;
     const qolRows =
-      `<div class="drow"><span>Safety</span><b>${qol.safety}/5</b></div>` +
-      `<div class="drow"><span>Healthcare</span><b>${qol.healthcare}/5</b></div>` +
+      `<div class="drow"><span>Safety${qol.violentCrimeRate == null ? "" :
+        ` · ${Math.round(qol.violentCrimeRate)} violent crimes per 100k`}</span><b>${qol.safety}/5</b></div>` +
+      `<div class="drow"><span>Healthcare${qol.lifeExpectancy == null ? "" :
+        ` · ${qol.lifeExpectancy}-year life expectancy`}</span><b>${qol.healthcare}/5</b></div>` +
       `<div class="drow"><span>Livability / climate</span><b>${qol.livability}/5</b></div>`;
     const legRows =
       `<div class="drow"><span>Lawyer jobs / 1k</span><b>${leg.lawyerJobsPer1k}</b></div>` +
@@ -2140,7 +2167,7 @@
   // The pieces of a school's read that both the full page and the results
   // detail panel show.
   function schoolOutcomesHTML(sc) {
-    // Class-of-2024 outcomes, with each figure's percentile against every other
+    // ABA employment outcomes, with each figure's percentile against every other
     // ABA school — 12% federal clerkships means something very different from 12% BigLaw.
     const oc = sc.outcomes;
     const ocTile = (label, field, val) => {
@@ -2155,7 +2182,7 @@
       : "";
     return oc ? `
       <div class="outcomes">
-        <div class="writeup-h">Where the class of 2024 ended up</div>
+        <div class="writeup-h">Where the ${esc((VINTAGE.outcomes || "latest class").toLowerCase())} ended up</div>
         <div class="oc-grid">
           ${ocTile("Employed, FT long-term", "employmentRate", oc.employmentRate)}
           ${ocTile("BigLaw (500+)", "bigLaw", oc.bigLaw)}
@@ -2224,10 +2251,13 @@
           <div class="stat"><div class="lbl">Acceptance Rate</div>
             <div class="val">${a && a.acceptanceRate != null ? a.acceptanceRate + "%" : "—"}</div>
             ${a && a.applications ? `<div class="rng">${a.applications.toLocaleString("en-US")} applied</div>` : ""}</div>
-          <div class="stat"><div class="lbl">Rank</div><div class="val">${sc.rank == null ? "—" : "#" + sc.rank}</div></div>
+          <div class="stat"><div class="lbl">Rank</div><div class="val">${sc.rank == null ? "Unranked" : "#" + sc.rank}</div>
+            <div class="rng">U.S. News</div></div>
           <div class="stat"><div class="lbl">In-State Tuition</div><div class="val">${money(sc.tuitionInState)}</div></div>
           <div class="stat"><div class="lbl">Out-of-State Tuition</div><div class="val">${money(sc.tuitionOutState)}</div></div>
-        </div>`;
+        </div>
+        <div class="anchor-note">ABA 509 data: ${esc(VINTAGE.admissions || "")} · ${esc(VINTAGE.tuition || "")} tuition ·
+          ${esc(VINTAGE.outcomes || "")} outcomes. Rank: ${esc(VINTAGE.rank || "U.S. News")}.</div>`;
   }
 
   function schoolLifestyleHTML(sc) {
@@ -2690,7 +2720,7 @@
     names.forEach((stn) => {
       md += `## ${stn}\n\n`;
       sortSchools(groups[stn]).forEach((s) => {
-        const rk = s.rank == null ? (s.tier || "unranked") : "#" + s.rank;
+        const rk = s.rank == null ? "unranked" : "#" + s.rank;
         md += `- **${s.name}** — ${s.city}. GPA ${s.medianGPA.toFixed(2)}, LSAT ${s.medianLSAT}, ` +
           `${money(s.tuitionInState)} in-state / ${money(s.tuitionOutState)} out-of-state, ${rk} (${s.tier || "—"})\n`;
         if (notes[s.name]) md += notes[s.name].trim().split("\n").map((l) => "  > " + l).join("\n") + "\n";
@@ -2760,8 +2790,13 @@
       restoreBar(`That isn't a backup from this site. <button class="linkbtn" type="button" id="restoreNo">Dismiss</button>`);
     } else {
       if (!filesCache) await loadFiles();
-      const imported = data.notes && typeof data.notes === "object" ? data.notes : {};
-      const names = data.saved.filter((n) => schoolByName[n] && !isSaved(n));
+      // A backup made before a school was renamed still restores onto the right school.
+      const imported = {};
+      if (data.notes && typeof data.notes === "object") {
+        Object.keys(data.notes).forEach((k) => { imported[current(k)] = data.notes[k]; });
+      }
+      (Array.isArray(data.files) ? data.files : []).forEach((f) => { if (f) f.school = current(f.school); });
+      const names = data.saved.map(current).filter((n) => schoolByName[n] && !isSaved(n));
       const noteKeys = Object.keys(imported).filter((k) =>
         typeof imported[k] === "string" && imported[k].trim() && !(notes[k] || "").includes(imported[k]));
       const files = (Array.isArray(data.files) ? data.files : []).filter((f) =>
@@ -2824,11 +2859,14 @@
         if (typeof s.state !== "string" || s.state[0] === "_") return;
         stateByName[s.state] = s;
       });
+      VINTAGE = schools._vintage || {};
       (schools.schools || []).forEach((sc) => {
         if (typeof sc.name !== "string" || sc.name[0] === "_") return;
         schoolByName[sc.name] = sc;
         (schoolsByState[sc.state] = schoolsByState[sc.state] || []).push(sc);
+        (sc.formerNames || []).forEach((n) => { RENAMED[n] = sc.name; });
       });
+      migrateRenames();
 
       buildPercentiles();
       buildInsights();

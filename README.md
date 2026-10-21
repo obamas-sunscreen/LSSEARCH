@@ -4,8 +4,6 @@ A personal tool for building a shortlist of law schools, organized by state.
 
 **Flow:** you land on **Find your fit**: enter your GPA, LSAT, career goals, and where you want to practice. You then get every ABA school sorted into Reach / Target / Safety / Far reach; click one for its full page. Add schools to **My saved list**: each one becomes a folder, filed by admission band, that opens to the site's read of the school beside your own notes and attached files. Everything stays in the browser (notes in localStorage, files in IndexedDB); **Back up** / **Restore** move it all as one JSON file, and the list still exports to Markdown or CSV. **Explore by state** (in the menu) is the whiteboard map of every state: hover one for its real strengths and weaknesses, click it and the map zooms in, dots every city with a law school, and lists those schools beside it (with your band for each once you've entered a GPA and LSAT). Pick a school and a pin drops on it, with a link through to its page. Back, Esc, or a click on open water zooms out.
 
-Press `/` (or `⌘K`) anywhere to jump straight to any of the 193 schools or 51 jurisdictions by name.
-
 ### State strengths and weaknesses
 
 Ten measures per jurisdiction, each percentile-ranked against the other 50, in `INSIGHT_METRICS` in `app.js`. Four come straight from `states.json` (legal market, legal pay, cost of living, quality of life); six are derived from the schools in that state (how many there are, its highest-ranked one, median out-of-state tuition, median employment rate, the best BigLaw share available, and the median share of a class that stays in state).
@@ -66,22 +64,32 @@ To stop the server, press `Ctrl+C` in the terminal.
 Everything lives in plain JSON you can edit in any text editor:
 
 - **`data/states.json`** — all 50 states plus DC, with cost-of-living, quality-of-life, and legal-industry figures, plus 1–5 scores. The youthful-active-lifestyle factor is **not** here — it lives at the city level (see below), because it varies too much within a state to be one number.
-- **`data/cities.json`** — the 148 law-school cities, each scored on youthful-active-lifestyle: a `social` scene signal (weighted heaviest), `outdoors`, and `walkability`, blended into a `lifestyleScore`, plus a blurb. Shown on each school's detail page for the city you'd actually live in.
-- **`data/schools.json`** — all 193 ABA-accredited schools in the 50 states + DC: median GPA, median LSAT, in-state / out-of-state tuition, a tier, a rank, and a write-up, plus two blocks pulled straight from the ABA (see below): `admissions` (applications, offers, acceptance rate, and 25th/50th/75th percentile GPA and LSAT) and `outcomes` (employment rate and the share of graduates going to BigLaw, mid-law, small firms, government, public interest, federal and state clerkships, business, and academia), with `topStates` giving the three states each school actually places graduates into.
+- **`data/cities.json`** — the 146 law-school cities, each scored on youthful-active-lifestyle: a `social` scene signal (weighted heaviest), `outdoors`, and `walkability`, blended into a `lifestyleScore`, plus a blurb. Shown on each school's detail page for the city you'd actually live in.
+- **`data/schools.json`** — all 193 ABA-accredited schools in the 50 states + DC: median GPA, median LSAT, in-state / out-of-state tuition, a tier, a rank, and a write-up, plus three blocks pulled straight from the ABA (see below): `admissions` (applications, offers, acceptance rate, and 25th/50th/75th percentile GPA and LSAT) and `outcomes` (employment rate and the share of graduates going to BigLaw, mid-law, small firms, government, public interest, federal and state clerkships, business, and academia), with `topStates` giving the three states each school actually places graduates into, and `bar` (first-time pass rate against its states' average). `_vintage` at the top of the file records which class or year each category describes, and the app labels the figures from it.
 - **`data/us-states.json`** — the map geometry: Census state boundaries at 1:10m from [us-atlas](https://github.com/topojson/us-atlas), with Alaska and Hawaii moved into insets. Rebuilt by `tools/build_geometry.py` (instructions at the top of that file); you shouldn't need to touch it.
 
 ### Refreshing the ABA data
 
-`tools/fetch_aba.py` pulls the current Standard 509 compilation reports and folds them into `data/schools.json`:
+Every school figure comes from one source, the ABA, so the whole category refreshes in one go. `tools/fetch_aba.py` pulls the newest Standard 509 compilation reports and folds them into `data/schools.json`, then regenerates the data-driven write-ups (`tools/writeups.py`):
 
 ```bash
 pip3 install openpyxl
-python3 tools/fetch_aba.py --year 2025        # --dry-run to preview
+python3 tools/fetch_aba.py --dry-run   # preview every change
+python3 tools/fetch_aba.py
 ```
 
-It hits the two public endpoints the ABA's own disclosure site calls (no key, no auth), then joins 193 schools onto the ABA's roster. The ABA lists schools by parent institution — "Samford University" where this project says "Cumberland School of Law" — so `ALIASES` in that script bridges roughly 50 of them. **The join is asserted 1:1**: if a school stops matching, or one ABA record gets claimed twice, the script fails loudly instead of quietly dropping outcomes. It also prints every school it matched by inference rather than exact name, so you can eyeball them.
+There's no year to pass: each category takes the newest report the ABA has actually published. Before a release the backend serves a blank, zero-filled, or half-filled file (schools' in-progress submissions), so a report only counts once at least 95% of schools have their headline figure. When to re-run:
 
-One school (Wilmington University) has no employment record — provisionally approved in 2023, no graduating class yet. That's listed in `EXPECTED_MISSING` so it doesn't trip the assertion.
+| Category | ABA report | Covers | Released |
+|---|---|---|---|
+| Admissions, medians, acceptance rate | First Year Class | the class that entered that fall | mid-December |
+| Tuition (and required credit hours) | Tuitions and Fees; The Basics | the academic year starting that fall | mid-December |
+| `outcomes`, `topStates` | Employment Summary | that year's graduating class, ten months on | late April |
+| `bar` | First-Time Bar Admission | the previous year's graduates | spring |
+
+It hits the public endpoints the ABA's own disclosure site calls (no key, no auth), then joins 193 schools onto the ABA's roster. The ABA lists schools by parent institution — "Samford University" where this project says "Cumberland School of Law" — so `ALIASES` in that script bridges roughly 50 of them. **The join is asserted 1:1**: if a school stops matching, or one ABA record gets claimed twice, the script fails loudly instead of quietly dropping outcomes. It also prints every school it matched by inference rather than exact name, so you can eyeball them.
+
+One school (Wilmington University Farnan) has no employment or bar record — provisionally approved in 2023, no graduating class yet. That's listed in `EXPECTED_MISSING` so it doesn't trip the assertion. Marquette has no bar figure either: Wisconsin admits its graduates by diploma privilege.
 
 ### Where the numbers come from
 
@@ -89,36 +97,40 @@ Each figure traces to a named public source, so you can re-check any of them:
 
 | Field | Source |
 |---|---|
-| Median GPA / LSAT, 25th/75th percentiles, applications, offers, acceptance rate | **ABA Standard 509, 2025 "First Year Class" compilation** — fetched live by `tools/fetch_aba.py` from [abarequireddisclosures.org](https://www.abarequireddisclosures.org/) |
-| `outcomes` and `topStates` — employment rate, firm-size distribution, employer type, clerkships, states of employment | **ABA 509 Employment Summary compilation, 2025 report** (describes the class of 2024) — same script |
-| Tuition | ABA Standard 509 disclosures, 2025 |
-| Bar-passage figures quoted inside write-ups | ABA 509 First-Time Bar Admission reports, 2025 |
-| `rank` | Publicly reported US News rank; `tier` is derived from it |
-| `costOfLivingIndex`, `housingIndex` | **C2ER / MERIC state cost-of-living index, Q1 2026** (US average = 100, lower is cheaper) |
+| Median GPA / LSAT, 25th/75th percentiles, applications, offers, acceptance rate | **ABA Standard 509 "First Year Class" compilation** (fall 2025 entering class) — fetched by `tools/fetch_aba.py` from [abarequireddisclosures.org](https://www.abarequireddisclosures.org/) |
+| `outcomes` and `topStates` — employment rate, firm-size distribution, employer type, clerkships, states of employment | **ABA Employment Summary compilation** (class of 2025, released April 2026) — same script |
+| Tuition | **ABA 509 Tuitions and Fees compilation** (2025–26); per-credit schools annualized at a third of the ABA-reported required credit hours — same script |
+| `bar`, and the bar-passage lines in write-ups | **ABA First-Time Bar Admission compilation** (class of 2025) — same script |
+| `rank` | **U.S. News Best Law Schools, 2026 edition** (April 2026), read from usnews.com; `null` (shown "Unranked") where U.S. News publishes no number. `tier` is derived from it |
+| `costOfLivingIndex`, `housingIndex` | **C2ER cost-of-living index as published by MERIC, Q2 2026** (US average = 100, lower is cheaper) |
 | `lawyerJobsPer1k`, `avgLegalSalary` | **BLS OES, May 2025**, occupation 23-1011 (Lawyers), via the BLS public API |
-| `safety` | Quintile of the **FBI 2024 violent-crime rate** per 100k, inverted |
-| `healthcare` | Quintile of **CDC life expectancy at birth** by state |
+| `violentCrimeRate`, `safety` | **FBI 2025 estimated violent-crime rate** per 100k (Crime in the United States, Table 4, August 2026); `safety` is its quintile, inverted |
+| `lifeExpectancy`, `healthcare` | **CDC/NCHS life expectancy at birth, 2022** (U.S. State Life Tables, December 2025 — the newest state tables); `healthcare` is its quintile |
 | `livability` | Editorial 1–5 — climate, natural setting, general amenity density |
 | City lifestyle scores and blurbs | Editorial estimates, not survey data |
 
 **Caveats worth knowing:**
 
-- **Employment data is a rear-view mirror.** The 2025 report describes the class of 2024 — people who started law school in 2021. If you matriculate next year you'll graduate roughly four years after the class you're being shown. It's the best available data, not a forecast.
+- **Employment data is a rear-view mirror.** The current report describes the class of 2025 — people who started law school in 2022. If you matriculate next year you'll graduate roughly four years after the class you're being shown. It's the best available data, not a forecast.
 - **The admission percentage is a model, not a measurement**, and nothing in it is fitted to real admission results — see [How the admission odds are built](#how-the-admission-odds-are-built-and-what-theyre-worth) for what constrains it and what it ignores. Treat "Target" as "worth applying to," never as "you're in."
 - **Scores are percentile ranks, not absolute measures.** A 1–5 score answers "where does this rank among the 51 jurisdictions," not "what is the value." The raw figures shown next to each score carry the magnitude. Adding or removing a state shifts everyone's scores.
 - **`topStates` only covers the top three.** A school that scatters graduates widely can look less connected to your target market than it is, since anything past third place isn't reported.
-- **The three factors are weighted equally**, which has consequences you may not want. DC has by far the strongest legal market in the country (47 lawyers per 1,000 jobs, more than four times the next state) but lands mid-pack overall because it's expensive and scores badly on crime. If you care more about the legal market than about cost, reweight `overall` in `states.json`.
-- **About 32 schools report tuition per credit** rather than annually. Those are annualized at a third of the required credit hours, so they're approximate.
-- **Mississippi's safety score is flattered** by incomplete FBI reporting participation. It's what the official data says; treat it with suspicion.
+- **The three factors are weighted equally**, which has consequences you may not want. DC has by far the strongest legal market in the country (47 lawyers per 1,000 jobs, nearly five times the next state) but lands mid-pack overall because it's expensive and scores badly on crime. If you care more about the legal market than about cost, reweight `overall` in `states.json`.
+- **30 schools report tuition per credit** rather than annually. Those are annualized at a third of the JD's required credit hours (as the school reports them to the ABA), so they're approximate.
+- **Mississippi's crime figure rests on thin reporting.** Agencies covering only about two-thirds of its population reported to the FBI in 2024, so its estimate leans more on FBI imputation than most states'. It's what the official data says; treat it with suspicion.
 - **Puerto Rico's three ABA schools are not included** — the map covers the 50 states and DC only.
-- **Write-ups have two voices.** Schools in the original 12 states keep hand-written write-ups; the rest are generated from each school's own 509 figures.
-- `tier` is a public-data proxy for prestige. Four schools carry no published rank (two opened too recently to be ranked); their tier falls back to median LSAT.
+- **Write-ups have two voices.** Schools in the original 12 states keep hand-written write-ups; the rest (`writeupAuto`) are generated by `tools/writeups.py` from each school's own 509 figures and re-generated on every ABA refresh. Hand-written ones aren't, so re-read them when ranks or bar results move.
+- `tier` is a public-data proxy for prestige, bracketed from the U.S. News rank (T14 is ranks 1–14, so the three-way tie at 13 makes it 15 schools). The 19 schools without a published rank — U.S. News's bottom band, plus two too new to be ranked — are "Unranked" rather than guessed at.
 
 **These numbers are an approximate, point-in-time snapshot.** Spot-check any school against its official 509 report before making a real decision. Every value is editable — change the JSON and reload.
 
 ## Editing states or schools
 
 - **Add a school:** add an object to the `schools` array in `data/schools.json` with a `state` matching one in `states.json`. It'll show up automatically. If it's in a city not already in `cities.json`, add that too, or the lifestyle block won't render. To give it admissions and outcomes data, add an `ALIASES` entry in `tools/fetch_aba.py` mapping your name to the ABA's, then re-run the script.
-- **Change a score or fix a number:** edit the value and reload the page. Note that re-running `tools/fetch_aba.py` overwrites the `admissions`, `outcomes`, `topStates`, `medianGPA`, and `medianLSAT` fields — hand-edit those in the script, not the JSON, if you want the change to survive.
+- **Change a score or fix a number:** edit the value and reload the page. Note that re-running `tools/fetch_aba.py` overwrites `admissions`, `outcomes`, `topStates`, `bar`, `medianGPA`, `medianLSAT`, both tuition fields, and every `writeupAuto` write-up — fix those in the script, not the JSON, if you want the change to survive.
+- **Update the ranks:** U.S. News publishes each spring and blocks scripted access, so the list is captured in a browser (`.claude/skills/refreshing-law-school-data/usnews-capture.js`) and applied with `python3 tools/apply_ranks.py LIST.txt --edition "2027 edition (April 2027)"`. It matches each school on its exact `usnewsName`, refuses to run on any mismatch, and regenerates the auto write-ups (they lead with the tier).
+- **Update the state figures:** `python3 tools/states.py` fetches the newest MERIC cost-of-living quarter, FBI violent-crime estimates, and BLS lawyer employment and pay, and recomputes every score; edit `lifeExpectancy` by hand when the CDC publishes new state life tables, then re-run it.
+- **Check the links:** `python3 tools/check_links.py` flags any school link that errors, redirects elsewhere, or lands on a not-found page.
+- **The whole fact-check / refresh process** is written up as a Claude Code skill in `.claude/skills/refreshing-law-school-data/`.
 - **Reweight the model:** `overall` in `states.json` is just the average of the three factor scores. Recompute it however you like — the map color and sort follow whatever you put there. The fit weights live in `app.js`: `LSAT_WEIGHT`/`GPA_WEIGHT` for how the two numbers blend into one index, the `0.55`/`0.45` split in `scoreAll` for career vs. place, and the `0.7`/`0.3` split in `locationFit` for named states vs. sliders. The admission model is the `ODDS` block — every constant in it is commented with what it controls, and `BAND_CUTS` sets the admit probabilities where Safety/Target/Reach/Far reach change over.
-- **Renaming a school** will drop it from any saved target list, since the list stores names. Edit `lawSchoolShortlist` in localStorage if you need to rename something you've saved. Your profile lives in `lawSchoolProfile`.
+- **Renaming a school:** change `name` and add the old one to its `formerNames` list. On the next load the app moves saved schools, notes, and attached files across, and a backup made before the rename still restores onto the right school. Update the `ALIASES` key in `tools/fetch_aba.py` if the old name was one. Your profile lives in `lawSchoolProfile`.

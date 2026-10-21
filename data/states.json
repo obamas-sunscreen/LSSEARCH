@@ -1,5 +1,5 @@
 {
-  "_note": "State-level snapshot for a personal law-school shortlist, covering all 50 states plus DC. Scores are 1-5 percentile ranks computed across all 51 jurisdictions, so they answer 'where does this rank' rather than 'what is the absolute value' \u2014 the raw figures next to them carry the magnitude. Cost of living and housing are C2ER/MERIC index values (US avg = 100, Q1 2026). Lawyer job density and average legal salary are BLS OES May 2025 (occupation 23-1011). Safety is a quintile of the FBI 2024 violent-crime rate (inverted); healthcare is a quintile of CDC life expectancy at birth; livability/climate is an editorial 1-5. The youthful-active-lifestyle factor lives at the CITY level in cities.json and is shown on each school. Point-in-time \u2014 spot-check before relying on any number. Editable.",
+  "_note": "State-level snapshot for a personal law-school shortlist, covering all 50 states plus DC. Scores are 1-5 percentile ranks computed across all 51 jurisdictions, so they answer 'where does this rank' rather than 'what is the absolute value' \u2014 the raw figures next to them carry the magnitude. Cost of living and housing are C2ER index values published by MERIC (US avg = 100, Q2 2026). Lawyer job density and average legal salary are BLS OEWS May 2025 (occupation 23-1011). violentCrimeRate is the FBI's 2025 estimate per 100,000 (Crime in the United States, Table 4, released August 2026); safety is its quintile, inverted. lifeExpectancy is CDC/NCHS life expectancy at birth, 2022 (U.S. State Life Tables, NVSR 74-12, December 2025); healthcare is its quintile. Quintiles: percentile rank with ties at the midpoint, 10/10/10/10/11 states per band. livability/climate is an editorial 1-5. The youthful-active-lifestyle factor lives at the CITY level in cities.json and is shown on each school. Point-in-time \u2014 spot-check before relying on any number. Editable.",
   "_scoreLegend": {
     "affordability": "higher = more affordable; 2/3 overall cost-of-living index, 1/3 housing index, both inverted",
     "qualityOfLife": "even blend of safety + healthcare + livability/climate; the youthful-active-lifestyle score is per-city, see cities.json",
@@ -12,33 +12,37 @@
       "abbr": "AL",
       "anchorCity": "Birmingham",
       "affordability": {
-        "costOfLivingIndex": 85.0,
-        "housingIndex": 67.7,
+        "costOfLivingIndex": 86.0,
+        "housingIndex": 68.6,
         "score": 4.9
       },
       "qualityOfLife": {
-        "safety": 3,
+        "violentCrimeRate": 348.3,
+        "lifeExpectancy": 73.8,
+        "safety": 2,
         "healthcare": 1,
         "livability": 3,
-        "score": 2.33
+        "score": 2.0
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.2,
         "avgLegalSalary": 146630,
         "score": 2.2
       },
-      "overall": 3.14
+      "overall": 3.03
     },
     {
       "state": "Alaska",
       "abbr": "AK",
       "anchorCity": "Anchorage",
       "affordability": {
-        "costOfLivingIndex": 129.0,
-        "housingIndex": 132.4,
-        "score": 1.4
+        "costOfLivingIndex": 124.5,
+        "housingIndex": 126.7,
+        "score": 1.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 729.3,
+        "lifeExpectancy": 75.8,
         "safety": 1,
         "healthcare": 2,
         "livability": 3,
@@ -49,18 +53,20 @@
         "avgLegalSalary": 167890,
         "score": 2.8
       },
-      "overall": 2.07
+      "overall": 2.1
     },
     {
       "state": "Arizona",
       "abbr": "AZ",
       "anchorCity": "Phoenix / Tempe",
       "affordability": {
-        "costOfLivingIndex": 107.6,
-        "housingIndex": 119.0,
-        "score": 2.1
+        "costOfLivingIndex": 108.6,
+        "housingIndex": 120.5,
+        "score": 2.0
       },
       "qualityOfLife": {
+        "violentCrimeRate": 377.9,
+        "lifeExpectancy": 76.7,
         "safety": 2,
         "healthcare": 3,
         "livability": 3,
@@ -71,18 +77,20 @@
         "avgLegalSalary": 157190,
         "score": 2.7
       },
-      "overall": 2.49
+      "overall": 2.46
     },
     {
       "state": "Arkansas",
       "abbr": "AR",
       "anchorCity": "Fayetteville",
       "affordability": {
-        "costOfLivingIndex": 89.1,
-        "housingIndex": 77.2,
-        "score": 4.3
+        "costOfLivingIndex": 89.0,
+        "housingIndex": 76.9,
+        "score": 4.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 531.8,
+        "lifeExpectancy": 73.9,
         "safety": 1,
         "healthcare": 1,
         "livability": 3,
@@ -93,18 +101,20 @@
         "avgLegalSalary": 131680,
         "score": 1.6
       },
-      "overall": 2.52
+      "overall": 2.59
     },
     {
       "state": "California",
       "abbr": "CA",
       "anchorCity": "Los Angeles / Bay Area",
       "affordability": {
-        "costOfLivingIndex": 140.5,
-        "housingIndex": 189.5,
+        "costOfLivingIndex": 140.3,
+        "housingIndex": 192.1,
         "score": 1.2
       },
       "qualityOfLife": {
+        "violentCrimeRate": 432.7,
+        "lifeExpectancy": 79.3,
         "safety": 1,
         "healthcare": 5,
         "livability": 5,
@@ -122,11 +132,13 @@
       "abbr": "CO",
       "anchorCity": "Denver / Boulder",
       "affordability": {
-        "costOfLivingIndex": 101.8,
-        "housingIndex": 107.4,
+        "costOfLivingIndex": 102.7,
+        "housingIndex": 108.6,
         "score": 2.4
       },
       "qualityOfLife": {
+        "violentCrimeRate": 421.7,
+        "lifeExpectancy": 78.5,
         "safety": 1,
         "healthcare": 5,
         "livability": 5,
@@ -144,11 +156,13 @@
       "abbr": "CT",
       "anchorCity": "New Haven",
       "affordability": {
-        "costOfLivingIndex": 114.2,
-        "housingIndex": 123.5,
-        "score": 1.8
+        "costOfLivingIndex": 103.6,
+        "housingIndex": 97.0,
+        "score": 2.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 109.6,
+        "lifeExpectancy": 79.4,
         "safety": 5,
         "healthcare": 5,
         "livability": 4,
@@ -159,40 +173,44 @@
         "avgLegalSalary": 186170,
         "score": 4.2
       },
-      "overall": 3.56
+      "overall": 3.79
     },
     {
       "state": "Delaware",
       "abbr": "DE",
       "anchorCity": "Wilmington",
       "affordability": {
-        "costOfLivingIndex": 101.7,
-        "housingIndex": 101.3,
-        "score": 2.5
+        "costOfLivingIndex": 100.6,
+        "housingIndex": 99.1,
+        "score": 2.6
       },
       "qualityOfLife": {
-        "safety": 3,
+        "violentCrimeRate": 346.9,
+        "lifeExpectancy": 76.5,
+        "safety": 2,
         "healthcare": 2,
         "livability": 3,
-        "score": 2.67
+        "score": 2.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 6.0,
         "avgLegalSalary": 199970,
         "score": 4.6
       },
-      "overall": 3.26
+      "overall": 3.18
     },
     {
       "state": "District of Columbia",
       "abbr": "DC",
       "anchorCity": "Washington",
       "affordability": {
-        "costOfLivingIndex": 134.3,
-        "housingIndex": 190.4,
-        "score": 1.2
+        "costOfLivingIndex": 133.8,
+        "housingIndex": 186.9,
+        "score": 1.3
       },
       "qualityOfLife": {
+        "violentCrimeRate": 803.0,
+        "lifeExpectancy": 76.6,
         "safety": 1,
         "healthcare": 2,
         "livability": 4,
@@ -203,20 +221,22 @@
         "avgLegalSalary": 242800,
         "score": 5.0
       },
-      "overall": 2.84
+      "overall": 2.88
     },
     {
       "state": "Florida",
       "abbr": "FL",
       "anchorCity": "Miami",
       "affordability": {
-        "costOfLivingIndex": 100.7,
-        "housingIndex": 101.1,
-        "score": 2.7
+        "costOfLivingIndex": 100.8,
+        "housingIndex": 99.3,
+        "score": 2.5
       },
       "qualityOfLife": {
-        "safety": 4,
-        "healthcare": 3,
+        "violentCrimeRate": 260.9,
+        "lifeExpectancy": 77.9,
+        "safety": 3,
+        "healthcare": 4,
         "livability": 5,
         "score": 4.0
       },
@@ -225,18 +245,20 @@
         "avgLegalSalary": 162060,
         "score": 3.8
       },
-      "overall": 3.5
+      "overall": 3.43
     },
     {
       "state": "Georgia",
       "abbr": "GA",
       "anchorCity": "Atlanta",
       "affordability": {
-        "costOfLivingIndex": 90.6,
+        "costOfLivingIndex": 90.1,
         "housingIndex": 77.6,
-        "score": 4.1
+        "score": 4.2
       },
       "qualityOfLife": {
+        "violentCrimeRate": 296.9,
+        "lifeExpectancy": 75.9,
         "safety": 3,
         "healthcare": 2,
         "livability": 4,
@@ -247,18 +269,20 @@
         "avgLegalSalary": 191190,
         "score": 4.2
       },
-      "overall": 3.77
+      "overall": 3.8
     },
     {
       "state": "Hawaii",
       "abbr": "HI",
       "anchorCity": "Honolulu",
       "affordability": {
-        "costOfLivingIndex": 184.8,
-        "housingIndex": 302.4,
+        "costOfLivingIndex": 185.8,
+        "housingIndex": 302.6,
         "score": 1.0
       },
       "qualityOfLife": {
+        "violentCrimeRate": 205.1,
+        "lifeExpectancy": 80.0,
         "safety": 5,
         "healthcare": 5,
         "livability": 5,
@@ -276,55 +300,61 @@
       "abbr": "ID",
       "anchorCity": "Boise / Moscow",
       "affordability": {
-        "costOfLivingIndex": 101.7,
-        "housingIndex": 105.1,
-        "score": 2.5
+        "costOfLivingIndex": 99.4,
+        "housingIndex": 98.4,
+        "score": 2.7
       },
       "qualityOfLife": {
-        "safety": 4,
+        "violentCrimeRate": 217.3,
+        "lifeExpectancy": 78.4,
+        "safety": 5,
         "healthcare": 4,
         "livability": 4,
-        "score": 4.0
+        "score": 4.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 2.9,
         "avgLegalSalary": 125070,
         "score": 1.5
       },
-      "overall": 2.67
+      "overall": 2.84
     },
     {
       "state": "Illinois",
       "abbr": "IL",
       "anchorCity": "Chicago",
       "affordability": {
-        "costOfLivingIndex": 95.1,
-        "housingIndex": 84.7,
+        "costOfLivingIndex": 94.5,
+        "housingIndex": 83.3,
         "score": 3.2
       },
       "qualityOfLife": {
-        "safety": 3,
+        "violentCrimeRate": 251.0,
+        "lifeExpectancy": 77.5,
+        "safety": 4,
         "healthcare": 3,
         "livability": 3,
-        "score": 3.0
+        "score": 3.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 5.5,
         "avgLegalSalary": 181240,
         "score": 4.4
       },
-      "overall": 3.53
+      "overall": 3.64
     },
     {
       "state": "Indiana",
       "abbr": "IN",
       "anchorCity": "Indianapolis",
       "affordability": {
-        "costOfLivingIndex": 88.3,
-        "housingIndex": 73.0,
-        "score": 4.6
+        "costOfLivingIndex": 89.7,
+        "housingIndex": 77.5,
+        "score": 4.3
       },
       "qualityOfLife": {
+        "violentCrimeRate": 254.4,
+        "lifeExpectancy": 75.4,
         "safety": 3,
         "healthcare": 2,
         "livability": 3,
@@ -335,18 +365,20 @@
         "avgLegalSalary": 175850,
         "score": 2.6
       },
-      "overall": 3.29
+      "overall": 3.19
     },
     {
       "state": "Iowa",
       "abbr": "IA",
       "anchorCity": "Iowa City",
       "affordability": {
-        "costOfLivingIndex": 88.6,
-        "housingIndex": 75.6,
-        "score": 4.5
+        "costOfLivingIndex": 86.1,
+        "housingIndex": 70.6,
+        "score": 4.8
       },
       "qualityOfLife": {
+        "violentCrimeRate": 233.9,
+        "lifeExpectancy": 77.9,
         "safety": 4,
         "healthcare": 4,
         "livability": 3,
@@ -357,18 +389,20 @@
         "avgLegalSalary": 144760,
         "score": 1.7
       },
-      "overall": 3.29
+      "overall": 3.39
     },
     {
       "state": "Kansas",
       "abbr": "KS",
       "anchorCity": "Lawrence",
       "affordability": {
-        "costOfLivingIndex": 87.6,
-        "housingIndex": 77.5,
-        "score": 4.6
+        "costOfLivingIndex": 87.1,
+        "housingIndex": 78.7,
+        "score": 4.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 457.2,
+        "lifeExpectancy": 76.5,
         "safety": 1,
         "healthcare": 2,
         "livability": 2,
@@ -379,18 +413,20 @@
         "avgLegalSalary": 130530,
         "score": 1.8
       },
-      "overall": 2.69
+      "overall": 2.66
     },
     {
       "state": "Kentucky",
       "abbr": "KY",
       "anchorCity": "Louisville",
       "affordability": {
-        "costOfLivingIndex": 92.5,
-        "housingIndex": 78.1,
-        "score": 3.8
+        "costOfLivingIndex": 94.0,
+        "housingIndex": 79.4,
+        "score": 3.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 212.1,
+        "lifeExpectancy": 73.6,
         "safety": 5,
         "healthcare": 1,
         "livability": 3,
@@ -401,18 +437,20 @@
         "avgLegalSalary": 120730,
         "score": 1.3
       },
-      "overall": 2.7
+      "overall": 2.6
     },
     {
       "state": "Louisiana",
       "abbr": "LA",
       "anchorCity": "New Orleans",
       "affordability": {
-        "costOfLivingIndex": 91.1,
-        "housingIndex": 83.3,
-        "score": 3.8
+        "costOfLivingIndex": 91.3,
+        "housingIndex": 81.3,
+        "score": 3.7
       },
       "qualityOfLife": {
+        "violentCrimeRate": 515.1,
+        "lifeExpectancy": 73.8,
         "safety": 1,
         "healthcare": 1,
         "livability": 3,
@@ -423,62 +461,68 @@
         "avgLegalSalary": 127520,
         "score": 3.0
       },
-      "overall": 2.82
+      "overall": 2.79
     },
     {
       "state": "Maine",
       "abbr": "ME",
       "anchorCity": "Portland",
       "affordability": {
-        "costOfLivingIndex": 114.6,
-        "housingIndex": 134.8,
-        "score": 1.6
+        "costOfLivingIndex": 112.9,
+        "housingIndex": 128.5,
+        "score": 1.7
       },
       "qualityOfLife": {
+        "violentCrimeRate": 93.2,
+        "lifeExpectancy": 76.6,
         "safety": 5,
-        "healthcare": 3,
+        "healthcare": 2,
         "livability": 4,
-        "score": 4.0
+        "score": 3.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.6,
         "avgLegalSalary": 129600,
         "score": 2.2
       },
-      "overall": 2.6
+      "overall": 2.52
     },
     {
       "state": "Maryland",
       "abbr": "MD",
       "anchorCity": "Baltimore",
       "affordability": {
-        "costOfLivingIndex": 121.1,
-        "housingIndex": 149.1,
+        "costOfLivingIndex": 118.8,
+        "housingIndex": 144.1,
         "score": 1.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 358.0,
+        "lifeExpectancy": 77.8,
         "safety": 2,
-        "healthcare": 3,
+        "healthcare": 4,
         "livability": 4,
-        "score": 3.0
+        "score": 3.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 5.0,
         "avgLegalSalary": 157370,
         "score": 3.5
       },
-      "overall": 2.67
+      "overall": 2.78
     },
     {
       "state": "Massachusetts",
       "abbr": "MA",
       "anchorCity": "Boston / Cambridge",
       "affordability": {
-        "costOfLivingIndex": 147.8,
-        "housingIndex": 217.5,
+        "costOfLivingIndex": 148.1,
+        "housingIndex": 213.2,
         "score": 1.1
       },
       "qualityOfLife": {
+        "violentCrimeRate": 302.7,
+        "lifeExpectancy": 79.8,
         "safety": 3,
         "healthcare": 5,
         "livability": 4,
@@ -496,22 +540,24 @@
       "abbr": "MI",
       "anchorCity": "Ann Arbor",
       "affordability": {
-        "costOfLivingIndex": 93.9,
-        "housingIndex": 85.7,
-        "score": 3.3
+        "costOfLivingIndex": 92.1,
+        "housingIndex": 82.9,
+        "score": 3.6
       },
       "qualityOfLife": {
+        "violentCrimeRate": 416.2,
+        "lifeExpectancy": 76.8,
         "safety": 2,
-        "healthcare": 2,
+        "healthcare": 3,
         "livability": 3,
-        "score": 2.33
+        "score": 2.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.8,
         "avgLegalSalary": 148820,
         "score": 2.8
       },
-      "overall": 2.81
+      "overall": 3.02
     },
     {
       "state": "Minnesota",
@@ -519,10 +565,12 @@
       "anchorCity": "Minneapolis",
       "affordability": {
         "costOfLivingIndex": 93.4,
-        "housingIndex": 79.5,
-        "score": 3.7
+        "housingIndex": 79.1,
+        "score": 3.6
       },
       "qualityOfLife": {
+        "violentCrimeRate": 223.5,
+        "lifeExpectancy": 79.3,
         "safety": 4,
         "healthcare": 5,
         "livability": 3,
@@ -533,84 +581,92 @@
         "avgLegalSalary": 174300,
         "score": 3.7
       },
-      "overall": 3.8
+      "overall": 3.77
     },
     {
       "state": "Mississippi",
       "abbr": "MS",
       "anchorCity": "Oxford",
       "affordability": {
-        "costOfLivingIndex": 86.2,
-        "housingIndex": 71.0,
-        "score": 4.8
+        "costOfLivingIndex": 87.4,
+        "housingIndex": 70.8,
+        "score": 4.6
       },
       "qualityOfLife": {
-        "safety": 5,
+        "violentCrimeRate": 226.9,
+        "lifeExpectancy": 72.6,
+        "safety": 4,
         "healthcare": 1,
         "livability": 2,
-        "score": 2.67
+        "score": 2.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 2.7,
         "avgLegalSalary": 108930,
         "score": 1.1
       },
-      "overall": 2.86
+      "overall": 2.68
     },
     {
       "state": "Missouri",
       "abbr": "MO",
       "anchorCity": "St. Louis",
       "affordability": {
-        "costOfLivingIndex": 88.6,
-        "housingIndex": 76.1,
-        "score": 4.5
+        "costOfLivingIndex": 88.2,
+        "housingIndex": 77.7,
+        "score": 4.4
       },
       "qualityOfLife": {
-        "safety": 1,
-        "healthcare": 1,
+        "violentCrimeRate": 417.8,
+        "lifeExpectancy": 75.2,
+        "safety": 2,
+        "healthcare": 2,
         "livability": 3,
-        "score": 1.67
+        "score": 2.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.9,
         "avgLegalSalary": 162820,
         "score": 3.2
       },
-      "overall": 3.12
+      "overall": 3.31
     },
     {
       "state": "Montana",
       "abbr": "MT",
       "anchorCity": "Missoula",
       "affordability": {
-        "costOfLivingIndex": 105.9,
-        "housingIndex": 113.2,
-        "score": 2.3
+        "costOfLivingIndex": 106.0,
+        "housingIndex": 114.9,
+        "score": 2.2
       },
       "qualityOfLife": {
-        "safety": 2,
+        "violentCrimeRate": 419.1,
+        "lifeExpectancy": 77.3,
+        "safety": 1,
         "healthcare": 3,
         "livability": 4,
-        "score": 3.0
+        "score": 2.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 4.7,
         "avgLegalSalary": 115830,
         "score": 2.5
       },
-      "overall": 2.6
+      "overall": 2.46
     },
     {
       "state": "Nebraska",
       "abbr": "NE",
       "anchorCity": "Lincoln",
       "affordability": {
-        "costOfLivingIndex": 91.3,
-        "housingIndex": 78.1,
-        "score": 3.9
+        "costOfLivingIndex": 90.1,
+        "housingIndex": 76.5,
+        "score": 4.3
       },
       "qualityOfLife": {
+        "violentCrimeRate": 218.4,
+        "lifeExpectancy": 78.3,
         "safety": 4,
         "healthcare": 4,
         "livability": 2,
@@ -621,18 +677,20 @@
         "avgLegalSalary": 133490,
         "score": 2.1
       },
-      "overall": 3.11
+      "overall": 3.24
     },
     {
       "state": "Nevada",
       "abbr": "NV",
       "anchorCity": "Las Vegas",
       "affordability": {
-        "costOfLivingIndex": 100.7,
-        "housingIndex": 110.5,
-        "score": 2.6
+        "costOfLivingIndex": 105.4,
+        "housingIndex": 119.0,
+        "score": 2.2
       },
       "qualityOfLife": {
+        "violentCrimeRate": 379.2,
+        "lifeExpectancy": 76.4,
         "safety": 2,
         "healthcare": 2,
         "livability": 3,
@@ -643,40 +701,44 @@
         "avgLegalSalary": 205630,
         "score": 4.1
       },
-      "overall": 3.01
+      "overall": 2.88
     },
     {
       "state": "New Hampshire",
       "abbr": "NH",
       "anchorCity": "Concord",
       "affordability": {
-        "costOfLivingIndex": 110.1,
-        "housingIndex": 116.5,
-        "score": 2.1
+        "costOfLivingIndex": 108.5,
+        "housingIndex": 113.9,
+        "score": 2.2
       },
       "qualityOfLife": {
+        "violentCrimeRate": 117.6,
+        "lifeExpectancy": 78.7,
         "safety": 5,
-        "healthcare": 4,
+        "healthcare": 5,
         "livability": 4,
-        "score": 4.33
+        "score": 4.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.3,
         "avgLegalSalary": 172990,
         "score": 2.9
       },
-      "overall": 3.11
+      "overall": 3.26
     },
     {
       "state": "New Jersey",
       "abbr": "NJ",
       "anchorCity": "Newark / Camden",
       "affordability": {
-        "costOfLivingIndex": 118.8,
-        "housingIndex": 144.3,
+        "costOfLivingIndex": 119.2,
+        "housingIndex": 145.1,
         "score": 1.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 193.8,
+        "lifeExpectancy": 79.6,
         "safety": 5,
         "healthcare": 5,
         "livability": 3,
@@ -694,33 +756,37 @@
       "abbr": "NM",
       "anchorCity": "Albuquerque",
       "affordability": {
-        "costOfLivingIndex": 89.9,
-        "housingIndex": 83.2,
-        "score": 4.0
+        "costOfLivingIndex": 90.2,
+        "housingIndex": 82.4,
+        "score": 3.9
       },
       "qualityOfLife": {
+        "violentCrimeRate": 621.6,
+        "lifeExpectancy": 74.5,
         "safety": 1,
-        "healthcare": 2,
+        "healthcare": 1,
         "livability": 3,
-        "score": 2.0
+        "score": 1.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.9,
         "avgLegalSalary": 138250,
         "score": 2.7
       },
-      "overall": 2.9
+      "overall": 2.76
     },
     {
       "state": "New York",
       "abbr": "NY",
       "anchorCity": "New York City",
       "affordability": {
-        "costOfLivingIndex": 124.7,
-        "housingIndex": 172.3,
-        "score": 1.4
+        "costOfLivingIndex": 132.6,
+        "housingIndex": 194.8,
+        "score": 1.3
       },
       "qualityOfLife": {
+        "violentCrimeRate": 368.4,
+        "lifeExpectancy": 79.5,
         "safety": 2,
         "healthcare": 5,
         "livability": 3,
@@ -731,40 +797,44 @@
         "avgLegalSalary": 220180,
         "score": 4.9
       },
-      "overall": 3.21
+      "overall": 3.18
     },
     {
       "state": "North Carolina",
       "abbr": "NC",
       "anchorCity": "Durham / Chapel Hill",
       "affordability": {
-        "costOfLivingIndex": 96.6,
-        "housingIndex": 91.7,
-        "score": 3.0
+        "costOfLivingIndex": 96.7,
+        "housingIndex": 91.4,
+        "score": 2.9
       },
       "qualityOfLife": {
-        "safety": 2,
+        "violentCrimeRate": 330.3,
+        "lifeExpectancy": 75.9,
+        "safety": 3,
         "healthcare": 2,
         "livability": 4,
-        "score": 2.67
+        "score": 3.0
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.4,
         "avgLegalSalary": 160340,
         "score": 2.7
       },
-      "overall": 2.79
+      "overall": 2.87
     },
     {
       "state": "North Dakota",
       "abbr": "ND",
       "anchorCity": "Grand Forks",
       "affordability": {
-        "costOfLivingIndex": 90.7,
-        "housingIndex": 77.2,
+        "costOfLivingIndex": 90.5,
+        "housingIndex": 77.0,
         "score": 4.1
       },
       "qualityOfLife": {
+        "violentCrimeRate": 238.1,
+        "lifeExpectancy": 77.9,
         "safety": 4,
         "healthcare": 4,
         "livability": 2,
@@ -782,11 +852,13 @@
       "abbr": "OH",
       "anchorCity": "Columbus",
       "affordability": {
-        "costOfLivingIndex": 93.7,
-        "housingIndex": 86.3,
-        "score": 3.4
+        "costOfLivingIndex": 93.0,
+        "housingIndex": 85.8,
+        "score": 3.5
       },
       "qualityOfLife": {
+        "violentCrimeRate": 275.6,
+        "lifeExpectancy": 75.6,
         "safety": 3,
         "healthcare": 2,
         "livability": 3,
@@ -797,18 +869,20 @@
         "avgLegalSalary": 151140,
         "score": 2.6
       },
-      "overall": 2.89
+      "overall": 2.92
     },
     {
       "state": "Oklahoma",
       "abbr": "OK",
       "anchorCity": "Oklahoma City",
       "affordability": {
-        "costOfLivingIndex": 83.5,
-        "housingIndex": 66.9,
+        "costOfLivingIndex": 83.0,
+        "housingIndex": 65.1,
         "score": 5.0
       },
       "qualityOfLife": {
+        "violentCrimeRate": 407.7,
+        "lifeExpectancy": 73.8,
         "safety": 2,
         "healthcare": 1,
         "livability": 2,
@@ -826,33 +900,37 @@
       "abbr": "OR",
       "anchorCity": "Portland",
       "affordability": {
-        "costOfLivingIndex": 109.6,
-        "housingIndex": 117.4,
-        "score": 2.1
+        "costOfLivingIndex": 110.4,
+        "housingIndex": 118.8,
+        "score": 2.0
       },
       "qualityOfLife": {
+        "violentCrimeRate": 311.2,
+        "lifeExpectancy": 77.7,
         "safety": 3,
-        "healthcare": 5,
+        "healthcare": 4,
         "livability": 4,
-        "score": 4.0
+        "score": 3.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.6,
         "avgLegalSalary": 156620,
         "score": 2.8
       },
-      "overall": 2.97
+      "overall": 2.82
     },
     {
       "state": "Pennsylvania",
       "abbr": "PA",
       "anchorCity": "Philadelphia",
       "affordability": {
-        "costOfLivingIndex": 96.2,
-        "housingIndex": 84.1,
+        "costOfLivingIndex": 95.3,
+        "housingIndex": 84.8,
         "score": 3.2
       },
       "qualityOfLife": {
+        "violentCrimeRate": 226.8,
+        "lifeExpectancy": 77.3,
         "safety": 4,
         "healthcare": 3,
         "livability": 3,
@@ -870,11 +948,13 @@
       "abbr": "RI",
       "anchorCity": "Bristol / Providence",
       "affordability": {
-        "costOfLivingIndex": 111.2,
-        "housingIndex": 114.4,
+        "costOfLivingIndex": 110.9,
+        "housingIndex": 117.1,
         "score": 2.0
       },
       "qualityOfLife": {
+        "violentCrimeRate": 144.1,
+        "lifeExpectancy": 79.2,
         "safety": 5,
         "healthcare": 5,
         "livability": 4,
@@ -892,33 +972,37 @@
       "abbr": "SC",
       "anchorCity": "Columbia",
       "affordability": {
-        "costOfLivingIndex": 91.9,
-        "housingIndex": 79.8,
+        "costOfLivingIndex": 92.7,
+        "housingIndex": 79.5,
         "score": 3.7
       },
       "qualityOfLife": {
-        "safety": 1,
+        "violentCrimeRate": 387.6,
+        "lifeExpectancy": 75.1,
+        "safety": 2,
         "healthcare": 1,
         "livability": 4,
-        "score": 2.0
+        "score": 2.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.4,
         "avgLegalSalary": 144700,
         "score": 2.2
       },
-      "overall": 2.63
+      "overall": 2.74
     },
     {
       "state": "South Dakota",
       "abbr": "SD",
       "anchorCity": "Vermillion",
       "affordability": {
-        "costOfLivingIndex": 94.1,
-        "housingIndex": 88.2,
-        "score": 3.2
+        "costOfLivingIndex": 93.5,
+        "housingIndex": 86.3,
+        "score": 3.3
       },
       "qualityOfLife": {
+        "violentCrimeRate": 307.5,
+        "lifeExpectancy": 77.3,
         "safety": 3,
         "healthcare": 3,
         "livability": 2,
@@ -929,18 +1013,20 @@
         "avgLegalSalary": 132270,
         "score": 1.9
       },
-      "overall": 2.59
+      "overall": 2.62
     },
     {
       "state": "Tennessee",
       "abbr": "TN",
       "anchorCity": "Nashville",
       "affordability": {
-        "costOfLivingIndex": 88.9,
-        "housingIndex": 80.3,
+        "costOfLivingIndex": 89.7,
+        "housingIndex": 80.0,
         "score": 4.1
       },
       "qualityOfLife": {
+        "violentCrimeRate": 492.3,
+        "lifeExpectancy": 73.8,
         "safety": 1,
         "healthcare": 1,
         "livability": 4,
@@ -958,55 +1044,61 @@
       "abbr": "TX",
       "anchorCity": "Austin",
       "affordability": {
-        "costOfLivingIndex": 90.7,
-        "housingIndex": 77.7,
+        "costOfLivingIndex": 90.8,
+        "housingIndex": 77.2,
         "score": 4.0
       },
       "qualityOfLife": {
-        "safety": 2,
+        "violentCrimeRate": 344.9,
+        "lifeExpectancy": 77.1,
+        "safety": 3,
         "healthcare": 3,
         "livability": 3,
-        "score": 2.67
+        "score": 3.0
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 4.0,
         "avgLegalSalary": 180370,
         "score": 3.7
       },
-      "overall": 3.46
+      "overall": 3.57
     },
     {
       "state": "Utah",
       "abbr": "UT",
       "anchorCity": "Salt Lake City",
       "affordability": {
-        "costOfLivingIndex": 100.6,
-        "housingIndex": 110.8,
-        "score": 2.6
+        "costOfLivingIndex": 98.4,
+        "housingIndex": 102.9,
+        "score": 2.7
       },
       "qualityOfLife": {
+        "violentCrimeRate": 235.7,
+        "lifeExpectancy": 79.0,
         "safety": 4,
-        "healthcare": 4,
+        "healthcare": 5,
         "livability": 4,
-        "score": 4.0
+        "score": 4.33
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 4.0,
         "avgLegalSalary": 169480,
         "score": 3.4
       },
-      "overall": 3.33
+      "overall": 3.48
     },
     {
       "state": "Vermont",
       "abbr": "VT",
       "anchorCity": "South Royalton",
       "affordability": {
-        "costOfLivingIndex": 113.0,
-        "housingIndex": 127.5,
-        "score": 1.8
+        "costOfLivingIndex": 113.4,
+        "housingIndex": 128.2,
+        "score": 1.7
       },
       "qualityOfLife": {
+        "violentCrimeRate": 214.4,
+        "lifeExpectancy": 78.3,
         "safety": 5,
         "healthcare": 4,
         "livability": 4,
@@ -1017,62 +1109,68 @@
         "avgLegalSalary": 179630,
         "score": 3.9
       },
-      "overall": 3.34
+      "overall": 3.31
     },
     {
       "state": "Virginia",
       "abbr": "VA",
       "anchorCity": "Richmond / Charlottesville",
       "affordability": {
-        "costOfLivingIndex": 99.1,
-        "housingIndex": 99.1,
-        "score": 2.8
+        "costOfLivingIndex": 99.0,
+        "housingIndex": 99.3,
+        "score": 2.7
       },
       "qualityOfLife": {
+        "violentCrimeRate": 205.9,
+        "lifeExpectancy": 77.5,
         "safety": 5,
-        "healthcare": 4,
+        "healthcare": 3,
         "livability": 4,
-        "score": 4.33
+        "score": 4.0
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 4.5,
         "avgLegalSalary": 179240,
         "score": 3.9
       },
-      "overall": 3.68
+      "overall": 3.53
     },
     {
       "state": "Washington",
       "abbr": "WA",
       "anchorCity": "Seattle",
       "affordability": {
-        "costOfLivingIndex": 114.6,
-        "housingIndex": 123.1,
+        "costOfLivingIndex": 115.1,
+        "housingIndex": 124.6,
         "score": 1.7
       },
       "qualityOfLife": {
+        "violentCrimeRate": 283.9,
+        "lifeExpectancy": 78.4,
         "safety": 3,
-        "healthcare": 5,
+        "healthcare": 4,
         "livability": 4,
-        "score": 4.0
+        "score": 3.67
       },
       "legalIndustry": {
         "lawyerJobsPer1k": 3.6,
         "avgLegalSalary": 169940,
         "score": 3.2
       },
-      "overall": 2.97
+      "overall": 2.86
     },
     {
       "state": "West Virginia",
       "abbr": "WV",
       "anchorCity": "Morgantown",
       "affordability": {
-        "costOfLivingIndex": 87.9,
-        "housingIndex": 71.3,
-        "score": 4.7
+        "costOfLivingIndex": 87.0,
+        "housingIndex": 69.9,
+        "score": 4.8
       },
       "qualityOfLife": {
+        "violentCrimeRate": 241.7,
+        "lifeExpectancy": 72.2,
         "safety": 4,
         "healthcare": 1,
         "livability": 3,
@@ -1083,18 +1181,20 @@
         "avgLegalSalary": 123210,
         "score": 1.9
       },
-      "overall": 3.09
+      "overall": 3.12
     },
     {
       "state": "Wisconsin",
       "abbr": "WI",
       "anchorCity": "Madison",
       "affordability": {
-        "costOfLivingIndex": 97.4,
-        "housingIndex": 96.6,
-        "score": 2.9
+        "costOfLivingIndex": 95.7,
+        "housingIndex": 91.2,
+        "score": 3.0
       },
       "qualityOfLife": {
+        "violentCrimeRate": 240.3,
+        "lifeExpectancy": 78.1,
         "safety": 4,
         "healthcare": 4,
         "livability": 3,
@@ -1105,18 +1205,20 @@
         "avgLegalSalary": 171200,
         "score": 2.7
       },
-      "overall": 3.09
+      "overall": 3.12
     },
     {
       "state": "Wyoming",
       "abbr": "WY",
       "anchorCity": "Laramie",
       "affordability": {
-        "costOfLivingIndex": 93.7,
-        "housingIndex": 86.5,
-        "score": 3.3
+        "costOfLivingIndex": 94.4,
+        "housingIndex": 88.5,
+        "score": 3.2
       },
       "qualityOfLife": {
+        "violentCrimeRate": 179.9,
+        "lifeExpectancy": 76.8,
         "safety": 5,
         "healthcare": 3,
         "livability": 3,
@@ -1127,7 +1229,7 @@
         "avgLegalSalary": 125050,
         "score": 1.7
       },
-      "overall": 2.89
+      "overall": 2.86
     }
   ]
 }

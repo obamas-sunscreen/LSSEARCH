@@ -1,15 +1,17 @@
 {
-  "_note": "Every ABA-approved law school in the 50 states plus DC (193 of them). Median GPA and LSAT, tuition, acceptance rate, and the employment/bar figures behind each write-up come from the official ABA Standard 509 disclosures for 2025 (abarequireddisclosures.org), pulled from the ABA's own compilation spreadsheets. About 32 schools report tuition per credit rather than annually; those are annualized at a third of the required credit hours and are therefore approximate. `rank` is the publicly reported US News rank where one exists, and `tier` is derived from it. Write-ups for schools outside the original 12 states are generated from each school's own 509 figures; the rest are hand-written. Point-in-time — spot-check any school against its official 509 report before relying on it. Admissions percentiles (25/50/75 GPA and LSAT, acceptance rate) and employment outcomes (firm-size distribution, employer type, federal and state clerkships, top three states of employment) are pulled directly from the ABA 2025 Standard 509 compilation reports, which describe the class of 2024. Regenerate with tools/fetch_aba.py. Editable.",
+  "_note": "Every ABA-approved law school in the 50 states plus DC (193 of them). Each category comes from one vetted source. Admissions (applications, offers, acceptance rate, enrollment, 25/50/75 GPA and LSAT), tuition, employment outcomes and first-time bar passage are the ABA's own Standard 509 compilation reports (abarequireddisclosures.org); `_vintage` says which class or year each describes. 30 schools charge per credit; their tuition is annualized at a third of the JD's required credit hours, as reported to the ABA, so it's approximate. `rank` is the U.S. News rank, null where U.S. News publishes none, and `tier` is derived from it. Write-ups marked `writeupAuto` are generated from these figures by tools/writeups.py; the rest are hand-written. `formerNames` lists a renamed school's old names so saved lists follow it. Refresh with tools/fetch_aba.py. Editable.",
   "schools": [
     {
       "state": "Alabama",
       "name": "University of Alabama School of Law",
+      "usnewsName": "University of Alabama",
       "city": "Tuscaloosa",
+      "website": "https://law.ua.edu/",
       "medianGPA": 3.97,
       "medianLSAT": 167,
       "tuitionInState": 24980,
       "tuitionOutState": 48100,
-      "rank": 31,
+      "rank": 40,
       "tier": "T50",
       "writeup": "Solid national school in Tuscaloosa, admitting 26% of applicants at a 167/3.97 median. Where it excels: 93% of the class lands full-time bar-required work, among the best placement rates in the country, and the federal clerkship pipeline is unusually strong at 12% of the class.",
       "outcomes": {
@@ -55,19 +57,28 @@
         "lsat25": 161,
         "lsat50": 167,
         "lsat75": 168
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 95.24,
+        "statePassRate": 81.29,
+        "diff": 13.95,
+        "takers": 147
       }
     },
     {
       "state": "Alabama",
       "name": "Cumberland School of Law",
+      "usnewsName": "Samford University (Cumberland)",
       "city": "Birmingham",
+      "website": "https://cumberland.samford.edu/",
       "medianGPA": 3.63,
       "medianLSAT": 156,
       "tuitionInState": 46334,
       "tuitionOutState": 46334,
-      "rank": 107,
+      "rank": 122,
       "tier": "Regional",
-      "writeup": "Regional school in Birmingham, admitting 49% of applicants at a 156/3.63 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
+      "writeup": "Regional school in Birmingham, admitting 49% of applicants at a 156/3.63 median. Where it excels: graduates beat their states' average bar pass rate by 9 points.",
       "outcomes": {
         "graduates": 139,
         "employmentRate": 87.1,
@@ -111,19 +122,28 @@
         "lsat25": 154,
         "lsat50": 156,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 90.44,
+        "statePassRate": 81.87,
+        "diff": 8.57,
+        "takers": 136
       }
     },
     {
       "state": "Alabama",
       "name": "Thomas Goode Jones School of Law",
+      "usnewsName": "Faulkner University (Jones)",
       "city": "Montgomery",
+      "website": "https://law.faulkner.edu/",
       "medianGPA": 3.33,
       "medianLSAT": 150,
       "tuitionInState": 39900,
       "tuitionOutState": 39900,
-      "rank": 178,
+      "rank": 164,
       "tier": "Regional",
-      "writeup": "Regional school in Montgomery, admitting 54% of applicants at a 150/3.33 median. Where it falls short: just 66% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 9 points.",
+      "writeup": "Regional school in Montgomery, admitting 54% of applicants at a 150/3.33 median. Where it falls short: just 66% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 13 points.",
       "outcomes": {
         "graduates": 88,
         "employmentRate": 71.6,
@@ -167,19 +187,28 @@
         "lsat25": 148,
         "lsat50": 150,
         "lsat75": 154
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 67.5,
+        "statePassRate": 80.8,
+        "diff": -13.3,
+        "takers": 80
       }
     },
     {
       "state": "Arizona",
       "name": "Sandra Day O'Connor College of Law",
-      "city": "Tempe",
+      "usnewsName": "Arizona State University (O'Connor)",
+      "city": "Phoenix",
+      "website": "https://law.asu.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 165,
       "tuitionInState": 28390,
       "tuitionOutState": 52099,
-      "rank": 45,
+      "rank": 44,
       "tier": "T50",
-      "writeup": "Solid national school in Tempe, admitting 20% of applicants at a 165/3.91 median. Where it excels: graduates beat their states' average bar pass rate by 13 points, and residency saves $23,709 a year.",
+      "writeup": "Solid national school in Phoenix, admitting 20% of applicants at a 165/3.91 median. Where it excels: graduates beat their states' average bar pass rate by 14 points, and residency saves $23,709 a year.",
       "outcomes": {
         "graduates": 290,
         "employmentRate": 92.8,
@@ -223,19 +252,28 @@
         "lsat25": 158,
         "lsat50": 165,
         "lsat75": 167
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 91.94,
+        "statePassRate": 78.23,
+        "diff": 13.71,
+        "takers": 273
       }
     },
     {
       "state": "Arizona",
       "name": "University of Arizona James E. Rogers College of Law",
+      "usnewsName": "University of Arizona (Rogers)",
       "city": "Tucson",
+      "website": "https://law.arizona.edu/",
       "medianGPA": 3.78,
       "medianLSAT": 163,
       "tuitionInState": 26490,
       "tuitionOutState": 31360,
-      "rank": 59,
-      "tier": "T60",
-      "writeup": "Regional-plus school in Tucson, admitting 28% of applicants at a 163/3.78 median. Where it excels: the sticker price is low at $31,360 out-of-state.",
+      "rank": 70,
+      "tier": "T70",
+      "writeup": "Regional-plus school in Tucson, admitting 28% of applicants at a 163/3.78 median. Where it excels: graduates beat their states' average bar pass rate by 6 points, and the sticker price is low at $31,360 out-of-state.",
       "outcomes": {
         "graduates": 130,
         "employmentRate": 92.3,
@@ -279,18 +317,27 @@
         "lsat25": 162,
         "lsat50": 163,
         "lsat75": 165
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 84.13,
+        "statePassRate": 77.69,
+        "diff": 6.44,
+        "takers": 126
       }
     },
     {
       "state": "Arkansas",
       "name": "University of Arkansas Law School",
+      "usnewsName": "University of Arkansas--Fayetteville",
       "city": "Fayetteville",
+      "website": "https://law.uark.edu/",
       "medianGPA": 3.71,
       "medianLSAT": 158,
       "tuitionInState": 16230,
       "tuitionOutState": 39120,
-      "rank": 115,
-      "tier": "Regional",
+      "rank": 100,
+      "tier": "T100",
       "writeup": "Regional school in Fayetteville, admitting 27% of applicants at a 158/3.71 median. Where it excels: residency saves $22,890 a year. Where it falls short: just 73% of graduates land full-time bar-required work.",
       "outcomes": {
         "graduates": 119,
@@ -335,17 +382,26 @@
         "lsat25": 155,
         "lsat50": 158,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 80.0,
+        "statePassRate": 78.11,
+        "diff": 1.89,
+        "takers": 115
       }
     },
     {
       "state": "Arkansas",
       "name": "University of Arkansas at Little Rock Bowen School of Law",
+      "usnewsName": "University of Arkansas--Little Rock (Bowen)",
       "city": "Little Rock",
+      "website": "https://ualr.edu/law/",
       "medianGPA": 3.41,
       "medianLSAT": 153,
       "tuitionInState": 13770,
       "tuitionOutState": 30180,
-      "rank": 139,
+      "rank": 140,
       "tier": "Regional",
       "writeup": "Regional school in Little Rock, admitting 55% of applicants at a 153/3.41 median. Where it excels: it pulls hard toward government and public interest (29% of graduates), and the sticker price is low at $30,180 out-of-state.",
       "outcomes": {
@@ -391,19 +447,28 @@
         "lsat25": 150,
         "lsat50": 153,
         "lsat75": 158
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 78.91,
+        "statePassRate": 77.72,
+        "diff": 1.19,
+        "takers": 128
       }
     },
     {
       "state": "California",
       "name": "Stanford Law School",
+      "usnewsName": "Stanford University",
       "city": "Stanford",
+      "website": "https://law.stanford.edu/",
       "medianGPA": 3.96,
       "medianLSAT": 173,
       "tuitionInState": 77454,
       "tuitionOutState": 77454,
       "rank": 1,
       "tier": "T14",
-      "writeup": "Elite nationally — unmatched for clerkships, academia, and tech/IP law given its Silicon Valley ties. Falls short only on cost: full private sticker with limited need-based aid.",
+      "writeup": "Elite nationally — top-tier for clerkships and academia, and unmatched for tech/IP law given its Silicon Valley ties. Falls short only on cost: no merit scholarships, so aid is need-based (though generous) at a full private sticker.",
       "outcomes": {
         "graduates": 190,
         "employmentRate": 91.1,
@@ -447,19 +512,27 @@
         "lsat25": 171,
         "lsat50": 173,
         "lsat75": 176
+      },
+      "bar": {
+        "passRate": 99.43,
+        "statePassRate": 84.66,
+        "diff": 14.77,
+        "takers": 176
       }
     },
     {
       "state": "California",
       "name": "UCLA School of Law",
+      "usnewsName": "University of California--Los Angeles",
       "city": "Los Angeles",
+      "website": "https://www.law.ucla.edu/",
       "medianGPA": 3.95,
       "medianLSAT": 171,
       "tuitionInState": 59084,
       "tuitionOutState": 71329,
-      "rank": 12,
+      "rank": 13,
       "tier": "T14",
-      "writeup": "Best launchpad into the LA market and entertainment law; strong across the board. Slightly weaker national portability than the T14 above it, but excellent value for a Californian.",
+      "writeup": "Best launchpad into the LA market and entertainment law; strong across the board. Slightly weaker national portability than the schools ranked above it, but excellent value for a Californian.",
       "outcomes": {
         "graduates": 332,
         "employmentRate": 97.0,
@@ -503,19 +576,27 @@
         "lsat25": 166,
         "lsat50": 171,
         "lsat75": 172
+      },
+      "bar": {
+        "passRate": 96.65,
+        "statePassRate": 83.13,
+        "diff": 13.52,
+        "takers": 328
       }
     },
     {
       "state": "California",
       "name": "UC Berkeley School of Law",
+      "usnewsName": "University of California, Berkeley",
       "city": "Berkeley",
+      "website": "https://www.law.berkeley.edu/",
       "medianGPA": 3.92,
       "medianLSAT": 170,
       "tuitionInState": 62532,
       "tuitionOutState": 76149,
-      "rank": 13,
-      "tier": "T14",
-      "writeup": "T14 with deep pull in California and tech; strong public-interest and IP programs. Public 'discount' is modest — resident tuition is still high and Bay Area cost of living is brutal.",
+      "rank": 16,
+      "tier": "T20",
+      "writeup": "Top-20 school with deep pull in California and tech; strong public-interest and IP programs. Public 'discount' is modest — resident tuition is still high and Bay Area cost of living is brutal.",
       "outcomes": {
         "graduates": 283,
         "employmentRate": 96.8,
@@ -559,12 +640,20 @@
         "lsat25": 167,
         "lsat50": 170,
         "lsat75": 172
+      },
+      "bar": {
+        "passRate": 94.79,
+        "statePassRate": 83.61,
+        "diff": 11.18,
+        "takers": 288
       }
     },
     {
       "state": "California",
       "name": "USC Gould School of Law",
+      "usnewsName": "University of Southern California (Gould)",
       "city": "Los Angeles",
+      "website": "https://gould.usc.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 169,
       "tuitionInState": 84034,
@@ -615,17 +704,25 @@
         "lsat25": 165,
         "lsat50": 169,
         "lsat75": 170
+      },
+      "bar": {
+        "passRate": 94.14,
+        "statePassRate": 83.28,
+        "diff": 10.86,
+        "takers": 222
       }
     },
     {
       "state": "California",
       "name": "UC Irvine School of Law",
+      "usnewsName": "University of California--Irvine",
       "city": "Irvine",
+      "website": "https://www.law.uci.edu/",
       "medianGPA": 3.8,
       "medianLSAT": 169,
       "tuitionInState": 59080,
       "tuitionOutState": 71325,
-      "rank": 38,
+      "rank": 34,
       "tier": "T50",
       "writeup": "Young but fast-rising, well-regarded faculty and good SoCal placement. Still building national brand recognition.",
       "outcomes": {
@@ -671,18 +768,26 @@
         "lsat25": 166,
         "lsat50": 169,
         "lsat75": 170
+      },
+      "bar": {
+        "passRate": 89.87,
+        "statePassRate": 82.68,
+        "diff": 7.19,
+        "takers": 158
       }
     },
     {
       "state": "California",
       "name": "UC Davis School of Law",
+      "usnewsName": "University of California--Davis",
       "city": "Davis",
+      "website": "https://www.law.ucdavis.edu/",
       "medianGPA": 3.7,
       "medianLSAT": 165,
       "tuitionInState": 57460,
       "tuitionOutState": 69705,
-      "rank": 50,
-      "tier": "T50",
+      "rank": 52,
+      "tier": "T60",
       "writeup": "Solid NorCal/Sacramento and public-sector placement with an environmental-law strength. Less national reach; better as an in-state value play.",
       "outcomes": {
         "graduates": 204,
@@ -727,18 +832,26 @@
         "lsat25": 160,
         "lsat50": 165,
         "lsat75": 167
+      },
+      "bar": {
+        "passRate": 93.24,
+        "statePassRate": 82.53,
+        "diff": 10.71,
+        "takers": 207
       }
     },
     {
       "state": "California",
       "name": "Pepperdine Caruso School of Law",
+      "usnewsName": "Pepperdine University (Caruso)",
       "city": "Malibu",
+      "website": "https://law.pepperdine.edu/",
       "medianGPA": 3.85,
       "medianLSAT": 164,
       "tuitionInState": 72920,
       "tuitionOutState": 72920,
-      "rank": 55,
-      "tier": "T60",
+      "rank": 46,
+      "tier": "T50",
       "writeup": "Nationally ranked dispute-resolution program and improving outcomes. High private cost and a smaller regional network outside SoCal.",
       "outcomes": {
         "graduates": 183,
@@ -783,17 +896,25 @@
         "lsat25": 161,
         "lsat50": 164,
         "lsat75": 167
+      },
+      "bar": {
+        "passRate": 90.71,
+        "statePassRate": 82.44,
+        "diff": 8.27,
+        "takers": 183
       }
     },
     {
       "state": "California",
       "name": "University of San Diego School of Law",
+      "usnewsName": "University of San Diego",
       "city": "San Diego",
+      "website": "https://www.sandiego.edu/law/",
       "medianGPA": 3.84,
       "medianLSAT": 163,
       "tuitionInState": 66950,
       "tuitionOutState": 66950,
-      "rank": 57,
+      "rank": 54,
       "tier": "T60",
       "writeup": "Best-connected school in the San Diego market. Outcomes are regional and cost is high for the ranking.",
       "outcomes": {
@@ -839,18 +960,26 @@
         "lsat25": 160,
         "lsat50": 163,
         "lsat75": 165
+      },
+      "bar": {
+        "passRate": 86.73,
+        "statePassRate": 82.3,
+        "diff": 4.43,
+        "takers": 226
       }
     },
     {
       "state": "California",
       "name": "Loyola Law School",
+      "usnewsName": "Loyola Law School",
       "city": "Los Angeles",
+      "website": "https://www.lls.edu/",
       "medianGPA": 3.74,
       "medianLSAT": 163,
       "tuitionInState": 70360,
       "tuitionOutState": 70360,
-      "rank": 71,
-      "tier": "T80",
+      "rank": 70,
+      "tier": "T70",
       "writeup": "Deep LA litigation and public-interest pipeline with strong local alumni. Regional focus and private-school price tag.",
       "outcomes": {
         "graduates": 300,
@@ -895,19 +1024,27 @@
         "lsat25": 160,
         "lsat50": 163,
         "lsat75": 165
+      },
+      "bar": {
+        "passRate": 79.72,
+        "statePassRate": 82.67,
+        "diff": -2.95,
+        "takers": 286
       }
     },
     {
       "state": "California",
       "name": "UC Law San Francisco",
+      "usnewsName": "University of California--San Francisco (formerly UC Hastings)",
       "city": "San Francisco",
+      "website": "https://www.uclawsf.edu/",
       "medianGPA": 3.71,
       "medianLSAT": 161,
       "tuitionInState": 53087,
       "tuitionOutState": 61773,
-      "rank": 88,
+      "rank": 85,
       "tier": "T90",
-      "writeup": "Downtown SF location feeds Bay Area employers and litigation. Large class and thinner national portability drag on outcomes.",
+      "writeup": "Downtown SF location feeds Bay Area employers and litigation. A large class with outcomes around the California median, and thinner national portability than Berkeley or UCLA.",
       "outcomes": {
         "graduates": 354,
         "employmentRate": 91.2,
@@ -951,19 +1088,27 @@
         "lsat25": 158,
         "lsat50": 161,
         "lsat75": 163
+      },
+      "bar": {
+        "passRate": 86.25,
+        "statePassRate": 82.74,
+        "diff": 3.51,
+        "takers": 349
       }
     },
     {
       "state": "California",
       "name": "Chapman University Fowler School of Law",
+      "usnewsName": "Chapman University (Fowler)",
       "city": "Orange",
+      "website": "https://www.chapman.edu/law/",
       "medianGPA": 3.7,
       "medianLSAT": 163,
       "tuitionInState": 63126,
       "tuitionOutState": 63126,
-      "rank": 104,
+      "rank": 112,
       "tier": "Regional",
-      "writeup": "Growing Orange County school with improving bar numbers. Limited reach beyond SoCal.",
+      "writeup": "Growing Orange County school whose bar passage has rebounded to just under the California average. Limited reach beyond SoCal.",
       "outcomes": {
         "graduates": 130,
         "employmentRate": 84.6,
@@ -1007,17 +1152,25 @@
         "lsat25": 156,
         "lsat50": 163,
         "lsat75": 164
+      },
+      "bar": {
+        "passRate": 80.31,
+        "statePassRate": 82.63,
+        "diff": -2.32,
+        "takers": 127
       }
     },
     {
       "state": "California",
       "name": "Southwestern Law School",
+      "usnewsName": "Southwestern Law School",
       "city": "Los Angeles",
+      "website": "https://www.swlaw.edu/",
       "medianGPA": 3.51,
       "medianLSAT": 157,
       "tuitionInState": 63160,
       "tuitionOutState": 63160,
-      "rank": 154,
+      "rank": 161,
       "tier": "Regional",
       "writeup": "Entertainment-law niche and a large LA network. Bar passage and employment lag; heavy debt risk at sticker.",
       "outcomes": {
@@ -1063,17 +1216,25 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 72.07,
+        "statePassRate": 82.67,
+        "diff": -10.6,
+        "takers": 290
       }
     },
     {
       "state": "California",
       "name": "Santa Clara University School of Law",
+      "usnewsName": "Santa Clara University",
       "city": "Santa Clara",
+      "website": "https://law.scu.edu/",
       "medianGPA": 3.5,
       "medianLSAT": 159,
       "tuitionInState": 64790,
       "tuitionOutState": 64790,
-      "rank": 156,
+      "rank": 150,
       "tier": "Regional",
       "writeup": "Silicon Valley location gives a genuine tech/IP edge. Otherwise regional with modest big-firm placement.",
       "outcomes": {
@@ -1119,19 +1280,27 @@
         "lsat25": 157,
         "lsat50": 159,
         "lsat75": 162
+      },
+      "bar": {
+        "passRate": 81.95,
+        "statePassRate": 82.59,
+        "diff": -0.64,
+        "takers": 205
       }
     },
     {
       "state": "California",
       "name": "Pacific McGeorge School of Law",
+      "usnewsName": "University of the Pacific (McGeorge)",
       "city": "Sacramento",
+      "website": "https://www.pacific.edu/law",
       "medianGPA": 3.52,
       "medianLSAT": 156,
       "tuitionInState": 62678,
       "tuitionOutState": 62678,
-      "rank": 163,
+      "rank": 152,
       "tier": "Regional",
-      "writeup": "Regional school in Sacramento, admitting 54% of applicants at a 156/3.52 median. Where it falls short: just 69% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 7 points.",
+      "writeup": "Regional school in Sacramento, admitting 54% of applicants at a 156/3.52 median. Where it falls short: just 69% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 11 points.",
       "outcomes": {
         "graduates": 148,
         "employmentRate": 79.1,
@@ -1175,17 +1344,26 @@
         "lsat25": 153,
         "lsat50": 156,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 71.13,
+        "statePassRate": 82.53,
+        "diff": -11.4,
+        "takers": 142
       }
     },
     {
       "state": "California",
       "name": "University of San Francisco School of Law",
+      "usnewsName": "University of San Francisco",
       "city": "San Francisco",
+      "website": "https://www.usfca.edu/law",
       "medianGPA": 3.47,
       "medianLSAT": 155,
       "tuitionInState": 59800,
       "tuitionOutState": 59800,
-      "rank": 166,
+      "rank": 156,
       "tier": "Regional",
       "writeup": "Bay Area access and a social-justice bent. Weak big-firm placement and high cost relative to outcomes.",
       "outcomes": {
@@ -1231,18 +1409,26 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 157
+      },
+      "bar": {
+        "passRate": 80.87,
+        "statePassRate": 82.63,
+        "diff": -1.76,
+        "takers": 115
       }
     },
     {
       "state": "California",
       "name": "California Western School of Law",
+      "usnewsName": "California Western School of Law",
       "city": "San Diego",
+      "website": "https://www.cwsl.edu/",
       "medianGPA": 3.5,
       "medianLSAT": 155,
       "tuitionInState": 64720,
       "tuitionOutState": 64720,
-      "rank": 178,
-      "tier": "Regional",
+      "rank": null,
+      "tier": "Unranked",
       "writeup": "Access-oriented San Diego school. Below-median bar passage and outcomes make cost the main concern.",
       "outcomes": {
         "graduates": 205,
@@ -1287,19 +1473,27 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "bar": {
+        "passRate": 71.43,
+        "statePassRate": 82.53,
+        "diff": -11.1,
+        "takers": 203
       }
     },
     {
       "state": "California",
       "name": "Western State College of Law",
+      "usnewsName": "Western State College of Law at Westcliff University",
       "city": "Irvine",
+      "website": "https://www.wsulaw.edu/",
       "medianGPA": 3.36,
       "medianLSAT": 152,
       "tuitionInState": 54840,
       "tuitionOutState": 54840,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "Regional school in Irvine, admitting 44% of applicants at a 152/3.36 median. Where it falls short: graduates trail their states' average bar pass rate by 14 points.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "Regional school in Irvine, admitting 44% of applicants at a 152/3.36 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 93,
         "employmentRate": 87.1,
@@ -1338,19 +1532,28 @@
         "lsat25": 150,
         "lsat50": 152,
         "lsat75": 156
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 81.11,
+        "statePassRate": 82.51,
+        "diff": -1.4,
+        "takers": 90
       }
     },
     {
       "state": "Colorado",
       "name": "University of Colorado Law School",
+      "usnewsName": "University of Colorado--Boulder",
       "city": "Boulder",
+      "website": "https://www.colorado.edu/law/",
       "medianGPA": 3.81,
       "medianLSAT": 164,
       "tuitionInState": 35992,
       "tuitionOutState": 44002,
-      "rank": 46,
-      "tier": "T50",
-      "writeup": "Solid national school in Boulder, admitting 28% of applicants at a 164/3.81 median. Where it excels: 93% of the class lands full-time bar-required work, among the best placement rates in the country.",
+      "rank": 54,
+      "tier": "T60",
+      "writeup": "Regional-plus school in Boulder, admitting 28% of applicants at a 164/3.81 median. Where it excels: 93% of the class lands full-time bar-required work, among the best placement rates in the country, and graduates beat their states' average bar pass rate by 9 points.",
       "outcomes": {
         "graduates": 157,
         "employmentRate": 96.2,
@@ -1394,18 +1597,27 @@
         "lsat25": 161,
         "lsat50": 164,
         "lsat75": 167
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.68,
+        "statePassRate": 80.51,
+        "diff": 9.17,
+        "takers": 155
       }
     },
     {
       "state": "Colorado",
       "name": "University of Denver Sturm College of Law",
+      "usnewsName": "University of Denver (Sturm)",
       "city": "Denver",
+      "website": "https://law.du.edu/",
       "medianGPA": 3.66,
       "medianLSAT": 160,
       "tuitionInState": 63390,
       "tuitionOutState": 63390,
-      "rank": 88,
-      "tier": "T90",
+      "rank": 91,
+      "tier": "T100",
       "writeup": "Regional school in Denver, admitting 41% of applicants at a 160/3.66 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 285,
@@ -1450,17 +1662,26 @@
         "lsat25": 156,
         "lsat50": 160,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 81.47,
+        "statePassRate": 80.31,
+        "diff": 1.16,
+        "takers": 286
       }
     },
     {
       "state": "Connecticut",
       "name": "Yale Law School",
+      "usnewsName": "Yale University",
       "city": "New Haven",
+      "website": "https://law.yale.edu/",
       "medianGPA": 3.96,
       "medianLSAT": 174,
       "tuitionInState": 76636,
       "tuitionOutState": 76636,
-      "rank": 1,
+      "rank": 2,
       "tier": "T14",
       "writeup": "National-elite school in New Haven, admitting 4% of applicants at a 174/3.96 median. Where it excels: BigLaw is a live option, with 31% going to firms of 500+ lawyers, and the federal clerkship pipeline is unusually strong at 23% of the class. Where it falls short: the $76,636 out-of-state sticker is steep.",
       "outcomes": {
@@ -1506,19 +1727,28 @@
         "lsat25": 171,
         "lsat50": 174,
         "lsat75": 177
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 98.54,
+        "statePassRate": 85.4,
+        "diff": 13.14,
+        "takers": 206
       }
     },
     {
       "state": "Connecticut",
       "name": "University of Connecticut School of Law",
+      "usnewsName": "University of Connecticut",
       "city": "Hartford",
+      "website": "https://law.uconn.edu/",
       "medianGPA": 3.78,
       "medianLSAT": 162,
       "tuitionInState": 30354,
       "tuitionOutState": 61396,
-      "rank": 50,
-      "tier": "T50",
-      "writeup": "Solid national school in Hartford, admitting 20% of applicants at a 162/3.78 median. Where it excels: graduates beat their states' average bar pass rate by 8 points, and residency saves $31,042 a year.",
+      "rank": 58,
+      "tier": "T60",
+      "writeup": "Regional-plus school in Hartford, admitting 20% of applicants at a 162/3.78 median. Where it excels: graduates beat their states' average bar pass rate by 9 points, and residency saves $31,042 a year.",
       "outcomes": {
         "graduates": 142,
         "employmentRate": 88.7,
@@ -1562,17 +1792,26 @@
         "lsat25": 160,
         "lsat50": 162,
         "lsat75": 164
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 82.81,
+        "statePassRate": 73.55,
+        "diff": 9.26,
+        "takers": 128
       }
     },
     {
       "state": "Connecticut",
       "name": "Quinnipiac University School of Law",
+      "usnewsName": "Quinnipiac University",
       "city": "North Haven",
+      "website": "https://law.qu.edu/",
       "medianGPA": 3.65,
       "medianLSAT": 155,
       "tuitionInState": 56610,
       "tuitionOutState": 56610,
-      "rank": 141,
+      "rank": 136,
       "tier": "Regional",
       "writeup": "Regional school in North Haven, admitting 43% of applicants at a 155/3.65 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
@@ -1618,19 +1857,28 @@
         "lsat25": 153,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 75.44,
+        "statePassRate": 71.29,
+        "diff": 4.15,
+        "takers": 114
       }
     },
     {
       "state": "Delaware",
       "name": "Widener University Delaware Law School",
+      "usnewsName": "Widener University--Delaware",
       "city": "Wilmington",
+      "website": "https://delawarelaw.widener.edu/",
       "medianGPA": 3.33,
       "medianLSAT": 152,
       "tuitionInState": 58500,
       "tuitionOutState": 58500,
-      "rank": 169,
+      "rank": 154,
       "tier": "Regional",
-      "writeup": "Regional school in Wilmington, admitting 60% of applicants at a 152/3.33 median. Where it falls short: graduates trail their states' average bar pass rate by 10 points.",
+      "writeup": "Regional school in Wilmington, admitting 60% of applicants at a 152/3.33 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 206,
         "employmentRate": 85.4,
@@ -1674,18 +1922,27 @@
         "lsat25": 149,
         "lsat50": 152,
         "lsat75": 154
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 75.88,
+        "statePassRate": 77.61,
+        "diff": -1.73,
+        "takers": 199
       }
     },
     {
       "state": "Delaware",
-      "name": "Wilmington University School of Law",
+      "name": "Wilmington University Farnan School of Law",
+      "usnewsName": "Wilmington University",
       "city": "Wilmington",
+      "website": "https://law.wilmu.edu/",
       "medianGPA": 3.13,
       "medianLSAT": 149,
       "tuitionInState": 24020,
       "tuitionOutState": 24020,
       "rank": null,
-      "tier": "Regional",
+      "tier": "Unranked",
       "writeup": "Regional school in Wilmington, admitting 52% of applicants at a 149/3.13 median. Where it excels: the sticker price is low at $24,020 out-of-state.",
       "admissions": {
         "applications": 273,
@@ -1698,19 +1955,25 @@
         "lsat25": 146,
         "lsat50": 149,
         "lsat75": 152
-      }
+      },
+      "writeupAuto": true,
+      "formerNames": [
+        "Wilmington University School of Law"
+      ]
     },
     {
       "state": "District of Columbia",
       "name": "Georgetown University Law Center",
+      "usnewsName": "Georgetown University",
       "city": "Washington",
+      "website": "https://www.law.georgetown.edu/",
       "medianGPA": 3.93,
       "medianLSAT": 171,
       "tuitionInState": 83576,
       "tuitionOutState": 83576,
-      "rank": 14,
-      "tier": "T14",
-      "writeup": "National-elite school in Washington, admitting 16% of applicants at a 171/3.93 median. Where it excels: BigLaw is a live option, with 55% going to firms of 500+ lawyers, and graduates beat their states' average bar pass rate by 10 points. Where it falls short: the $83,576 out-of-state sticker is steep.",
+      "rank": 18,
+      "tier": "T20",
+      "writeup": "National school in Washington, admitting 16% of applicants at a 171/3.93 median. Where it excels: BigLaw is a live option, with 55% going to firms of 500+ lawyers, and graduates beat their states' average bar pass rate by 9 points. Where it falls short: the $83,576 out-of-state sticker is steep.",
       "outcomes": {
         "graduates": 703,
         "employmentRate": 95.7,
@@ -1754,19 +2017,28 @@
         "lsat25": 166,
         "lsat50": 171,
         "lsat75": 173
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 94.55,
+        "statePassRate": 85.21,
+        "diff": 9.34,
+        "takers": 679
       }
     },
     {
       "state": "District of Columbia",
       "name": "George Washington University Law School",
+      "usnewsName": "George Washington University",
       "city": "Washington",
+      "website": "https://www.law.gwu.edu/",
       "medianGPA": 3.86,
       "medianLSAT": 168,
       "tuitionInState": 75420,
       "tuitionOutState": 75420,
-      "rank": 31,
-      "tier": "T50",
-      "writeup": "Solid national school in Washington, admitting 27% of applicants at a 168/3.86 median. Where it excels: graduates beat their states' average bar pass rate by 8 points. Where it falls short: the $75,420 out-of-state sticker is steep.",
+      "rank": 26,
+      "tier": "T30",
+      "writeup": "Strong national school in Washington, admitting 27% of applicants at a 168/3.86 median. Where it falls short: the $75,420 out-of-state sticker is steep.",
       "outcomes": {
         "graduates": 569,
         "employmentRate": 96.8,
@@ -1810,19 +2082,28 @@
         "lsat25": 162,
         "lsat50": 168,
         "lsat75": 170
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 87.66,
+        "statePassRate": 84.87,
+        "diff": 2.79,
+        "takers": 559
       }
     },
     {
       "state": "District of Columbia",
       "name": "Columbus School of Law, Catholic University",
+      "usnewsName": "The Catholic University of America",
       "city": "Washington",
+      "website": "https://www.law.edu/",
       "medianGPA": 3.68,
       "medianLSAT": 161,
       "tuitionInState": 61580,
       "tuitionOutState": 61580,
-      "rank": 71,
-      "tier": "T80",
-      "writeup": "Regional school in Washington, admitting 32% of applicants at a 161/3.68 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
+      "rank": 70,
+      "tier": "T70",
+      "writeup": "Regional-plus school in Washington, admitting 32% of applicants at a 161/3.68 median. Where it excels: graduates beat their states' average bar pass rate by 8 points.",
       "outcomes": {
         "graduates": 113,
         "employmentRate": 92.9,
@@ -1866,17 +2147,26 @@
         "lsat25": 158,
         "lsat50": 161,
         "lsat75": 163
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 90.38,
+        "statePassRate": 81.92,
+        "diff": 8.46,
+        "takers": 104
       }
     },
     {
       "state": "District of Columbia",
       "name": "American University Washington College of Law",
+      "usnewsName": "American University (Washington)",
       "city": "Washington",
+      "website": "https://www.wcl.american.edu/",
       "medianGPA": 3.63,
       "medianLSAT": 162,
       "tuitionInState": 66990,
       "tuitionOutState": 66990,
-      "rank": 104,
+      "rank": 108,
       "tier": "Regional",
       "writeup": "Regional school in Washington, admitting 33% of applicants at a 162/3.63 median. Where it falls short: just 69% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -1922,19 +2212,28 @@
         "lsat25": 157,
         "lsat50": 162,
         "lsat75": 163
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 86.61,
+        "statePassRate": 84.29,
+        "diff": 2.32,
+        "takers": 366
       }
     },
     {
       "state": "District of Columbia",
       "name": "Howard University School of Law",
+      "usnewsName": "Howard University",
       "city": "Washington",
+      "website": "https://law.howard.edu/",
       "medianGPA": 3.63,
       "medianLSAT": 156,
       "tuitionInState": 39780,
       "tuitionOutState": 39780,
-      "rank": 127,
+      "rank": 117,
       "tier": "Regional",
-      "writeup": "Regional school in Washington, admitting 24% of applicants at a 156/3.63 median. Where it excels: BigLaw is a live option, with 30% going to firms of 500+ lawyers. Where it falls short: just 71% of graduates land full-time bar-required work.",
+      "writeup": "Regional school in Washington, admitting 24% of applicants at a 156/3.63 median. Where it excels: BigLaw is a live option, with 30% going to firms of 500+ lawyers. Where it falls short: just 71% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 7 points.",
       "outcomes": {
         "graduates": 155,
         "employmentRate": 72.9,
@@ -1978,19 +2277,28 @@
         "lsat25": 153,
         "lsat50": 156,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 78.01,
+        "statePassRate": 84.74,
+        "diff": -6.73,
+        "takers": 141
       }
     },
     {
       "state": "District of Columbia",
       "name": "UDC David A. Clarke School of Law",
+      "usnewsName": "University of the District of Columbia (Clarke)",
       "city": "Washington",
+      "website": "https://law.udc.edu/",
       "medianGPA": 3.28,
       "medianLSAT": 151,
       "tuitionInState": 12438,
       "tuitionOutState": 24874,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "Regional school in Washington, admitting 37% of applicants at a 151/3.28 median. Where it excels: it pulls hard toward government and public interest (34% of graduates), and the sticker price is low at $24,874 out-of-state. Where it falls short: just 52% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 15 points.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "Regional school in Washington, admitting 37% of applicants at a 151/3.28 median. Where it excels: it pulls hard toward government and public interest (34% of graduates), and the sticker price is low at $24,874 out-of-state. Where it falls short: just 52% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 25 points.",
       "outcomes": {
         "graduates": 80,
         "employmentRate": 66.2,
@@ -2034,17 +2342,26 @@
         "lsat25": 148,
         "lsat50": 151,
         "lsat75": 153
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 57.89,
+        "statePassRate": 82.82,
+        "diff": -24.93,
+        "takers": 76
       }
     },
     {
       "state": "Florida",
       "name": "Florida State University College of Law",
+      "usnewsName": "Florida State University",
       "city": "Tallahassee",
+      "website": "https://law.fsu.edu/",
       "medianGPA": 3.93,
       "medianLSAT": 166,
       "tuitionInState": 20180,
       "tuitionOutState": 41710,
-      "rank": 38,
+      "rank": 34,
       "tier": "T50",
       "writeup": "Unbeatable for Florida government and policy careers given the Tallahassee capital location, at a low in-state cost. Less Big Law pull than UF and a regional footprint.",
       "outcomes": {
@@ -2090,19 +2407,27 @@
         "lsat25": 158,
         "lsat50": 166,
         "lsat75": 167
+      },
+      "bar": {
+        "passRate": 88.81,
+        "statePassRate": 76.36,
+        "diff": 12.45,
+        "takers": 134
       }
     },
     {
       "state": "Florida",
       "name": "University of Florida Levin College of Law",
+      "usnewsName": "University of Florida (Levin)",
       "city": "Gainesville",
+      "website": "https://law.ufl.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 169,
       "tuitionInState": 19139,
       "tuitionOutState": 36148,
-      "rank": 38,
+      "rank": 34,
       "tier": "T50",
-      "writeup": "The clear value leader in Florida — a T30 at low in-state tuition with the strongest statewide placement. Gainesville is a college town, and reach is mostly regional/Southeast.",
+      "writeup": "The clear value leader in Florida — a top-35 school at low in-state tuition with the strongest statewide placement. Gainesville is a college town, and reach is mostly regional/Southeast.",
       "outcomes": {
         "graduates": 215,
         "employmentRate": 94.0,
@@ -2146,19 +2471,27 @@
         "lsat25": 165,
         "lsat50": 169,
         "lsat75": 170
+      },
+      "bar": {
+        "passRate": 90.2,
+        "statePassRate": 77.07,
+        "diff": 13.13,
+        "takers": 204
       }
     },
     {
       "state": "Florida",
       "name": "Florida International University College of Law",
+      "usnewsName": "Florida International University",
       "city": "Miami",
+      "website": "https://law.fiu.edu/",
       "medianGPA": 3.8,
       "medianLSAT": 161,
       "tuitionInState": 20730,
       "tuitionOutState": 35880,
-      "rank": 84,
-      "tier": "T90",
-      "writeup": "Perennial #1 or #2 in Florida bar passage at a very low in-state cost — excellent value in the Miami market. Younger brand with mostly local reach.",
+      "rank": 77,
+      "tier": "T80",
+      "writeup": "Bar passage well above the Florida average at a very low in-state cost — excellent value in the Miami market. Younger brand with mostly local reach.",
       "outcomes": {
         "graduates": 157,
         "employmentRate": 93.0,
@@ -2202,19 +2535,27 @@
         "lsat25": 159,
         "lsat50": 161,
         "lsat75": 162
+      },
+      "bar": {
+        "passRate": 85.9,
+        "statePassRate": 75.93,
+        "diff": 9.97,
+        "takers": 156
       }
     },
     {
       "state": "Florida",
       "name": "University of Miami School of Law",
+      "usnewsName": "University of Miami",
       "city": "Coral Gables",
+      "website": "https://www.law.miami.edu/",
       "medianGPA": 3.79,
       "medianLSAT": 164,
       "tuitionInState": 66720,
       "tuitionOutState": 66720,
-      "rank": 92,
-      "tier": "T100",
-      "writeup": "Largest alumni network in South Florida with strong Miami firm and international/Latin America placement. High private cost relative to outcomes.",
+      "rank": 70,
+      "tier": "T70",
+      "writeup": "One of the largest alumni networks in South Florida with strong Miami firm and international/Latin America placement. High private cost relative to outcomes.",
       "outcomes": {
         "graduates": 383,
         "employmentRate": 88.0,
@@ -2258,17 +2599,25 @@
         "lsat25": 160,
         "lsat50": 164,
         "lsat75": 165
+      },
+      "bar": {
+        "passRate": 85.29,
+        "statePassRate": 77.0,
+        "diff": 8.29,
+        "takers": 367
       }
     },
     {
       "state": "Florida",
       "name": "Stetson University College of Law",
+      "usnewsName": "Stetson University",
       "city": "Gulfport",
+      "website": "https://www.stetson.edu/law/",
       "medianGPA": 3.63,
       "medianLSAT": 159,
       "tuitionInState": 56521,
       "tuitionOutState": 56521,
-      "rank": 99,
+      "rank": 91,
       "tier": "T100",
       "writeup": "Nationally top-ranked trial-advocacy program and strong Tampa Bay placement. Otherwise regional at a private price.",
       "outcomes": {
@@ -2314,19 +2663,27 @@
         "lsat25": 157,
         "lsat50": 159,
         "lsat75": 162
+      },
+      "bar": {
+        "passRate": 84.86,
+        "statePassRate": 76.27,
+        "diff": 8.59,
+        "takers": 284
       }
     },
     {
       "state": "Florida",
       "name": "Ave Maria School of Law",
-      "city": "Ave Maria",
+      "usnewsName": "Ave Maria School of Law",
+      "city": "Naples",
+      "website": "https://www.avemarialaw.edu/",
       "medianGPA": 3.36,
       "medianLSAT": 155,
       "tuitionInState": 49500,
       "tuitionOutState": 49500,
-      "rank": 153,
+      "rank": 164,
       "tier": "Regional",
-      "writeup": "Small, faith-based school on the Gulf coast. Limited network and regional-only outcomes.",
+      "writeup": "Small, faith-based school in Naples, on Florida's Gulf Coast. Limited network and regional-only outcomes.",
       "outcomes": {
         "graduates": 81,
         "employmentRate": 84.0,
@@ -2370,18 +2727,26 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "bar": {
+        "passRate": 77.46,
+        "statePassRate": 77.63,
+        "diff": -0.17,
+        "takers": 71
       }
     },
     {
       "state": "Florida",
       "name": "Barry University Dwayne O. Andreas School of Law",
+      "usnewsName": "Barry University",
       "city": "Orlando",
+      "website": "https://www.barry.edu/en/academics/law/",
       "medianGPA": 3.23,
       "medianLSAT": 150,
       "tuitionInState": 42000,
       "tuitionOutState": 42000,
-      "rank": 178,
-      "tier": "Regional",
+      "rank": null,
+      "tier": "Unranked",
       "writeup": "Access-oriented Orlando school. Below-median outcomes; cost-to-outcome ratio warrants caution.",
       "outcomes": {
         "graduates": 235,
@@ -2426,19 +2791,27 @@
         "lsat25": 148,
         "lsat50": 150,
         "lsat75": 152
+      },
+      "bar": {
+        "passRate": 58.85,
+        "statePassRate": 76.44,
+        "diff": -17.59,
+        "takers": 226
       }
     },
     {
       "state": "Florida",
       "name": "Florida A&M University College of Law",
+      "usnewsName": "Florida A&M University",
       "city": "Orlando",
+      "website": "https://law.famu.edu/",
       "medianGPA": 3.48,
       "medianLSAT": 152,
       "tuitionInState": 13680,
       "tuitionOutState": 32940,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "HBCU with a strong diversity mission and the lowest in-state cost in Florida. Bar passage has been a persistent challenge.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "HBCU with a strong diversity mission and the lowest in-state cost in Florida. Bar passage, long a weak spot, has climbed to near the state average.",
       "outcomes": {
         "graduates": 108,
         "employmentRate": 76.9,
@@ -2482,18 +2855,26 @@
         "lsat25": 149,
         "lsat50": 152,
         "lsat75": 155
+      },
+      "bar": {
+        "passRate": 74.68,
+        "statePassRate": 77.04,
+        "diff": -2.36,
+        "takers": 79
       }
     },
     {
       "state": "Florida",
       "name": "Nova Southeastern University Shepard Broad",
+      "usnewsName": "Nova Southeastern University (Broad)",
       "city": "Davie",
+      "website": "https://www.law.nova.edu/",
       "medianGPA": 3.52,
       "medianLSAT": 155,
       "tuitionInState": 49350,
       "tuitionOutState": 49350,
-      "rank": 178,
-      "tier": "Regional",
+      "rank": null,
+      "tier": "Unranked",
       "writeup": "Broward County access and a large South Florida network. Middling bar passage and outcomes for the cost.",
       "outcomes": {
         "graduates": 203,
@@ -2538,17 +2919,25 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "bar": {
+        "passRate": 74.47,
+        "statePassRate": 76.08,
+        "diff": -1.61,
+        "takers": 188
       }
     },
     {
       "state": "Florida",
       "name": "St. Thomas University College of Law",
+      "usnewsName": "St. Thomas University",
       "city": "Miami Gardens",
+      "website": "https://www.stu.edu/law/",
       "medianGPA": 3.42,
       "medianLSAT": 152,
       "tuitionInState": 44730,
       "tuitionOutState": 44730,
-      "rank": 178,
+      "rank": 168,
       "tier": "Regional",
       "writeup": "Miami access with a Catholic, public-interest mission and improving bar numbers. Regional with modest firm placement.",
       "outcomes": {
@@ -2594,19 +2983,27 @@
         "lsat25": 150,
         "lsat50": 152,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 87.06,
+        "statePassRate": 75.87,
+        "diff": 11.19,
+        "takers": 170
       }
     },
     {
       "state": "Florida",
       "name": "Jacksonville University College of Law",
+      "usnewsName": "Jacksonville University",
       "city": "Jacksonville",
+      "website": "https://www.ju.edu/law/",
       "medianGPA": 3.48,
       "medianLSAT": 156,
       "tuitionInState": 36000,
       "tuitionOutState": 36000,
       "rank": null,
-      "tier": "T100",
-      "writeup": "Regional school in Jacksonville, admitting 35% of applicants at a 156/3.48 median. Where it excels: 92% of the class lands full-time bar-required work, among the best placement rates in the country, and it pulls hard toward government and public interest (46% of graduates). Where it falls short: BigLaw is thin for the tier at 0% into 500+ lawyer firms.",
+      "tier": "Unranked",
+      "writeup": "Regional school in Jacksonville, admitting 35% of applicants at a 156/3.48 median. Where it excels: 92% of the class lands full-time bar-required work, among the best placement rates in the country, and it pulls hard toward government and public interest (46% of graduates).",
       "outcomes": {
         "graduates": 13,
         "employmentRate": 92.3,
@@ -2645,17 +3042,26 @@
         "lsat25": 154,
         "lsat50": 156,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 92.31,
+        "statePassRate": 76.54,
+        "diff": 15.77,
+        "takers": 13
       }
     },
     {
       "state": "Georgia",
       "name": "University of Georgia School of Law",
+      "usnewsName": "University of Georgia",
       "city": "Athens",
+      "website": "https://www.law.uga.edu/",
       "medianGPA": 3.92,
       "medianLSAT": 169,
       "tuitionInState": 18044,
       "tuitionOutState": 38944,
-      "rank": 22,
+      "rank": 26,
       "tier": "T30",
       "writeup": "One of the best prestige-to-price ratios in the country — a T30 at deeply subsidized in-state tuition, dominant in Georgia. Nonresident cost is far higher and reach is Southeast-centric.",
       "outcomes": {
@@ -2701,19 +3107,27 @@
         "lsat25": 159,
         "lsat50": 169,
         "lsat75": 171
+      },
+      "bar": {
+        "passRate": 88.37,
+        "statePassRate": 79.91,
+        "diff": 8.46,
+        "takers": 172
       }
     },
     {
       "state": "Georgia",
       "name": "Emory University School of Law",
+      "usnewsName": "Emory University",
       "city": "Atlanta",
+      "website": "https://law.emory.edu/",
       "medianGPA": 3.82,
       "medianLSAT": 166,
       "tuitionInState": 69510,
       "tuitionOutState": 69510,
-      "rank": 38,
+      "rank": 40,
       "tier": "T50",
-      "writeup": "Strong Atlanta and national Big Law placement with notable litigation and health-law programs. Full private cost and it competes hard with UGA for the Atlanta market.",
+      "writeup": "Strong Atlanta and national Big Law placement with solid litigation and health-law programs. Full private cost and it competes hard with UGA for the Atlanta market.",
       "outcomes": {
         "graduates": 224,
         "employmentRate": 91.1,
@@ -2757,17 +3171,25 @@
         "lsat25": 162,
         "lsat50": 166,
         "lsat75": 168
+      },
+      "bar": {
+        "passRate": 86.34,
+        "statePassRate": 80.82,
+        "diff": 5.52,
+        "takers": 227
       }
     },
     {
       "state": "Georgia",
       "name": "Georgia State University College of Law",
+      "usnewsName": "Georgia State University",
       "city": "Atlanta",
+      "website": "https://law.gsu.edu/",
       "medianGPA": 3.64,
       "medianLSAT": 160,
       "tuitionInState": 16162,
       "tuitionOutState": 37886,
-      "rank": 79,
+      "rank": 77,
       "tier": "T80",
       "writeup": "Exceptional value — downtown Atlanta location, low in-state tuition, and strong government/firm placement in the metro. Regional footprint and a commuter feel.",
       "outcomes": {
@@ -2813,17 +3235,25 @@
         "lsat25": 158,
         "lsat50": 160,
         "lsat75": 163
+      },
+      "bar": {
+        "passRate": 87.43,
+        "statePassRate": 79.55,
+        "diff": 7.88,
+        "takers": 183
       }
     },
     {
       "state": "Georgia",
       "name": "Mercer University School of Law",
+      "usnewsName": "Mercer University (George)",
       "city": "Macon",
+      "website": "https://law.mercer.edu/",
       "medianGPA": 3.62,
       "medianLSAT": 157,
       "tuitionInState": 44782,
       "tuitionOutState": 44782,
-      "rank": 107,
+      "rank": 108,
       "tier": "Regional",
       "writeup": "Nationally recognized legal-writing program and strong central-Georgia placement. Regional and private-priced.",
       "outcomes": {
@@ -2869,18 +3299,26 @@
         "lsat25": 155,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 86.52,
+        "statePassRate": 79.75,
+        "diff": 6.77,
+        "takers": 141
       }
     },
     {
       "state": "Georgia",
       "name": "Atlanta's John Marshall Law School",
+      "usnewsName": "Atlanta's John Marshall Law School",
       "city": "Atlanta",
+      "website": "https://www.johnmarshall.edu/",
       "medianGPA": 3.13,
       "medianLSAT": 152,
       "tuitionInState": 52536,
       "tuitionOutState": 52536,
-      "rank": 178,
-      "tier": "Regional",
+      "rank": null,
+      "tier": "Unranked",
       "writeup": "Access-oriented Atlanta school with an evening program. Weak bar passage and outcomes make cost the central concern.",
       "outcomes": {
         "graduates": 101,
@@ -2925,17 +3363,25 @@
         "lsat25": 150,
         "lsat50": 152,
         "lsat75": 155
+      },
+      "bar": {
+        "passRate": 63.81,
+        "statePassRate": 79.77,
+        "diff": -15.96,
+        "takers": 105
       }
     },
     {
       "state": "Hawaii",
       "name": "University of Hawai'i at Manoa William S. Richardson School of Law",
+      "usnewsName": "University of Hawaii--Manoa (Richardson)",
       "city": "Honolulu",
+      "website": "https://law.hawaii.edu/",
       "medianGPA": 3.62,
       "medianLSAT": 158,
       "tuitionInState": 23304,
       "tuitionOutState": 46728,
-      "rank": 99,
+      "rank": 91,
       "tier": "T100",
       "writeup": "Regional school in Honolulu, admitting 26% of applicants at a 158/3.62 median. Where it excels: residency saves $23,424 a year. Where it falls short: BigLaw is thin for the tier at 0% into 500+ lawyer firms.",
       "outcomes": {
@@ -2981,19 +3427,28 @@
         "lsat25": 155,
         "lsat50": 158,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 77.08,
+        "statePassRate": 77.16,
+        "diff": -0.08,
+        "takers": 96
       }
     },
     {
       "state": "Idaho",
       "name": "University of Idaho College of Law",
+      "usnewsName": "University of Idaho",
       "city": "Moscow",
+      "website": "https://www.uidaho.edu/law",
       "medianGPA": 3.54,
       "medianLSAT": 153,
       "tuitionInState": 27516,
       "tuitionOutState": 46752,
-      "rank": 141,
+      "rank": 148,
       "tier": "Regional",
-      "writeup": "Regional school in Moscow, admitting 67% of applicants at a 153/3.54 median. Where it excels: it pulls hard toward government and public interest (35% of graduates), and residency saves $19,236 a year. Where it falls short: graduates trail their states' average bar pass rate by 10 points.",
+      "writeup": "Regional school in Moscow, admitting 67% of applicants at a 153/3.54 median. Where it excels: it pulls hard toward government and public interest (35% of graduates), and residency saves $19,236 a year. Where it falls short: graduates trail their states' average bar pass rate by 6 points.",
       "outcomes": {
         "graduates": 137,
         "employmentRate": 84.7,
@@ -3037,19 +3492,28 @@
         "lsat25": 149,
         "lsat50": 153,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 75.2,
+        "statePassRate": 81.61,
+        "diff": -6.41,
+        "takers": 125
       }
     },
     {
       "state": "Illinois",
       "name": "University of Chicago Law School",
+      "usnewsName": "University of Chicago",
       "city": "Chicago",
+      "website": "https://www.law.uchicago.edu/",
       "medianGPA": 3.97,
       "medianLSAT": 174,
       "tuitionInState": 83316,
       "tuitionOutState": 83316,
-      "rank": 3,
+      "rank": 2,
       "tier": "T14",
-      "writeup": "Top-5 nationally — intellectually intense, elite for clerkships, academia, and Big Law anywhere. The cost is full sticker and the culture is famously rigorous.",
+      "writeup": "Top-5 nationally — intellectually intense, elite for clerkships, academia, and Big Law anywhere. The sticker price is high, though most students receive merit scholarships, and the culture is famously rigorous.",
       "outcomes": {
         "graduates": 216,
         "employmentRate": 98.1,
@@ -3093,17 +3557,25 @@
         "lsat25": 171,
         "lsat50": 174,
         "lsat75": 176
+      },
+      "bar": {
+        "passRate": 96.73,
+        "statePassRate": 83.77,
+        "diff": 12.96,
+        "takers": 214
       }
     },
     {
       "state": "Illinois",
       "name": "Northwestern Pritzker School of Law",
+      "usnewsName": "Northwestern University (Pritzker)",
       "city": "Chicago",
+      "website": "https://www.law.northwestern.edu/",
       "medianGPA": 3.96,
       "medianLSAT": 173,
       "tuitionInState": 79772,
       "tuitionOutState": 79722,
-      "rank": 10,
+      "rank": 9,
       "tier": "T14",
       "writeup": "T14 with the strongest Big Law and corporate placement in Chicago and a business-minded, collegial culture. Values work experience in admissions; full private cost.",
       "outcomes": {
@@ -3149,17 +3621,25 @@
         "lsat25": 167,
         "lsat50": 173,
         "lsat75": 175
+      },
+      "bar": {
+        "passRate": 91.83,
+        "statePassRate": 82.49,
+        "diff": 9.34,
+        "takers": 257
       }
     },
     {
       "state": "Illinois",
       "name": "University of Illinois College of Law",
+      "usnewsName": "University of Illinois Urbana-Champaign",
       "city": "Champaign",
+      "website": "https://law.illinois.edu/",
       "medianGPA": 3.81,
       "medianLSAT": 166,
       "tuitionInState": 36500,
       "tuitionOutState": 46500,
-      "rank": 48,
+      "rank": 46,
       "tier": "T50",
       "writeup": "Strong Chicago and Midwest placement at a relative discount, with good scholarship money. Champaign-Urbana location and a more regional pull than the Chicago T14s.",
       "outcomes": {
@@ -3205,19 +3685,27 @@
         "lsat25": 160,
         "lsat50": 166,
         "lsat75": 168
+      },
+      "bar": {
+        "passRate": 93.2,
+        "statePassRate": 81.27,
+        "diff": 11.93,
+        "takers": 147
       }
     },
     {
       "state": "Illinois",
       "name": "Loyola University Chicago School of Law",
+      "usnewsName": "Loyola University Chicago",
       "city": "Chicago",
+      "website": "https://www.luc.edu/law/",
       "medianGPA": 3.7,
       "medianLSAT": 161,
       "tuitionInState": 58670,
       "tuitionOutState": 58670,
-      "rank": 79,
-      "tier": "T80",
-      "writeup": "Well-regarded health-law and trial-advocacy programs with solid Chicago placement. Regional footprint and private cost.",
+      "rank": 70,
+      "tier": "T70",
+      "writeup": "A highly ranked health-law program with solid Chicago placement. Regional footprint and private cost.",
       "outcomes": {
         "graduates": 261,
         "employmentRate": 91.2,
@@ -3261,19 +3749,27 @@
         "lsat25": 159,
         "lsat50": 161,
         "lsat75": 163
+      },
+      "bar": {
+        "passRate": 85.71,
+        "statePassRate": 80.94,
+        "diff": 4.77,
+        "takers": 259
       }
     },
     {
       "state": "Illinois",
       "name": "Chicago-Kent College of Law",
+      "usnewsName": "Illinois Institute of Technology (Chicago-Kent)",
       "city": "Chicago",
+      "website": "https://kentlaw.iit.edu/",
       "medianGPA": 3.72,
       "medianLSAT": 161,
       "tuitionInState": 53070,
       "tuitionOutState": 53070,
-      "rank": 107,
+      "rank": 105,
       "tier": "Regional",
-      "writeup": "Strong legal-writing and IP/tech programs with downtown Chicago access. Middle-of-the-market outcomes at a high sticker.",
+      "writeup": "Strong IP/tech programs with downtown Chicago access. Middle-of-the-market outcomes at a high sticker.",
       "outcomes": {
         "graduates": 232,
         "employmentRate": 82.3,
@@ -3317,17 +3813,25 @@
         "lsat25": 156,
         "lsat50": 161,
         "lsat75": 164
+      },
+      "bar": {
+        "passRate": 79.71,
+        "statePassRate": 81.05,
+        "diff": -1.34,
+        "takers": 207
       }
     },
     {
       "state": "Illinois",
       "name": "DePaul University College of Law",
+      "usnewsName": "DePaul University",
       "city": "Chicago",
+      "website": "https://law.depaul.edu/",
       "medianGPA": 3.61,
       "medianLSAT": 158,
       "tuitionInState": 55328,
       "tuitionOutState": 55328,
-      "rank": 133,
+      "rank": 131,
       "tier": "Regional",
       "writeup": "Large Chicago alumni network and good part-time options. Employment outcomes are regional and cost is high for the tier.",
       "outcomes": {
@@ -3373,17 +3877,25 @@
         "lsat25": 154,
         "lsat50": 158,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 83.78,
+        "statePassRate": 80.95,
+        "diff": 2.83,
+        "takers": 148
       }
     },
     {
       "state": "Illinois",
       "name": "Northern Illinois University College of Law",
+      "usnewsName": "Northern Illinois University",
       "city": "DeKalb",
+      "website": "https://law.niu.edu/law/",
       "medianGPA": 3.41,
       "medianLSAT": 150,
       "tuitionInState": 23667,
       "tuitionOutState": 23667,
-      "rank": 150,
+      "rank": 161,
       "tier": "Regional",
       "writeup": "Affordable public option with regional northern-Illinois placement. Small program with limited national profile.",
       "outcomes": {
@@ -3429,19 +3941,27 @@
         "lsat25": 148,
         "lsat50": 150,
         "lsat75": 154
+      },
+      "bar": {
+        "passRate": 61.9,
+        "statePassRate": 80.64,
+        "diff": -18.74,
+        "takers": 105
       }
     },
     {
       "state": "Illinois",
       "name": "UIC School of Law",
+      "usnewsName": "University of Illinois Chicago",
       "city": "Chicago",
+      "website": "https://law.uic.edu/",
       "medianGPA": 3.4,
       "medianLSAT": 153,
       "tuitionInState": 37440,
       "tuitionOutState": 46800,
-      "rank": 169,
+      "rank": 167,
       "tier": "Regional",
-      "writeup": "Formerly John Marshall — deep Chicago practitioner network and IP strength. Bar and big-firm outcomes lag the city's stronger schools.",
+      "writeup": "Formerly John Marshall — deep Chicago practitioner network. Bar and big-firm outcomes lag the city's stronger schools.",
       "outcomes": {
         "graduates": 274,
         "employmentRate": 77.4,
@@ -3485,18 +4005,26 @@
         "lsat25": 150,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 68.82,
+        "statePassRate": 81.07,
+        "diff": -12.25,
+        "takers": 279
       }
     },
     {
       "state": "Illinois",
-      "name": "Southern Illinois University School of Law",
+      "name": "SIU Simmons Law School",
+      "usnewsName": "Southern Illinois University--Carbondale",
       "city": "Carbondale",
+      "website": "https://law.siu.edu/",
       "medianGPA": 3.38,
       "medianLSAT": 149,
       "tuitionInState": 16410,
       "tuitionOutState": 16410,
-      "rank": 175,
-      "tier": "Regional",
+      "rank": null,
+      "tier": "Unranked",
       "writeup": "Low in-state tuition and reliable downstate/central-Illinois placement. Limited reach into the Chicago market.",
       "outcomes": {
         "graduates": 74,
@@ -3541,12 +4069,23 @@
         "lsat25": 146,
         "lsat50": 149,
         "lsat75": 155
+      },
+      "formerNames": [
+        "Southern Illinois University School of Law"
+      ],
+      "bar": {
+        "passRate": 74.24,
+        "statePassRate": 81.66,
+        "diff": -7.42,
+        "takers": 66
       }
     },
     {
       "state": "Indiana",
       "name": "Notre Dame Law School",
+      "usnewsName": "University of Notre Dame",
       "city": "South Bend",
+      "website": "https://law.nd.edu/",
       "medianGPA": 3.89,
       "medianLSAT": 170,
       "tuitionInState": 73430,
@@ -3597,19 +4136,28 @@
         "lsat25": 166,
         "lsat50": 170,
         "lsat75": 171
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.44,
+        "statePassRate": 81.6,
+        "diff": 7.84,
+        "takers": 161
       }
     },
     {
       "state": "Indiana",
       "name": "Indiana University Maurer School of Law",
+      "usnewsName": "Indiana University--Bloomington (Maurer)",
       "city": "Bloomington",
+      "website": "https://www.law.indiana.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 164,
       "tuitionInState": 36950,
       "tuitionOutState": 58000,
-      "rank": 46,
+      "rank": 49,
       "tier": "T50",
-      "writeup": "Solid national school in Bloomington, admitting 36% of applicants at a 164/3.91 median. Where it excels: graduates beat their states' average bar pass rate by 8 points, and residency saves $21,050 a year.",
+      "writeup": "Solid national school in Bloomington, admitting 36% of applicants at a 164/3.91 median. Where it excels: residency saves $21,050 a year.",
       "outcomes": {
         "graduates": 164,
         "employmentRate": 90.9,
@@ -3653,17 +4201,26 @@
         "lsat25": 158,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 84.62,
+        "statePassRate": 80.95,
+        "diff": 3.67,
+        "takers": 156
       }
     },
     {
       "state": "Indiana",
       "name": "Indiana University McKinney School of Law",
+      "usnewsName": "Indiana University Indianapolis (McKinney)",
       "city": "Indianapolis",
+      "website": "https://mckinneylaw.iu.edu/",
       "medianGPA": 3.58,
       "medianLSAT": 155,
       "tuitionInState": 30840,
       "tuitionOutState": 49650,
-      "rank": 107,
+      "rank": 124,
       "tier": "Regional",
       "writeup": "Regional school in Indianapolis, admitting 56% of applicants at a 155/3.58 median. Where it excels: it pulls hard toward government and public interest (28% of graduates), and residency saves $18,810 a year.",
       "outcomes": {
@@ -3709,19 +4266,28 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 80.38,
+        "statePassRate": 80.78,
+        "diff": -0.4,
+        "takers": 209
       }
     },
     {
       "state": "Iowa",
       "name": "University of Iowa College of Law",
+      "usnewsName": "University of Iowa",
       "city": "Iowa City",
+      "website": "https://law.uiowa.edu/",
       "medianGPA": 3.78,
       "medianLSAT": 164,
       "tuitionInState": 30944,
       "tuitionOutState": 52191,
-      "rank": 36,
+      "rank": 32,
       "tier": "T50",
-      "writeup": "Solid national school in Iowa City, admitting 44% of applicants at a 164/3.78 median. Where it excels: graduates beat their states' average bar pass rate by 9 points, and residency saves $21,247 a year.",
+      "writeup": "Solid national school in Iowa City, admitting 44% of applicants at a 164/3.78 median. Where it excels: graduates beat their states' average bar pass rate by 10 points, and residency saves $21,247 a year.",
       "outcomes": {
         "graduates": 158,
         "employmentRate": 97.5,
@@ -3765,18 +4331,27 @@
         "lsat25": 161,
         "lsat50": 164,
         "lsat75": 165
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 91.39,
+        "statePassRate": 80.89,
+        "diff": 10.5,
+        "takers": 151
       }
     },
     {
       "state": "Iowa",
       "name": "Drake University Law School",
+      "usnewsName": "Drake University",
       "city": "Des Moines",
+      "website": "https://www.drake.edu/law",
       "medianGPA": 3.67,
       "medianLSAT": 156,
       "tuitionInState": 50920,
       "tuitionOutState": 50920,
-      "rank": 84,
-      "tier": "T90",
+      "rank": 91,
+      "tier": "T100",
       "writeup": "Regional school in Des Moines, admitting 55% of applicants at a 156/3.67 median. Where it falls short: BigLaw is thin for the tier at 0% into 500+ lawyer firms.",
       "outcomes": {
         "graduates": 114,
@@ -3821,19 +4396,28 @@
         "lsat25": 153,
         "lsat50": 156,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 77.19,
+        "statePassRate": 78.74,
+        "diff": -1.55,
+        "takers": 114
       }
     },
     {
       "state": "Kansas",
       "name": "University of Kansas School of Law",
+      "usnewsName": "University of Kansas",
       "city": "Lawrence",
+      "website": "https://law.ku.edu/",
       "medianGPA": 3.85,
       "medianLSAT": 162,
       "tuitionInState": 25710,
       "tuitionOutState": 32820,
-      "rank": 50,
+      "rank": 46,
       "tier": "T50",
-      "writeup": "Solid national school in Lawrence, admitting 39% of applicants at a 162/3.85 median. Where it excels: graduates beat their states' average bar pass rate by 12 points, and the sticker price is low at $32,820 out-of-state.",
+      "writeup": "Solid national school in Lawrence, admitting 39% of applicants at a 162/3.85 median. Where it excels: graduates beat their states' average bar pass rate by 10 points, and the sticker price is low at $32,820 out-of-state.",
       "outcomes": {
         "graduates": 126,
         "employmentRate": 96.0,
@@ -3877,19 +4461,28 @@
         "lsat25": 158,
         "lsat50": 162,
         "lsat75": 164
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 94.21,
+        "statePassRate": 83.83,
+        "diff": 10.38,
+        "takers": 121
       }
     },
     {
       "state": "Kansas",
       "name": "Washburn University School of Law",
+      "usnewsName": "Washburn University",
       "city": "Topeka",
+      "website": "https://www.washburnlaw.edu/index.html",
       "medianGPA": 3.68,
       "medianLSAT": 155,
       "tuitionInState": 27960,
       "tuitionOutState": 41790,
-      "rank": 121,
+      "rank": 108,
       "tier": "Regional",
-      "writeup": "Regional school in Topeka, admitting 46% of applicants at a 155/3.68 median. Where it excels: it pulls hard toward government and public interest (27% of graduates). Where it falls short: graduates trail their states' average bar pass rate by 9 points.",
+      "writeup": "Regional school in Topeka, admitting 46% of applicants at a 155/3.68 median. Where it excels: it pulls hard toward government and public interest (27% of graduates). Where it falls short: graduates trail their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 99,
         "employmentRate": 90.9,
@@ -3933,17 +4526,26 @@
         "lsat25": 151,
         "lsat50": 155,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 73.91,
+        "statePassRate": 84.17,
+        "diff": -10.26,
+        "takers": 92
       }
     },
     {
       "state": "Kentucky",
       "name": "University of Kentucky Rosenberg College of Law",
+      "usnewsName": "University of Kentucky (Rosenberg)",
       "city": "Lexington",
+      "website": "https://law.uky.edu/",
       "medianGPA": 3.72,
       "medianLSAT": 159,
       "tuitionInState": 25685,
       "tuitionOutState": 49836,
-      "rank": 68,
+      "rank": 70,
       "tier": "T70",
       "writeup": "Regional-plus school in Lexington, admitting 41% of applicants at a 159/3.72 median. Where it excels: residency saves $24,151 a year. Where it falls short: BigLaw is thin for the tier at 2% into 500+ lawyer firms.",
       "outcomes": {
@@ -3989,17 +4591,26 @@
         "lsat25": 156,
         "lsat50": 159,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 79.82,
+        "statePassRate": 78.86,
+        "diff": 0.96,
+        "takers": 114
       }
     },
     {
       "state": "Kentucky",
       "name": "NKU Salmon P. Chase College of Law",
+      "usnewsName": "Northern Kentucky University (Chase)",
       "city": "Highland Heights",
+      "website": "https://chaselaw.nku.edu/",
       "medianGPA": 3.41,
       "medianLSAT": 154,
       "tuitionInState": 24388,
       "tuitionOutState": 38454,
-      "rank": 134,
+      "rank": 131,
       "tier": "Regional",
       "writeup": "Regional school in Highland Heights, admitting 59% of applicants at a 154/3.41 median. Where it falls short: just 69% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -4045,17 +4656,26 @@
         "lsat25": 152,
         "lsat50": 154,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 76.19,
+        "statePassRate": 78.59,
+        "diff": -2.4,
+        "takers": 84
       }
     },
     {
       "state": "Kentucky",
       "name": "University of Louisville Brandeis School of Law",
+      "usnewsName": "University of Louisville (Brandeis)",
       "city": "Louisville",
+      "website": "https://law.louisville.edu/",
       "medianGPA": 3.67,
       "medianLSAT": 157,
       "tuitionInState": 27000,
       "tuitionOutState": 32000,
-      "rank": 146,
+      "rank": 124,
       "tier": "Regional",
       "writeup": "Regional school in Louisville, admitting 63% of applicants at a 157/3.67 median. Where it excels: the sticker price is low at $32,000 out-of-state.",
       "outcomes": {
@@ -4101,19 +4721,28 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 84.48,
+        "statePassRate": 78.98,
+        "diff": 5.5,
+        "takers": 116
       }
     },
     {
       "state": "Louisiana",
       "name": "Tulane University Law School",
+      "usnewsName": "Tulane University",
       "city": "New Orleans",
+      "website": "https://law.tulane.edu/",
       "medianGPA": 3.67,
       "medianLSAT": 161,
       "tuitionInState": 69578,
       "tuitionOutState": 69578,
-      "rank": 71,
-      "tier": "T80",
-      "writeup": "Regional school in New Orleans, admitting 40% of applicants at a 161/3.67 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
+      "rank": 70,
+      "tier": "T70",
+      "writeup": "Regional-plus school in New Orleans, admitting 40% of applicants at a 161/3.67 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 214,
         "employmentRate": 88.8,
@@ -4157,19 +4786,28 @@
         "lsat25": 159,
         "lsat50": 161,
         "lsat75": 164
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 76.12,
+        "statePassRate": 81.89,
+        "diff": -5.77,
+        "takers": 201
       }
     },
     {
       "state": "Louisiana",
       "name": "LSU Paul M. Hebert Law Center",
+      "usnewsName": "Louisiana State University--Baton Rouge (Hebert)",
       "city": "Baton Rouge",
+      "website": "https://law.lsu.edu/",
       "medianGPA": 3.74,
       "medianLSAT": 157,
       "tuitionInState": 19750,
       "tuitionOutState": 19750,
-      "rank": 84,
+      "rank": 85,
       "tier": "T90",
-      "writeup": "Regional school in Baton Rouge, admitting 39% of applicants at a 157/3.74 median. Where it excels: graduates beat their states' average bar pass rate by 10 points, and the sticker price is low at $19,750 out-of-state.",
+      "writeup": "Regional school in Baton Rouge, admitting 39% of applicants at a 157/3.74 median. Where it excels: the sticker price is low at $19,750 out-of-state.",
       "outcomes": {
         "graduates": 198,
         "employmentRate": 87.4,
@@ -4213,19 +4851,28 @@
         "lsat25": 155,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 85.39,
+        "statePassRate": 79.77,
+        "diff": 5.62,
+        "takers": 178
       }
     },
     {
       "state": "Louisiana",
       "name": "Loyola University New Orleans College of Law",
+      "usnewsName": "Loyola University New Orleans",
       "city": "New Orleans",
+      "website": "https://law.loyno.edu/",
       "medianGPA": 3.47,
       "medianLSAT": 154,
       "tuitionInState": 55024,
       "tuitionOutState": 55024,
-      "rank": 134,
+      "rank": 135,
       "tier": "Regional",
-      "writeup": "Regional school in New Orleans, admitting 51% of applicants at a 154/3.47 median. Where it falls short: graduates trail their states' average bar pass rate by 7 points.",
+      "writeup": "Regional school in New Orleans, admitting 51% of applicants at a 154/3.47 median. Where it falls short: graduates trail their states' average bar pass rate by 8 points.",
       "outcomes": {
         "graduates": 177,
         "employmentRate": 83.6,
@@ -4269,19 +4916,28 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 71.17,
+        "statePassRate": 79.65,
+        "diff": -8.48,
+        "takers": 163
       }
     },
     {
       "state": "Louisiana",
       "name": "Southern University Law Center",
+      "usnewsName": "Southern University Law Center",
       "city": "Baton Rouge",
+      "website": "https://www.sulc.edu/",
       "medianGPA": 3.15,
       "medianLSAT": 147,
       "tuitionInState": 11338,
       "tuitionOutState": 11338,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "Regional school in Baton Rouge, admitting 57% of applicants at a 147/3.15 median. Where it excels: the sticker price is low at $11,338 out-of-state. Where it falls short: just 40% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 16 points.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "Regional school in Baton Rouge, admitting 57% of applicants at a 147/3.15 median. Where it excels: the sticker price is low at $11,338 out-of-state. Where it falls short: just 40% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 12 points.",
       "outcomes": {
         "graduates": 231,
         "employmentRate": 46.8,
@@ -4325,19 +4981,28 @@
         "lsat25": 145,
         "lsat50": 147,
         "lsat75": 150
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 68.09,
+        "statePassRate": 80.18,
+        "diff": -12.09,
+        "takers": 141
       }
     },
     {
       "state": "Maine",
       "name": "University of Maine Law School",
+      "usnewsName": "University of Maine School of Law",
       "city": "Portland",
+      "website": "https://mainelaw.edu/",
       "medianGPA": 3.7,
       "medianLSAT": 158,
       "tuitionInState": 26100,
       "tuitionOutState": 38160,
-      "rank": 88,
-      "tier": "T90",
-      "writeup": "Regional school in Portland, admitting 37% of applicants at a 158/3.70 median. Where it excels: graduates beat their states' average bar pass rate by 9 points. Where it falls short: just 72% of graduates land full-time bar-required work, and BigLaw is thin for the tier at 1% into 500+ lawyer firms.",
+      "rank": 91,
+      "tier": "T100",
+      "writeup": "Regional school in Portland, admitting 37% of applicants at a 158/3.70 median. Where it excels: graduates beat their states' average bar pass rate by 13 points. Where it falls short: just 72% of graduates land full-time bar-required work, and BigLaw is thin for the tier at 1% into 500+ lawyer firms.",
       "outcomes": {
         "graduates": 88,
         "employmentRate": 79.5,
@@ -4381,17 +5046,26 @@
         "lsat25": 154,
         "lsat50": 158,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 85.06,
+        "statePassRate": 72.0,
+        "diff": 13.06,
+        "takers": 87
       }
     },
     {
       "state": "Maryland",
       "name": "University of Maryland Francis King Carey",
+      "usnewsName": "University of Maryland (Carey)",
       "city": "Baltimore",
+      "website": "https://www.law.umaryland.edu/",
       "medianGPA": 3.72,
       "medianLSAT": 164,
       "tuitionInState": 37830,
       "tuitionOutState": 55844,
-      "rank": 63,
+      "rank": 62,
       "tier": "T70",
       "writeup": "Strong DC/Baltimore government, health-law, and public-interest placement at a reasonable in-state cost. National reach is limited beyond the mid-Atlantic.",
       "outcomes": {
@@ -4437,17 +5111,25 @@
         "lsat25": 156,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "bar": {
+        "passRate": 81.69,
+        "statePassRate": 75.59,
+        "diff": 6.1,
+        "takers": 213
       }
     },
     {
       "state": "Maryland",
       "name": "University of Baltimore School of Law",
+      "usnewsName": "University of Baltimore",
       "city": "Baltimore",
+      "website": "https://www.ubalt.edu/law/index.cfm",
       "medianGPA": 3.45,
       "medianLSAT": 155,
       "tuitionInState": 33944,
       "tuitionOutState": 50624,
-      "rank": 139,
+      "rank": 136,
       "tier": "Regional",
       "writeup": "Practical, practice-focused program with deep Baltimore and Maryland-government ties and strong part-time options. Outcomes are firmly regional.",
       "outcomes": {
@@ -4493,12 +5175,20 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "bar": {
+        "passRate": 70.53,
+        "statePassRate": 73.99,
+        "diff": -3.46,
+        "takers": 207
       }
     },
     {
       "state": "Massachusetts",
       "name": "Harvard Law School",
+      "usnewsName": "Harvard University",
       "city": "Cambridge",
+      "website": "https://hls.harvard.edu/",
       "medianGPA": 3.96,
       "medianLSAT": 174,
       "tuitionInState": 77100,
@@ -4549,19 +5239,27 @@
         "lsat25": 171,
         "lsat50": 174,
         "lsat75": 176
+      },
+      "bar": {
+        "passRate": 97.9,
+        "statePassRate": 85.24,
+        "diff": 12.66,
+        "takers": 620
       }
     },
     {
       "state": "Massachusetts",
       "name": "Boston University School of Law",
+      "usnewsName": "Boston University",
       "city": "Boston",
+      "website": "https://www.bu.edu/law/",
       "medianGPA": 3.88,
       "medianLSAT": 170,
       "tuitionInState": 69870,
       "tuitionOutState": 69870,
-      "rank": 22,
+      "rank": 24,
       "tier": "T30",
-      "writeup": "T20 with excellent Boston and Northeast Big Law placement and standout tax/health-law programs. Strong but somewhat regionally concentrated outside the top markets.",
+      "writeup": "Top-25 school with excellent Boston and Northeast Big Law placement and standout tax/health-law programs. Strong but somewhat regionally concentrated outside the top markets.",
       "outcomes": {
         "graduates": 214,
         "employmentRate": 95.8,
@@ -4605,18 +5303,26 @@
         "lsat25": 164,
         "lsat50": 170,
         "lsat75": 171
+      },
+      "bar": {
+        "passRate": 94.93,
+        "statePassRate": 84.36,
+        "diff": 10.57,
+        "takers": 217
       }
     },
     {
       "state": "Massachusetts",
       "name": "Boston College Law School",
+      "usnewsName": "Boston College",
       "city": "Newton",
+      "website": "https://www.bc.edu/content/bc-web/schools/law",
       "medianGPA": 3.83,
       "medianLSAT": 168,
       "tuitionInState": 72380,
       "tuitionOutState": 72380,
-      "rank": 25,
-      "tier": "T30",
+      "rank": 20,
+      "tier": "T20",
       "writeup": "Collegial culture with strong Boston firm and public-interest placement. Slightly suburban campus and a regional (Northeast) center of gravity.",
       "outcomes": {
         "graduates": 213,
@@ -4661,18 +5367,26 @@
         "lsat25": 162,
         "lsat50": 168,
         "lsat75": 169
+      },
+      "bar": {
+        "passRate": 96.19,
+        "statePassRate": 85.29,
+        "diff": 10.9,
+        "takers": 210
       }
     },
     {
       "state": "Massachusetts",
       "name": "Northeastern University School of Law",
+      "usnewsName": "Northeastern University",
       "city": "Boston",
+      "website": "https://law.northeastern.edu/",
       "medianGPA": 3.77,
       "medianLSAT": 164,
       "tuitionInState": 65652,
       "tuitionOutState": 65652,
-      "rank": 68,
-      "tier": "T70",
+      "rank": 77,
+      "tier": "T80",
       "writeup": "Distinctive co-op program gives real work experience before graduation; strong for public-interest careers. No traditional class rank/grades can complicate Big Law recruiting.",
       "outcomes": {
         "graduates": 213,
@@ -4717,17 +5431,25 @@
         "lsat25": 161,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "bar": {
+        "passRate": 90.52,
+        "statePassRate": 84.27,
+        "diff": 6.25,
+        "takers": 211
       }
     },
     {
       "state": "Massachusetts",
       "name": "Suffolk University Law School",
+      "usnewsName": "Suffolk University",
       "city": "Boston",
+      "website": "https://www.suffolk.edu/law",
       "medianGPA": 3.58,
       "medianLSAT": 155,
       "tuitionInState": 62610,
       "tuitionOutState": 62610,
-      "rank": 127,
+      "rank": 128,
       "tier": "Regional",
       "writeup": "Huge Boston-area alumni network and strong evening/part-time options. Outcomes are regional and cost is high for the tier.",
       "outcomes": {
@@ -4773,17 +5495,25 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 159
+      },
+      "bar": {
+        "passRate": 80.75,
+        "statePassRate": 84.33,
+        "diff": -3.58,
+        "takers": 348
       }
     },
     {
       "state": "Massachusetts",
       "name": "UMass Law - Dartmouth",
+      "usnewsName": "University of Massachusetts--Dartmouth",
       "city": "Dartmouth",
+      "website": "https://www.umassd.edu/law/",
       "medianGPA": 3.36,
       "medianLSAT": 152,
       "tuitionInState": 31766,
       "tuitionOutState": 41565,
-      "rank": 161,
+      "rank": 171,
       "tier": "Regional",
       "writeup": "The state's only public law school and by far the cheapest MA option. Newer, still building bar passage and its employment record.",
       "outcomes": {
@@ -4829,17 +5559,25 @@
         "lsat25": 149,
         "lsat50": 152,
         "lsat75": 155
+      },
+      "bar": {
+        "passRate": 62.63,
+        "statePassRate": 83.35,
+        "diff": -20.72,
+        "takers": 99
       }
     },
     {
       "state": "Massachusetts",
       "name": "New England Law Boston",
+      "usnewsName": "New England Law Boston",
       "city": "Boston",
+      "website": "https://www.nesl.edu/",
       "medianGPA": 3.37,
       "medianLSAT": 153,
       "tuitionInState": 62896,
       "tuitionOutState": 62896,
-      "rank": 166,
+      "rank": 168,
       "tier": "Regional",
       "writeup": "Downtown Boston access at an access-oriented admissions bar. Bar passage and employment outcomes lag.",
       "outcomes": {
@@ -4885,17 +5623,25 @@
         "lsat25": 149,
         "lsat50": 153,
         "lsat75": 157
+      },
+      "bar": {
+        "passRate": 73.88,
+        "statePassRate": 83.77,
+        "diff": -9.89,
+        "takers": 291
       }
     },
     {
       "state": "Massachusetts",
       "name": "Western New England University School of Law",
+      "usnewsName": "Western New England University",
       "city": "Springfield",
+      "website": "https://www.wne.edu/law/",
       "medianGPA": 3.27,
       "medianLSAT": 153,
       "tuitionInState": 50320,
       "tuitionOutState": 50320,
-      "rank": 166,
+      "rank": 159,
       "tier": "Regional",
       "writeup": "Serves the western-Massachusetts/Connecticut-valley market. Small and regional with modest big-firm placement.",
       "outcomes": {
@@ -4941,17 +5687,25 @@
         "lsat25": 149,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 68.0,
+        "statePassRate": 77.44,
+        "diff": -9.44,
+        "takers": 75
       }
     },
     {
       "state": "Michigan",
       "name": "University of Michigan Law School",
+      "usnewsName": "University of Michigan--Ann Arbor",
       "city": "Ann Arbor",
+      "website": "https://michigan.law.umich.edu/",
       "medianGPA": 3.88,
       "medianLSAT": 171,
       "tuitionInState": 76108,
       "tuitionOutState": 79108,
-      "rank": 8,
+      "rank": 9,
       "tier": "T14",
       "writeup": "A top national school that places into Big Law and clerkships in every major market, not just the Midwest. Nonresident tuition is nearly the same as resident — it's priced like a private.",
       "outcomes": {
@@ -4997,18 +5751,26 @@
         "lsat25": 168,
         "lsat50": 171,
         "lsat75": 173
+      },
+      "bar": {
+        "passRate": 94.15,
+        "statePassRate": 82.68,
+        "diff": 11.47,
+        "takers": 342
       }
     },
     {
       "state": "Michigan",
       "name": "Wayne State University Law School",
+      "usnewsName": "Wayne State University",
       "city": "Detroit",
+      "website": "https://law.wayne.edu/",
       "medianGPA": 3.89,
       "medianLSAT": 164,
       "tuitionInState": 38861,
       "tuitionOutState": 42632,
-      "rank": 71,
-      "tier": "T80",
+      "rank": 62,
+      "tier": "T70",
       "writeup": "Best value in the Detroit metro with strong local firm and government placement. Limited pull outside Michigan.",
       "outcomes": {
         "graduates": 124,
@@ -5053,17 +5815,25 @@
         "lsat25": 157,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "bar": {
+        "passRate": 73.85,
+        "statePassRate": 71.67,
+        "diff": 2.18,
+        "takers": 130
       }
     },
     {
       "state": "Michigan",
       "name": "Michigan State University College of Law",
+      "usnewsName": "Michigan State University",
       "city": "East Lansing",
+      "website": "https://law.msu.edu/",
       "medianGPA": 3.73,
       "medianLSAT": 162,
       "tuitionInState": 43480,
       "tuitionOutState": 48222,
-      "rank": 115,
+      "rank": 108,
       "tier": "Regional",
       "writeup": "Now fully integrated into MSU with improving resources and solid Michigan placement. Outcomes are regional and the ranking has been volatile.",
       "outcomes": {
@@ -5109,17 +5879,25 @@
         "lsat25": 158,
         "lsat50": 162,
         "lsat75": 164
+      },
+      "bar": {
+        "passRate": 77.35,
+        "statePassRate": 74.0,
+        "diff": 3.35,
+        "takers": 181
       }
     },
     {
       "state": "Michigan",
       "name": "University of Detroit Mercy School of Law",
+      "usnewsName": "University of Detroit Mercy",
       "city": "Detroit",
+      "website": "https://law.udmercy.edu/",
       "medianGPA": 3.52,
       "medianLSAT": 156,
       "tuitionInState": 48480,
       "tuitionOutState": 48480,
-      "rank": 134,
+      "rank": 142,
       "tier": "Regional",
       "writeup": "Detroit access plus a unique dual US/Canadian JD option. Private cost with regional outcomes.",
       "outcomes": {
@@ -5165,19 +5943,27 @@
         "lsat25": 154,
         "lsat50": 156,
         "lsat75": 159
+      },
+      "bar": {
+        "passRate": 71.53,
+        "statePassRate": 71.89,
+        "diff": -0.36,
+        "takers": 144
       }
     },
     {
       "state": "Michigan",
-      "name": "Western Michigan University Cooley Law School",
+      "name": "Thomas M. Cooley Law School",
+      "usnewsName": "Cooley Law School",
       "city": "Lansing",
+      "website": "https://cooley.edu/",
       "medianGPA": 3.09,
       "medianLSAT": 147,
       "tuitionInState": 47400,
       "tuitionOutState": 47400,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "The most accessible admissions in the state — very high acceptance. Low bar passage and heavy debt make it a high-risk cost proposition.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "The most accessible admissions in the state, admitting about half of applicants. Low bar passage and heavy debt make it a high-risk cost proposition.",
       "outcomes": {
         "graduates": 143,
         "employmentRate": 67.1,
@@ -5221,19 +6007,30 @@
         "lsat25": 145,
         "lsat50": 147,
         "lsat75": 151
+      },
+      "formerNames": [
+        "Western Michigan University Cooley Law School"
+      ],
+      "bar": {
+        "passRate": 51.45,
+        "statePassRate": 74.33,
+        "diff": -22.88,
+        "takers": 138
       }
     },
     {
       "state": "Minnesota",
       "name": "University of Minnesota Law School",
+      "usnewsName": "University of Minnesota",
       "city": "Minneapolis",
+      "website": "https://law.umn.edu/",
       "medianGPA": 3.88,
       "medianLSAT": 171,
       "tuitionInState": 51440,
       "tuitionOutState": 61845,
-      "rank": 20,
-      "tier": "T20",
-      "writeup": "National school in Minneapolis, admitting 27% of applicants at a 171/3.88 median. Where it excels: graduates beat their states' average bar pass rate by 11 points.",
+      "rank": 22,
+      "tier": "T30",
+      "writeup": "Strong national school in Minneapolis, admitting 27% of applicants at a 171/3.88 median. Where it excels: graduates beat their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 222,
         "employmentRate": 95.0,
@@ -5277,19 +6074,28 @@
         "lsat25": 166,
         "lsat50": 171,
         "lsat75": 173
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 95.31,
+        "statePassRate": 85.31,
+        "diff": 10.0,
+        "takers": 213
       }
     },
     {
       "state": "Minnesota",
       "name": "University of St. Thomas School of Law",
+      "usnewsName": "University of St. Thomas",
       "city": "Minneapolis",
+      "website": "https://law.stthomas.edu/index.html",
       "medianGPA": 3.72,
       "medianLSAT": 159,
       "tuitionInState": 50998,
       "tuitionOutState": 50998,
-      "rank": 94,
-      "tier": "T100",
-      "writeup": "Regional school in Minneapolis, admitting 58% of applicants at a 159/3.72 median. Where it falls short: BigLaw is thin for the tier at 1% into 500+ lawyer firms, and graduates trail their states' average bar pass rate by 10 points.",
+      "rank": 105,
+      "tier": "Regional",
+      "writeup": "Regional school in Minneapolis, admitting 58% of applicants at a 159/3.72 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 149,
         "employmentRate": 91.3,
@@ -5333,17 +6139,26 @@
         "lsat25": 155,
         "lsat50": 159,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 85.14,
+        "statePassRate": 86.61,
+        "diff": -1.47,
+        "takers": 148
       }
     },
     {
       "state": "Minnesota",
       "name": "Mitchell Hamline School of Law",
+      "usnewsName": "Mitchell Hamline School of Law",
       "city": "Saint Paul",
+      "website": "https://mitchellhamline.edu/",
       "medianGPA": 3.29,
       "medianLSAT": 154,
       "tuitionInState": 55300,
       "tuitionOutState": 55300,
-      "rank": 154,
+      "rank": 152,
       "tier": "Regional",
       "writeup": "Regional school in Saint Paul, admitting 51% of applicants at a 154/3.29 median. Where it falls short: just 60% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 11 points.",
       "outcomes": {
@@ -5389,19 +6204,28 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 158
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 71.95,
+        "statePassRate": 82.93,
+        "diff": -10.98,
+        "takers": 328
       }
     },
     {
       "state": "Mississippi",
       "name": "University of Mississippi School of Law",
+      "usnewsName": "University of Mississippi (Ole Miss)",
       "city": "Oxford",
+      "website": "https://law.olemiss.edu/",
       "medianGPA": 3.68,
       "medianLSAT": 157,
       "tuitionInState": 19797,
       "tuitionOutState": 26797,
-      "rank": 121,
+      "rank": 124,
       "tier": "Regional",
-      "writeup": "Regional school in Oxford, admitting 42% of applicants at a 157/3.68 median. Where it excels: the sticker price is low at $26,797 out-of-state. Where it falls short: graduates trail their states' average bar pass rate by 7 points.",
+      "writeup": "Regional school in Oxford, admitting 42% of applicants at a 157/3.68 median. Where it excels: the sticker price is low at $26,797 out-of-state.",
       "outcomes": {
         "graduates": 176,
         "employmentRate": 88.1,
@@ -5445,19 +6269,28 @@
         "lsat25": 155,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 78.18,
+        "statePassRate": 81.01,
+        "diff": -2.83,
+        "takers": 165
       }
     },
     {
       "state": "Mississippi",
-      "name": "Mississippi College School of Law",
+      "name": "Mississippi Christian University School of Law",
+      "usnewsName": "Mississippi College",
       "city": "Jackson",
+      "website": "https://law.mc.edu/",
       "medianGPA": 3.37,
       "medianLSAT": 152,
       "tuitionInState": 37980,
       "tuitionOutState": 37980,
-      "rank": 158,
+      "rank": 161,
       "tier": "Regional",
-      "writeup": "Regional school in Jackson, admitting 60% of applicants at a 152/3.37 median. Where it excels: the federal clerkship pipeline is unusually strong at 8% of the class. Where it falls short: graduates trail their states' average bar pass rate by 16 points.",
+      "writeup": "Regional school in Jackson, admitting 60% of applicants at a 152/3.37 median. Where it excels: the federal clerkship pipeline is unusually strong at 8% of the class.",
       "outcomes": {
         "graduates": 103,
         "employmentRate": 91.3,
@@ -5501,17 +6334,29 @@
         "lsat25": 148,
         "lsat50": 152,
         "lsat75": 155
+      },
+      "writeupAuto": true,
+      "formerNames": [
+        "Mississippi College School of Law"
+      ],
+      "bar": {
+        "passRate": 81.63,
+        "statePassRate": 80.97,
+        "diff": 0.66,
+        "takers": 98
       }
     },
     {
       "state": "Missouri",
       "name": "Washington University School of Law",
+      "usnewsName": "Washington University in St. Louis",
       "city": "St. Louis",
+      "website": "https://law.washu.edu/",
       "medianGPA": 3.96,
       "medianLSAT": 175,
       "tuitionInState": 72792,
       "tuitionOutState": 72792,
-      "rank": 14,
+      "rank": 13,
       "tier": "T14",
       "writeup": "National-elite school in St. Louis, admitting 19% of applicants at a 175/3.96 median. Where it excels: 94% of the class lands full-time bar-required work, among the best placement rates in the country, and BigLaw is a live option, with 40% going to firms of 500+ lawyers. Where it falls short: the $72,792 out-of-state sticker is steep.",
       "outcomes": {
@@ -5557,17 +6402,26 @@
         "lsat25": 165,
         "lsat50": 175,
         "lsat75": 176
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.63,
+        "statePassRate": 83.41,
+        "diff": 6.22,
+        "takers": 270
       }
     },
     {
       "state": "Missouri",
       "name": "University of Missouri School of Law",
+      "usnewsName": "University of Missouri",
       "city": "Columbia",
+      "website": "https://law.missouri.edu/",
       "medianGPA": 3.72,
       "medianLSAT": 161,
       "tuitionInState": 24090,
       "tuitionOutState": 30500,
-      "rank": 57,
+      "rank": 59,
       "tier": "T60",
       "writeup": "Regional-plus school in Columbia, admitting 42% of applicants at a 161/3.72 median. Where it excels: the sticker price is low at $30,500 out-of-state.",
       "outcomes": {
@@ -5613,17 +6467,26 @@
         "lsat25": 156,
         "lsat50": 161,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 86.18,
+        "statePassRate": 85.78,
+        "diff": 0.4,
+        "takers": 123
       }
     },
     {
       "state": "Missouri",
       "name": "Saint Louis University School of Law",
+      "usnewsName": "Saint Louis University",
       "city": "St. Louis",
+      "website": "https://www.slu.edu/law/index.php",
       "medianGPA": 3.61,
       "medianLSAT": 157,
       "tuitionInState": 55260,
       "tuitionOutState": 55260,
-      "rank": 94,
+      "rank": 91,
       "tier": "T100",
       "writeup": "Regional school in St. Louis, admitting 56% of applicants at a 157/3.61 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
@@ -5669,17 +6532,26 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.09,
+        "statePassRate": 85.6,
+        "diff": 3.49,
+        "takers": 165
       }
     },
     {
       "state": "Missouri",
       "name": "UMKC School of Law",
+      "usnewsName": "University of Missouri--Kansas City",
       "city": "Kansas City",
+      "website": "https://law.umkc.edu/",
       "medianGPA": 3.65,
       "medianLSAT": 156,
       "tuitionInState": 23840,
       "tuitionOutState": 29910,
-      "rank": 99,
+      "rank": 100,
       "tier": "T100",
       "writeup": "Regional school in Kansas City, admitting 46% of applicants at a 156/3.65 median. Where it excels: the sticker price is low at $29,910 out-of-state.",
       "outcomes": {
@@ -5725,18 +6597,27 @@
         "lsat25": 154,
         "lsat50": 156,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 82.26,
+        "statePassRate": 85.7,
+        "diff": -3.44,
+        "takers": 124
       }
     },
     {
       "state": "Montana",
       "name": "University of Montana Law School",
+      "usnewsName": "University of Montana (Blewett)",
       "city": "Missoula",
+      "website": "https://www.umt.edu/law/",
       "medianGPA": 3.64,
       "medianLSAT": 156,
       "tuitionInState": 24582,
       "tuitionOutState": 51582,
-      "rank": 99,
-      "tier": "T100",
+      "rank": 90,
+      "tier": "T90",
       "writeup": "Regional school in Missoula, admitting 51% of applicants at a 156/3.64 median. Where it excels: it pulls hard toward government and public interest (31% of graduates), and residency saves $27,000 a year. Where it falls short: BigLaw is thin for the tier at 0% into 500+ lawyer firms.",
       "outcomes": {
         "graduates": 86,
@@ -5781,19 +6662,28 @@
         "lsat25": 153,
         "lsat50": 156,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 82.5,
+        "statePassRate": 82.31,
+        "diff": 0.19,
+        "takers": 80
       }
     },
     {
       "state": "Nebraska",
       "name": "University of Nebraska Law School",
+      "usnewsName": "University of Nebraska--Lincoln",
       "city": "Lincoln",
+      "website": "https://law.unl.edu/",
       "medianGPA": 3.81,
       "medianLSAT": 160,
       "tuitionInState": 14140,
       "tuitionOutState": 38100,
-      "rank": 71,
-      "tier": "T80",
-      "writeup": "Regional school in Lincoln, admitting 40% of applicants at a 160/3.81 median. Where it excels: graduates beat their states' average bar pass rate by 7 points, and residency saves $23,960 a year.",
+      "rank": 62,
+      "tier": "T70",
+      "writeup": "Regional-plus school in Lincoln, admitting 40% of applicants at a 160/3.81 median. Where it excels: residency saves $23,960 a year.",
       "outcomes": {
         "graduates": 143,
         "employmentRate": 90.9,
@@ -5837,19 +6727,28 @@
         "lsat25": 156,
         "lsat50": 160,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 84.89,
+        "statePassRate": 79.05,
+        "diff": 5.84,
+        "takers": 139
       }
     },
     {
       "state": "Nebraska",
       "name": "Creighton University School of Law",
+      "usnewsName": "Creighton University",
       "city": "Omaha",
+      "website": "https://www.creighton.edu/law/",
       "medianGPA": 3.51,
       "medianLSAT": 153,
       "tuitionInState": 46260,
       "tuitionOutState": 46260,
-      "rank": 148,
+      "rank": 144,
       "tier": "Regional",
-      "writeup": "Regional school in Omaha, admitting 65% of applicants at a 153/3.51 median. Where it falls short: graduates trail their states' average bar pass rate by 10 points.",
+      "writeup": "Regional school in Omaha, admitting 65% of applicants at a 153/3.51 median. Where it falls short: graduates trail their states' average bar pass rate by 8 points.",
       "outcomes": {
         "graduates": 113,
         "employmentRate": 88.5,
@@ -5893,19 +6792,28 @@
         "lsat25": 150,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 71.17,
+        "statePassRate": 79.36,
+        "diff": -8.19,
+        "takers": 111
       }
     },
     {
       "state": "Nevada",
       "name": "William S. Boyd School of Law at UNLV",
+      "usnewsName": "University of Nevada--Las Vegas (Boyd)",
       "city": "Las Vegas",
+      "website": "https://law.unlv.edu/",
       "medianGPA": 3.76,
       "medianLSAT": 160,
       "tuitionInState": 31518,
       "tuitionOutState": 46040,
-      "rank": 79,
-      "tier": "T80",
-      "writeup": "Regional school in Las Vegas, admitting 31% of applicants at a 160/3.76 median. Where it excels: graduates beat their states' average bar pass rate by 6 points.",
+      "rank": 91,
+      "tier": "T100",
+      "writeup": "Regional school in Las Vegas, admitting 31% of applicants at a 160/3.76 median. Where it excels: graduates beat their states' average bar pass rate by 12 points.",
       "outcomes": {
         "graduates": 117,
         "employmentRate": 92.3,
@@ -5949,17 +6857,26 @@
         "lsat25": 156,
         "lsat50": 160,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 83.47,
+        "statePassRate": 71.83,
+        "diff": 11.64,
+        "takers": 121
       }
     },
     {
       "state": "New Hampshire",
       "name": "University of New Hampshire Franklin Pierce School of Law",
+      "usnewsName": "University of New Hampshire (Pierce)",
       "city": "Concord",
+      "website": "https://law.unh.edu/",
       "medianGPA": 3.5,
       "medianLSAT": 155,
       "tuitionInState": 42000,
       "tuitionOutState": 50000,
-      "rank": 125,
+      "rank": 136,
       "tier": "Regional",
       "writeup": "Regional school in Concord, admitting 52% of applicants at a 155/3.50 median. Where it falls short: just 58% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -6005,19 +6922,28 @@
         "lsat25": 151,
         "lsat50": 155,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 73.78,
+        "statePassRate": 77.16,
+        "diff": -3.38,
+        "takers": 164
       }
     },
     {
       "state": "New Jersey",
       "name": "Seton Hall University School of Law",
+      "usnewsName": "Seton Hall University",
       "city": "Newark",
+      "website": "https://law.shu.edu/",
       "medianGPA": 3.71,
       "medianLSAT": 161,
       "tuitionInState": 69660,
       "tuitionOutState": 69660,
-      "rank": 71,
-      "tier": "T80",
-      "writeup": "Regional school in Newark, admitting 34% of applicants at a 161/3.71 median. Where it excels: graduates beat their states' average bar pass rate by 12 points.",
+      "rank": 70,
+      "tier": "T70",
+      "writeup": "Regional-plus school in Newark, admitting 34% of applicants at a 161/3.71 median. Where it excels: graduates beat their states' average bar pass rate by 13 points.",
       "outcomes": {
         "graduates": 207,
         "employmentRate": 90.8,
@@ -6061,19 +6987,28 @@
         "lsat25": 158,
         "lsat50": 161,
         "lsat75": 164
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 87.13,
+        "statePassRate": 74.38,
+        "diff": 12.75,
+        "takers": 202
       }
     },
     {
       "state": "New Jersey",
       "name": "Rutgers Law School",
-      "city": "Camden",
+      "usnewsName": "Rutgers University",
+      "city": "Newark",
+      "website": "https://law.rutgers.edu/",
       "medianGPA": 3.66,
       "medianLSAT": 158,
       "tuitionInState": 31577,
       "tuitionOutState": 47863,
-      "rank": null,
+      "rank": 100,
       "tier": "T100",
-      "writeup": "Regional school in Camden, admitting 34% of applicants at a 158/3.66 median. Where it excels: residency saves $16,286 a year.",
+      "writeup": "Regional school in Newark, admitting 34% of applicants at a 158/3.66 median. Where it excels: residency saves $16,286 a year.",
       "outcomes": {
         "graduates": 368,
         "employmentRate": 89.1,
@@ -6117,17 +7052,26 @@
         "lsat25": 155,
         "lsat50": 158,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 79.11,
+        "statePassRate": 75.08,
+        "diff": 4.03,
+        "takers": 383
       }
     },
     {
       "state": "New Mexico",
       "name": "University of New Mexico School of Law",
+      "usnewsName": "University of New Mexico",
       "city": "Albuquerque",
+      "website": "https://lawschool.unm.edu/",
       "medianGPA": 3.56,
       "medianLSAT": 157,
       "tuitionInState": 19474,
       "tuitionOutState": 43192,
-      "rank": 107,
+      "rank": 117,
       "tier": "Regional",
       "writeup": "Regional school in Albuquerque, admitting 41% of applicants at a 157/3.56 median. Where it excels: residency saves $23,718 a year. Where it falls short: just 74% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -6173,17 +7117,26 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 77.0,
+        "statePassRate": 77.9,
+        "diff": -0.9,
+        "takers": 100
       }
     },
     {
       "state": "New York",
       "name": "New York University School of Law",
+      "usnewsName": "New York University",
       "city": "New York",
+      "website": "https://www.law.nyu.edu/",
       "medianGPA": 3.92,
       "medianLSAT": 172,
       "tuitionInState": 83952,
       "tuitionOutState": 83952,
-      "rank": 8,
+      "rank": 7,
       "tier": "T14",
       "writeup": "T14 with elite corporate, tax, and public-interest programs and unrivaled NYC placement. Enormous cost of attendance in the most expensive city in the country.",
       "outcomes": {
@@ -6229,17 +7182,25 @@
         "lsat25": 169,
         "lsat50": 172,
         "lsat75": 174
+      },
+      "bar": {
+        "passRate": 96.94,
+        "statePassRate": 86.37,
+        "diff": 10.57,
+        "takers": 425
       }
     },
     {
       "state": "New York",
       "name": "Columbia Law School",
+      "usnewsName": "Columbia University",
       "city": "New York",
+      "website": "https://www.law.columbia.edu/",
       "medianGPA": 3.92,
       "medianLSAT": 173,
       "tuitionInState": 85368,
       "tuitionOutState": 85368,
-      "rank": 10,
+      "rank": 9,
       "tier": "T14",
       "writeup": "T14 powerhouse with arguably the best Wall Street corporate and Big Law placement anywhere. Full sticker and an intense, large-market culture.",
       "outcomes": {
@@ -6285,19 +7246,27 @@
         "lsat25": 169,
         "lsat50": 173,
         "lsat75": 175
+      },
+      "bar": {
+        "passRate": 94.73,
+        "statePassRate": 86.6,
+        "diff": 8.13,
+        "takers": 455
       }
     },
     {
       "state": "New York",
       "name": "Cornell Law School",
+      "usnewsName": "Cornell University",
       "city": "Ithaca",
+      "website": "https://www.lawschool.cornell.edu/",
       "medianGPA": 3.92,
       "medianLSAT": 173,
       "tuitionInState": 84722,
       "tuitionOutState": 84722,
-      "rank": 18,
-      "tier": "T20",
-      "writeup": "The smallest T14 — strong NYC Big Law placement with a close-knit culture. Isolated in upstate Ithaca, far from the market it feeds.",
+      "rank": 13,
+      "tier": "T14",
+      "writeup": "T14 with strong NYC Big Law placement and a close-knit culture. Isolated in upstate Ithaca, far from the market it feeds.",
       "outcomes": {
         "graduates": 197,
         "employmentRate": 99.5,
@@ -6341,19 +7310,27 @@
         "lsat25": 168,
         "lsat50": 173,
         "lsat75": 175
+      },
+      "bar": {
+        "passRate": 93.68,
+        "statePassRate": 85.8,
+        "diff": 7.88,
+        "takers": 190
       }
     },
     {
       "state": "New York",
       "name": "Fordham University School of Law",
+      "usnewsName": "Fordham University",
       "city": "New York",
+      "website": "https://www.fordham.edu/school-of-law/",
       "medianGPA": 3.79,
       "medianLSAT": 168,
       "tuitionInState": 78078,
       "tuitionOutState": 78078,
-      "rank": 38,
+      "rank": 42,
       "tier": "T50",
-      "writeup": "The best non-T14 pipeline into NYC Big Law and a massive, loyal Manhattan alumni network. Regionally concentrated and privately priced.",
+      "writeup": "One of the strongest pipelines into NYC Big Law outside the T14 and a massive, loyal Manhattan alumni network. Regionally concentrated and privately priced.",
       "outcomes": {
         "graduates": 420,
         "employmentRate": 90.0,
@@ -6397,18 +7374,26 @@
         "lsat25": 165,
         "lsat50": 168,
         "lsat75": 170
+      },
+      "bar": {
+        "passRate": 90.8,
+        "statePassRate": 86.78,
+        "diff": 4.02,
+        "takers": 424
       }
     },
     {
       "state": "New York",
       "name": "Benjamin N. Cardozo School of Law",
+      "usnewsName": "Yeshiva University (Cardozo)",
       "city": "New York",
+      "website": "https://cardozo.yu.edu/",
       "medianGPA": 3.78,
       "medianLSAT": 165,
       "tuitionInState": 74438,
       "tuitionOutState": 74438,
-      "rank": 63,
-      "tier": "T70",
+      "rank": 59,
+      "tier": "T60",
       "writeup": "Strong NYC placement with standout IP, entertainment, and dispute-resolution programs. Reach is largely NYC-metro.",
       "outcomes": {
         "graduates": 303,
@@ -6453,19 +7438,27 @@
         "lsat25": 162,
         "lsat50": 165,
         "lsat75": 167
+      },
+      "bar": {
+        "passRate": 87.83,
+        "statePassRate": 86.77,
+        "diff": 1.06,
+        "takers": 304
       }
     },
     {
       "state": "New York",
       "name": "St. John's University School of Law",
+      "usnewsName": "St. John's University",
       "city": "Queens",
+      "website": "https://www.stjohns.edu/law",
       "medianGPA": 3.81,
       "medianLSAT": 164,
       "tuitionInState": 75170,
       "tuitionOutState": 75170,
-      "rank": 63,
+      "rank": 62,
       "tier": "T70",
-      "writeup": "Strong NYC bar passage and a deep outer-borough/Long Island firm network. Regional footprint at a private cost.",
+      "writeup": "Bar passage around the New York average and a deep outer-borough/Long Island firm network. Regional footprint at a private cost.",
       "outcomes": {
         "graduates": 249,
         "employmentRate": 92.4,
@@ -6509,18 +7502,26 @@
         "lsat25": 156,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "bar": {
+        "passRate": 87.55,
+        "statePassRate": 87.08,
+        "diff": 0.47,
+        "takers": 249
       }
     },
     {
       "state": "New York",
       "name": "University at Buffalo School of Law (SUNY)",
+      "usnewsName": "University at Buffalo--SUNY",
       "city": "Buffalo",
+      "website": "https://www.law.buffalo.edu/",
       "medianGPA": 3.71,
       "medianLSAT": 157,
       "tuitionInState": 26430,
       "tuitionOutState": 32100,
-      "rank": 94,
-      "tier": "T100",
+      "rank": 82,
+      "tier": "T90",
       "writeup": "The best value in New York — SUNY tuition with dominant Western New York placement. Outcomes are heavily upstate/regional.",
       "outcomes": {
         "graduates": 137,
@@ -6565,18 +7566,26 @@
         "lsat25": 155,
         "lsat50": 157,
         "lsat75": 161
+      },
+      "bar": {
+        "passRate": 88.46,
+        "statePassRate": 87.23,
+        "diff": 1.23,
+        "takers": 130
       }
     },
     {
       "state": "New York",
       "name": "Syracuse University College of Law",
+      "usnewsName": "Syracuse University",
       "city": "Syracuse",
+      "website": "https://law.syracuse.edu/",
       "medianGPA": 3.6,
       "medianLSAT": 158,
       "tuitionInState": 64650,
       "tuitionOutState": 64650,
-      "rank": 107,
-      "tier": "Regional",
+      "rank": 100,
+      "tier": "T100",
       "writeup": "Central New York placement plus a strong national-security/tech law niche and online options. Regional reach and private cost.",
       "outcomes": {
         "graduates": 208,
@@ -6621,17 +7630,25 @@
         "lsat25": 154,
         "lsat50": 158,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 84.77,
+        "statePassRate": 83.8,
+        "diff": 0.97,
+        "takers": 197
       }
     },
     {
       "state": "New York",
       "name": "Albany Law School",
+      "usnewsName": "Albany Law School",
       "city": "Albany",
+      "website": "https://www.albanylaw.edu/",
       "medianGPA": 3.54,
       "medianLSAT": 158,
       "tuitionInState": 63994,
       "tuitionOutState": 63994,
-      "rank": 117,
+      "rank": 120,
       "tier": "Regional",
       "writeup": "Unbeatable for New York State government and capital-region careers given its Albany location. Regional footprint outside state government.",
       "outcomes": {
@@ -6677,17 +7694,25 @@
         "lsat25": 154,
         "lsat50": 158,
         "lsat75": 161
+      },
+      "bar": {
+        "passRate": 86.71,
+        "statePassRate": 86.02,
+        "diff": 0.69,
+        "takers": 158
       }
     },
     {
       "state": "New York",
       "name": "Brooklyn Law School",
+      "usnewsName": "Brooklyn Law School",
       "city": "Brooklyn",
+      "website": "https://www.brooklaw.edu/",
       "medianGPA": 3.59,
       "medianLSAT": 161,
       "tuitionInState": 75496,
       "tuitionOutState": 75496,
-      "rank": 117,
+      "rank": 105,
       "tier": "Regional",
       "writeup": "Solid NYC placement with a large network and a strong corporate/BigLaw feeder history. Middle-market outcomes for a high sticker.",
       "outcomes": {
@@ -6733,17 +7758,25 @@
         "lsat25": 158,
         "lsat50": 161,
         "lsat75": 163
+      },
+      "bar": {
+        "passRate": 85.47,
+        "statePassRate": 86.89,
+        "diff": -1.42,
+        "takers": 358
       }
     },
     {
       "state": "New York",
       "name": "New York Law School",
+      "usnewsName": "New York Law School",
       "city": "New York",
+      "website": "https://www.nyls.edu/",
       "medianGPA": 3.63,
       "medianLSAT": 157,
       "tuitionInState": 71052,
       "tuitionOutState": 71052,
-      "rank": 121,
+      "rank": 112,
       "tier": "Regional",
       "writeup": "Lower-Manhattan location and a large NYC network. Middle-market outcomes at a high sticker — not to be confused with NYU.",
       "outcomes": {
@@ -6789,17 +7822,25 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 86.47,
+        "statePassRate": 85.94,
+        "diff": 0.53,
+        "takers": 303
       }
     },
     {
       "state": "New York",
       "name": "Hofstra University Maurice A. Deane",
+      "usnewsName": "Hofstra University (Deane)",
       "city": "Hempstead",
+      "website": "https://law.hofstra.edu/",
       "medianGPA": 3.65,
       "medianLSAT": 157,
       "tuitionInState": 73344,
       "tuitionOutState": 73344,
-      "rank": 125,
+      "rank": 117,
       "tier": "Regional",
       "writeup": "Long Island access and a strong trial-advocacy program. Regional outcomes at a high private cost.",
       "outcomes": {
@@ -6845,17 +7886,25 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 79.17,
+        "statePassRate": 86.68,
+        "diff": -7.51,
+        "takers": 264
       }
     },
     {
       "state": "New York",
       "name": "Pace University Elisabeth Haub School of Law",
+      "usnewsName": "Pace University (Haub)",
       "city": "White Plains",
+      "website": "https://www.pace.edu/law",
       "medianGPA": 3.54,
       "medianLSAT": 154,
       "tuitionInState": 56648,
       "tuitionOutState": 56648,
-      "rank": 141,
+      "rank": 142,
       "tier": "Regional",
       "writeup": "The #1-ranked environmental-law program in the country and Westchester/NYC-suburb access. Otherwise regional.",
       "outcomes": {
@@ -6901,17 +7950,25 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 157
+      },
+      "bar": {
+        "passRate": 65.18,
+        "statePassRate": 84.05,
+        "diff": -18.87,
+        "takers": 247
       }
     },
     {
       "state": "New York",
       "name": "CUNY School of Law",
+      "usnewsName": "CUNY School of Law",
       "city": "Queens",
+      "website": "https://www.law.cuny.edu/",
       "medianGPA": 3.54,
       "medianLSAT": 155,
       "tuitionInState": 15450,
       "tuitionOutState": 25640,
-      "rank": 156,
+      "rank": 171,
       "tier": "Regional",
       "writeup": "The premier public-interest school in the country at the lowest tuition in NYC. By design it places into public-interest/government, not Big Law.",
       "outcomes": {
@@ -6957,17 +8014,25 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 161
+      },
+      "bar": {
+        "passRate": 69.04,
+        "statePassRate": 86.85,
+        "diff": -17.81,
+        "takers": 197
       }
     },
     {
       "state": "New York",
       "name": "Touro University Jacob D. Fuchsberg Law Center",
+      "usnewsName": "Touro University (Fuchsberg)",
       "city": "Central Islip",
+      "website": "https://www.tourolaw.edu/",
       "medianGPA": 3.35,
       "medianLSAT": 153,
       "tuitionInState": 61000,
       "tuitionOutState": 61000,
-      "rank": 169,
+      "rank": 164,
       "tier": "Regional",
       "writeup": "Long Island access with an access-oriented admissions bar. Bar passage and outcomes lag the cost.",
       "outcomes": {
@@ -7013,17 +8078,25 @@
         "lsat25": 151,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 67.86,
+        "statePassRate": 87.08,
+        "diff": -19.22,
+        "takers": 140
       }
     },
     {
       "state": "North Carolina",
       "name": "Duke University School of Law",
+      "usnewsName": "Duke University",
       "city": "Durham",
+      "website": "https://law.duke.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 171,
       "tuitionInState": 80100,
       "tuitionOutState": 80100,
-      "rank": 6,
+      "rank": 7,
       "tier": "T14",
       "writeup": "T14 with elite national placement, clerkships, and a famously supportive, non-cutthroat culture. It's a national school in a mid-size city — full private cost.",
       "outcomes": {
@@ -7069,12 +8142,20 @@
         "lsat25": 169,
         "lsat50": 171,
         "lsat75": 172
+      },
+      "bar": {
+        "passRate": 98.23,
+        "statePassRate": 84.59,
+        "diff": 13.64,
+        "takers": 226
       }
     },
     {
       "state": "North Carolina",
       "name": "UNC School of Law",
+      "usnewsName": "University of North Carolina--Chapel Hill",
       "city": "Chapel Hill",
+      "website": "https://law.unc.edu/",
       "medianGPA": 3.89,
       "medianLSAT": 168,
       "tuitionInState": 28082,
@@ -7125,17 +8206,25 @@
         "lsat25": 165,
         "lsat50": 168,
         "lsat75": 169
+      },
+      "bar": {
+        "passRate": 94.12,
+        "statePassRate": 82.68,
+        "diff": 11.44,
+        "takers": 187
       }
     },
     {
       "state": "North Carolina",
       "name": "Wake Forest University School of Law",
+      "usnewsName": "Wake Forest University",
       "city": "Winston-Salem",
+      "website": "https://law.wfu.edu/",
       "medianGPA": 3.79,
       "medianLSAT": 166,
       "tuitionInState": 57920,
       "tuitionOutState": 57920,
-      "rank": 26,
+      "rank": 30,
       "tier": "T30",
       "writeup": "Small, collegial program with solid North Carolina and Southeast firm placement. Regional reach and a private price tag.",
       "outcomes": {
@@ -7181,17 +8270,25 @@
         "lsat25": 163,
         "lsat50": 166,
         "lsat75": 168
+      },
+      "bar": {
+        "passRate": 89.61,
+        "statePassRate": 81.43,
+        "diff": 8.18,
+        "takers": 154
       }
     },
     {
       "state": "North Carolina",
       "name": "Campbell University School of Law",
+      "usnewsName": "Campbell University (Wiggins)",
       "city": "Raleigh",
+      "website": "https://law.campbell.edu/",
       "medianGPA": 3.51,
       "medianLSAT": 156,
       "tuitionInState": 51840,
       "tuitionOutState": 51840,
-      "rank": 134,
+      "rank": 131,
       "tier": "Regional",
       "writeup": "Strong North Carolina bar passage and a downtown Raleigh location feeding state courts and firms. Regional profile with limited national pull.",
       "outcomes": {
@@ -7237,19 +8334,27 @@
         "lsat25": 152,
         "lsat50": 156,
         "lsat75": 159
+      },
+      "bar": {
+        "passRate": 93.48,
+        "statePassRate": 82.1,
+        "diff": 11.38,
+        "takers": 184
       }
     },
     {
       "state": "North Carolina",
       "name": "Elon University School of Law",
+      "usnewsName": "Elon University",
       "city": "Greensboro",
+      "website": "https://www.elon.edu/u/law/",
       "medianGPA": 3.4,
       "medianLSAT": 154,
       "tuitionInState": 45333,
       "tuitionOutState": 45333,
-      "rank": 158,
+      "rank": 144,
       "tier": "Regional",
-      "writeup": "Accelerated 2.5-year option and experiential focus in the Piedmont Triad. Newer school still building its outcomes record.",
+      "writeup": "A 2.5-year JD for every student and an experiential focus in the Piedmont Triad. Newer school still building its outcomes record.",
       "outcomes": {
         "graduates": 135,
         "employmentRate": 88.1,
@@ -7293,19 +8398,27 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 158
+      },
+      "bar": {
+        "passRate": 69.92,
+        "statePassRate": 81.39,
+        "diff": -11.47,
+        "takers": 133
       }
     },
     {
       "state": "North Carolina",
       "name": "North Carolina Central University School of Law",
+      "usnewsName": "North Carolina Central University",
       "city": "Durham",
+      "website": "https://www.nccu.edu/law",
       "medianGPA": 3.31,
       "medianLSAT": 151,
       "tuitionInState": 13444,
       "tuitionOutState": 36116,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "HBCU with a strong public-interest mission and the lowest in-state cost in the state. Bar passage variability is the main risk.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "HBCU with a strong public-interest mission and the lowest in-state cost in the state. Bar passage well below the state average is the main risk.",
       "outcomes": {
         "graduates": 137,
         "employmentRate": 70.8,
@@ -7349,17 +8462,25 @@
         "lsat25": 149,
         "lsat50": 151,
         "lsat75": 154
+      },
+      "bar": {
+        "passRate": 59.4,
+        "statePassRate": 81.8,
+        "diff": -22.4,
+        "takers": 133
       }
     },
     {
       "state": "North Dakota",
       "name": "University of North Dakota School of Law",
+      "usnewsName": "University of North Dakota",
       "city": "Grand Forks",
+      "website": "https://law.und.edu/",
       "medianGPA": 3.48,
       "medianLSAT": 151,
       "tuitionInState": 17730,
       "tuitionOutState": 35430,
-      "rank": 161,
+      "rank": 156,
       "tier": "Regional",
       "writeup": "Regional school in Grand Forks, admitting 63% of applicants at a 151/3.48 median. Where it excels: it pulls hard toward government and public interest (32% of graduates), and residency saves $17,700 a year.",
       "outcomes": {
@@ -7405,19 +8526,28 @@
         "lsat25": 148,
         "lsat50": 151,
         "lsat75": 155
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 72.31,
+        "statePassRate": 75.24,
+        "diff": -2.93,
+        "takers": 65
       }
     },
     {
       "state": "Ohio",
       "name": "Ohio State Moritz College of Law",
+      "usnewsName": "Ohio State University (Moritz)",
       "city": "Columbus",
+      "website": "https://moritzlaw.osu.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 168,
       "tuitionInState": 35650,
       "tuitionOutState": 50902,
-      "rank": 28,
+      "rank": 30,
       "tier": "T30",
-      "writeup": "Strong national school in Columbus, admitting 25% of applicants at a 168/3.91 median. Where it excels: graduates beat their states' average bar pass rate by 12 points, and residency saves $15,252 a year.",
+      "writeup": "Strong national school in Columbus, admitting 25% of applicants at a 168/3.91 median. Where it excels: graduates beat their states' average bar pass rate by 15 points, and residency saves $15,252 a year.",
       "outcomes": {
         "graduates": 157,
         "employmentRate": 93.0,
@@ -7461,19 +8591,28 @@
         "lsat25": 163,
         "lsat50": 168,
         "lsat75": 169
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 93.13,
+        "statePassRate": 78.58,
+        "diff": 14.55,
+        "takers": 160
       }
     },
     {
       "state": "Ohio",
-      "name": "University of Cincinnati Law School",
+      "name": "University of Cincinnati Klekamp College of Law",
+      "usnewsName": "University of Cincinnati",
       "city": "Cincinnati",
+      "website": "https://www.law.uc.edu/",
       "medianGPA": 3.8,
       "medianLSAT": 159,
       "tuitionInState": 24010,
       "tuitionOutState": 29010,
-      "rank": 71,
-      "tier": "T80",
-      "writeup": "Regional school in Cincinnati, admitting 33% of applicants at a 159/3.80 median. Where it excels: the sticker price is low at $29,010 out-of-state.",
+      "rank": 82,
+      "tier": "T90",
+      "writeup": "Regional school in Cincinnati, admitting 33% of applicants at a 159/3.80 median. Where it excels: graduates beat their states' average bar pass rate by 7 points, and the sticker price is low at $29,010 out-of-state.",
       "outcomes": {
         "graduates": 127,
         "employmentRate": 90.6,
@@ -7517,18 +8656,30 @@
         "lsat25": 156,
         "lsat50": 159,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "formerNames": [
+        "University of Cincinnati Law School"
+      ],
+      "bar": {
+        "passRate": 85.12,
+        "statePassRate": 78.61,
+        "diff": 6.51,
+        "takers": 121
       }
     },
     {
       "state": "Ohio",
       "name": "Case Western Reserve University School of Law",
+      "usnewsName": "Case Western Reserve University",
       "city": "Cleveland",
+      "website": "https://case.edu/law/",
       "medianGPA": 3.76,
       "medianLSAT": 162,
       "tuitionInState": 64600,
       "tuitionOutState": 64600,
-      "rank": 107,
-      "tier": "Regional",
+      "rank": 100,
+      "tier": "T100",
       "writeup": "Regional school in Cleveland, admitting 35% of applicants at a 162/3.76 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 142,
@@ -7573,17 +8724,26 @@
         "lsat25": 156,
         "lsat50": 162,
         "lsat75": 164
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 77.46,
+        "statePassRate": 78.87,
+        "diff": -1.41,
+        "takers": 142
       }
     },
     {
       "state": "Ohio",
       "name": "University of Dayton School of Law",
+      "usnewsName": "University of Dayton",
       "city": "Dayton",
+      "website": "https://udayton.edu/law/",
       "medianGPA": 3.6,
       "medianLSAT": 157,
       "tuitionInState": 41400,
       "tuitionOutState": 41400,
-      "rank": 107,
+      "rank": 112,
       "tier": "Regional",
       "writeup": "Regional school in Dayton, admitting 31% of applicants at a 157/3.60 median. Where it excels: graduates beat their states' average bar pass rate by 8 points. Where it falls short: just 74% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -7629,17 +8789,26 @@
         "lsat25": 154,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 87.5,
+        "statePassRate": 79.06,
+        "diff": 8.44,
+        "takers": 88
       }
     },
     {
       "state": "Ohio",
-      "name": "Cleveland State Cleveland-Marshall College of Law",
+      "name": "Cleveland State University College of Law",
+      "usnewsName": "Cleveland State University",
       "city": "Cleveland",
+      "website": "https://www.law.csuohio.edu/",
       "medianGPA": 3.5,
       "medianLSAT": 155,
       "tuitionInState": 29766,
       "tuitionOutState": 29866,
-      "rank": 121,
+      "rank": 136,
       "tier": "Regional",
       "writeup": "Regional school in Cleveland, admitting 34% of applicants at a 155/3.50 median. Where it excels: the sticker price is low at $29,866 out-of-state. Where it falls short: just 73% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -7685,17 +8854,29 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "writeupAuto": true,
+      "formerNames": [
+        "Cleveland State Cleveland-Marshall College of Law"
+      ],
+      "bar": {
+        "passRate": 72.65,
+        "statePassRate": 78.02,
+        "diff": -5.37,
+        "takers": 117
       }
     },
     {
       "state": "Ohio",
       "name": "University of Akron School of Law",
+      "usnewsName": "University of Akron",
       "city": "Akron",
+      "website": "https://www.uakron.edu/law/",
       "medianGPA": 3.51,
       "medianLSAT": 154,
       "tuitionInState": 22359,
       "tuitionOutState": 22359,
-      "rank": 127,
+      "rank": 131,
       "tier": "Regional",
       "writeup": "Regional school in Akron, admitting 59% of applicants at a 154/3.51 median. Where it excels: it pulls hard toward government and public interest (30% of graduates), and the sticker price is low at $22,359 out-of-state. Where it falls short: graduates trail their states' average bar pass rate by 8 points.",
       "outcomes": {
@@ -7741,17 +8922,26 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 70.16,
+        "statePassRate": 77.95,
+        "diff": -7.79,
+        "takers": 124
       }
     },
     {
       "state": "Ohio",
       "name": "University of Toledo Law School",
+      "usnewsName": "University of Toledo",
       "city": "Toledo",
+      "website": "https://www.utoledo.edu/law/",
       "medianGPA": 3.53,
       "medianLSAT": 153,
       "tuitionInState": 26446,
       "tuitionOutState": 26446,
-      "rank": 150,
+      "rank": 149,
       "tier": "Regional",
       "writeup": "Regional school in Toledo, admitting 52% of applicants at a 153/3.53 median. Where it excels: the sticker price is low at $26,446 out-of-state. Where it falls short: just 63% of graduates land full-time bar-required work.",
       "outcomes": {
@@ -7797,19 +8987,28 @@
         "lsat25": 150,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 77.38,
+        "statePassRate": 76.88,
+        "diff": 0.5,
+        "takers": 84
       }
     },
     {
       "state": "Ohio",
       "name": "Capital University Law School",
+      "usnewsName": "Capital University",
       "city": "Columbus",
+      "website": "https://www.law.capital.edu/",
       "medianGPA": 3.44,
       "medianLSAT": 151,
       "tuitionInState": 45066,
       "tuitionOutState": 45066,
-      "rank": 174,
-      "tier": "Regional",
-      "writeup": "Regional school in Columbus, admitting 66% of applicants at a 151/3.44 median. Where it falls short: just 72% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 8 points.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "Regional school in Columbus, admitting 66% of applicants at a 151/3.44 median. Where it falls short: just 72% of graduates land full-time bar-required work.",
       "outcomes": {
         "graduates": 121,
         "employmentRate": 77.7,
@@ -7853,19 +9052,28 @@
         "lsat25": 148,
         "lsat50": 151,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 73.68,
+        "statePassRate": 78.14,
+        "diff": -4.46,
+        "takers": 114
       }
     },
     {
       "state": "Ohio",
       "name": "Ohio Northern University Pettit College of Law",
+      "usnewsName": "Ohio Northern University (Pettit)",
       "city": "Ada",
+      "website": "https://law.onu.edu/",
       "medianGPA": 3.34,
       "medianLSAT": 149,
       "tuitionInState": 33900,
       "tuitionOutState": 33900,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "Regional school in Ada, admitting 32% of applicants at a 149/3.34 median. Where it falls short: graduates trail their states' average bar pass rate by 11 points.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "Regional school in Ada, admitting 32% of applicants at a 149/3.34 median. Where it falls short: graduates trail their states' average bar pass rate by 23 points.",
       "outcomes": {
         "graduates": 49,
         "employmentRate": 87.8,
@@ -7909,19 +9117,28 @@
         "lsat25": 146,
         "lsat50": 149,
         "lsat75": 151
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 56.41,
+        "statePassRate": 79.51,
+        "diff": -23.1,
+        "takers": 39
       }
     },
     {
       "state": "Oklahoma",
       "name": "University of Oklahoma Law School",
+      "usnewsName": "The University of Oklahoma",
       "city": "Norman",
+      "website": "https://law.ou.edu/",
       "medianGPA": 3.73,
       "medianLSAT": 162,
       "tuitionInState": 18379,
       "tuitionOutState": 33357,
-      "rank": 59,
-      "tier": "T60",
-      "writeup": "Regional-plus school in Norman, admitting 33% of applicants at a 162/3.73 median. Where it excels: it pulls hard toward government and public interest (28% of graduates), and graduates beat their states' average bar pass rate by 8 points.",
+      "rank": 62,
+      "tier": "T70",
+      "writeup": "Regional-plus school in Norman, admitting 33% of applicants at a 162/3.73 median. Where it excels: it pulls hard toward government and public interest (28% of graduates), and graduates beat their states' average bar pass rate by 12 points.",
       "outcomes": {
         "graduates": 158,
         "employmentRate": 94.3,
@@ -7965,19 +9182,28 @@
         "lsat25": 159,
         "lsat50": 162,
         "lsat75": 164
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 91.67,
+        "statePassRate": 79.96,
+        "diff": 11.71,
+        "takers": 156
       }
     },
     {
       "state": "Oklahoma",
       "name": "University of Tulsa College of Law",
+      "usnewsName": "University of Tulsa",
       "city": "Tulsa",
+      "website": "https://utulsa.edu/academics/law/",
       "medianGPA": 3.45,
       "medianLSAT": 157,
       "tuitionInState": 30840,
       "tuitionOutState": 30840,
-      "rank": 127,
+      "rank": 120,
       "tier": "Regional",
-      "writeup": "Regional school in Tulsa, admitting 57% of applicants at a 157/3.45 median. Where it excels: the sticker price is low at $30,840 out-of-state.",
+      "writeup": "Regional school in Tulsa, admitting 57% of applicants at a 157/3.45 median. Where it excels: the sticker price is low at $30,840 out-of-state. Where it falls short: graduates trail their states' average bar pass rate by 8 points.",
       "outcomes": {
         "graduates": 113,
         "employmentRate": 89.4,
@@ -8021,17 +9247,26 @@
         "lsat25": 155,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 71.05,
+        "statePassRate": 79.15,
+        "diff": -8.1,
+        "takers": 114
       }
     },
     {
       "state": "Oklahoma",
       "name": "Oklahoma City University School of Law",
+      "usnewsName": "Oklahoma City University",
       "city": "Oklahoma City",
+      "website": "https://law.okcu.edu/",
       "medianGPA": 3.56,
       "medianLSAT": 151,
       "tuitionInState": 33210,
       "tuitionOutState": 33210,
-      "rank": 158,
+      "rank": 156,
       "tier": "Regional",
       "writeup": "Regional school in Oklahoma City, admitting 52% of applicants at a 151/3.56 median. Where it excels: the sticker price is low at $33,210 out-of-state.",
       "outcomes": {
@@ -8077,19 +9312,28 @@
         "lsat25": 149,
         "lsat50": 151,
         "lsat75": 155
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 75.94,
+        "statePassRate": 79.14,
+        "diff": -3.2,
+        "takers": 133
       }
     },
     {
       "state": "Oregon",
       "name": "University of Oregon School of Law",
+      "usnewsName": "University of Oregon",
       "city": "Eugene",
+      "website": "https://law.uoregon.edu/",
       "medianGPA": 3.62,
       "medianLSAT": 160,
       "tuitionInState": 47240,
       "tuitionOutState": 59495,
-      "rank": 94,
+      "rank": 91,
       "tier": "T100",
-      "writeup": "Regional school in Eugene, admitting 55% of applicants at a 160/3.62 median. Where it excels: graduates beat their states' average bar pass rate by 9 points.",
+      "writeup": "Regional school in Eugene, admitting 55% of applicants at a 160/3.62 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 142,
         "employmentRate": 85.2,
@@ -8133,18 +9377,27 @@
         "lsat25": 157,
         "lsat50": 160,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 79.17,
+        "statePassRate": 78.11,
+        "diff": 1.06,
+        "takers": 144
       }
     },
     {
       "state": "Oregon",
       "name": "Lewis & Clark Law School",
+      "usnewsName": "Lewis & Clark College (Northwestern)",
       "city": "Portland",
+      "website": "https://law.lclark.edu/",
       "medianGPA": 3.59,
       "medianLSAT": 161,
       "tuitionInState": 61434,
       "tuitionOutState": 61434,
-      "rank": 99,
-      "tier": "T100",
+      "rank": 112,
+      "tier": "Regional",
       "writeup": "Regional school in Portland, admitting 55% of applicants at a 161/3.59 median. Where it excels: graduates beat their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 153,
@@ -8189,19 +9442,28 @@
         "lsat25": 158,
         "lsat50": 161,
         "lsat75": 166
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 86.67,
+        "statePassRate": 77.12,
+        "diff": 9.55,
+        "takers": 150
       }
     },
     {
       "state": "Oregon",
       "name": "Willamette University College of Law",
+      "usnewsName": "Willamette University School of Law",
       "city": "Salem",
+      "website": "https://willamette.edu/academics/law/",
       "medianGPA": 3.48,
       "medianLSAT": 154,
       "tuitionInState": 56600,
       "tuitionOutState": 56600,
-      "rank": 150,
+      "rank": 168,
       "tier": "Regional",
-      "writeup": "Regional school in Salem, admitting 61% of applicants at a 154/3.48 median. Where it falls short: just 73% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 9 points.",
+      "writeup": "Regional school in Salem, admitting 61% of applicants at a 154/3.48 median. Where it falls short: just 73% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 12 points.",
       "outcomes": {
         "graduates": 105,
         "employmentRate": 74.3,
@@ -8245,17 +9507,26 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 64.58,
+        "statePassRate": 76.71,
+        "diff": -12.13,
+        "takers": 96
       }
     },
     {
       "state": "Pennsylvania",
       "name": "University of Pennsylvania Carey Law School",
+      "usnewsName": "University of Pennsylvania (Carey)",
       "city": "Philadelphia",
+      "website": "https://www.law.upenn.edu/",
       "medianGPA": 3.95,
       "medianLSAT": 173,
       "tuitionInState": 78348,
       "tuitionOutState": 78348,
-      "rank": 5,
+      "rank": 4,
       "tier": "T14",
       "writeup": "National-elite school in Philadelphia, admitting 8% of applicants at a 173/3.95 median. Where it excels: 97% of the class lands full-time bar-required work, among the best placement rates in the country, and BigLaw is a live option, with 67% going to firms of 500+ lawyers. Where it falls short: the $78,348 out-of-state sticker is steep.",
       "outcomes": {
@@ -8301,19 +9572,28 @@
         "lsat25": 167,
         "lsat50": 173,
         "lsat75": 174
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 94.42,
+        "statePassRate": 84.56,
+        "diff": 9.86,
+        "takers": 251
       }
     },
     {
       "state": "Pennsylvania",
       "name": "Villanova University Charles Widger School of Law",
+      "usnewsName": "Villanova University (Widger)",
       "city": "Villanova",
+      "website": "https://www.villanova.edu/university/law.html",
       "medianGPA": 3.8,
       "medianLSAT": 164,
       "tuitionInState": 59800,
       "tuitionOutState": 59800,
-      "rank": 48,
+      "rank": 49,
       "tier": "T50",
-      "writeup": "Solid national school in Villanova, admitting 26% of applicants at a 164/3.80 median. Where it excels: graduates beat their states' average bar pass rate by 11 points.",
+      "writeup": "Solid national school in Villanova, admitting 26% of applicants at a 164/3.80 median. Where it excels: graduates beat their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 184,
         "employmentRate": 94.0,
@@ -8357,19 +9637,28 @@
         "lsat25": 159,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.95,
+        "statePassRate": 80.16,
+        "diff": 9.79,
+        "takers": 189
       }
     },
     {
       "state": "Pennsylvania",
       "name": "Temple University Beasley School of Law",
+      "usnewsName": "Temple University (Beasley)",
       "city": "Philadelphia",
+      "website": "https://law.temple.edu/",
       "medianGPA": 3.76,
       "medianLSAT": 165,
       "tuitionInState": 32588,
       "tuitionOutState": 48996,
-      "rank": 50,
+      "rank": 49,
       "tier": "T50",
-      "writeup": "Solid national school in Philadelphia, admitting 24% of applicants at a 165/3.76 median. Where it excels: graduates beat their states' average bar pass rate by 11 points, and residency saves $16,408 a year.",
+      "writeup": "Solid national school in Philadelphia, admitting 24% of applicants at a 165/3.76 median. Where it excels: graduates beat their states' average bar pass rate by 9 points, and residency saves $16,408 a year.",
       "outcomes": {
         "graduates": 195,
         "employmentRate": 93.8,
@@ -8413,18 +9702,27 @@
         "lsat25": 162,
         "lsat50": 165,
         "lsat75": 168
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.0,
+        "statePassRate": 79.85,
+        "diff": 9.15,
+        "takers": 200
       }
     },
     {
       "state": "Pennsylvania",
       "name": "Penn State Dickinson Law",
+      "usnewsName": "Pennsylvania State University Dickinson Law",
       "city": "Carlisle",
+      "website": "https://dickinsonlaw.psu.edu/",
       "medianGPA": 3.71,
       "medianLSAT": 159,
       "tuitionInState": 60048,
       "tuitionOutState": 60048,
-      "rank": 59,
-      "tier": "T60",
+      "rank": 62,
+      "tier": "T70",
       "writeup": "Regional-plus school in Carlisle, admitting 43% of applicants at a 159/3.71 median. Where it excels: it pulls hard toward government and public interest (32% of graduates), and graduates beat their states' average bar pass rate by 7 points.",
       "outcomes": {
         "graduates": 223,
@@ -8469,18 +9767,27 @@
         "lsat25": 157,
         "lsat50": 159,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 87.56,
+        "statePassRate": 80.17,
+        "diff": 7.39,
+        "takers": 217
       }
     },
     {
       "state": "Pennsylvania",
       "name": "Drexel University Thomas R. Kline School of Law",
+      "usnewsName": "Drexel University (Kline)",
       "city": "Philadelphia",
+      "website": "https://drexel.edu/law/",
       "medianGPA": 3.76,
       "medianLSAT": 160,
       "tuitionInState": 57000,
       "tuitionOutState": 57000,
-      "rank": 79,
-      "tier": "T80",
+      "rank": 82,
+      "tier": "T90",
       "writeup": "Regional school in Philadelphia, admitting 30% of applicants at a 160/3.76 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 133,
@@ -8525,19 +9832,28 @@
         "lsat25": 154,
         "lsat50": 160,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 84.21,
+        "statePassRate": 79.5,
+        "diff": 4.71,
+        "takers": 133
       }
     },
     {
       "state": "Pennsylvania",
       "name": "University of Pittsburgh School of Law",
+      "usnewsName": "University of Pittsburgh",
       "city": "Pittsburgh",
+      "website": "https://www.law.pitt.edu/",
       "medianGPA": 3.54,
       "medianLSAT": 160,
       "tuitionInState": 39936,
       "tuitionOutState": 53434,
-      "rank": 79,
+      "rank": 77,
       "tier": "T80",
-      "writeup": "Regional school in Pittsburgh, admitting 35% of applicants at a 160/3.54 median. Where it excels: graduates beat their states' average bar pass rate by 6 points.",
+      "writeup": "Regional school in Pittsburgh, admitting 35% of applicants at a 160/3.54 median. Where it excels: graduates beat their states' average bar pass rate by 13 points.",
       "outcomes": {
         "graduates": 122,
         "employmentRate": 87.7,
@@ -8581,19 +9897,28 @@
         "lsat25": 158,
         "lsat50": 160,
         "lsat75": 163
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 93.04,
+        "statePassRate": 80.08,
+        "diff": 12.96,
+        "takers": 115
       }
     },
     {
       "state": "Pennsylvania",
       "name": "Duquesne University Kline School of Law",
+      "usnewsName": "Duquesne University (Kline)",
       "city": "Pittsburgh",
+      "website": "https://www.duq.edu/academics/colleges-and-schools/law/",
       "medianGPA": 3.62,
       "medianLSAT": 157,
       "tuitionInState": 58898,
       "tuitionOutState": 58898,
-      "rank": 92,
-      "tier": "T100",
-      "writeup": "Regional school in Pittsburgh, admitting 43% of applicants at a 157/3.62 median. Where it excels: graduates beat their states' average bar pass rate by 9 points.",
+      "rank": 85,
+      "tier": "T90",
+      "writeup": "Regional school in Pittsburgh, admitting 43% of applicants at a 157/3.62 median. Where it excels: graduates beat their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 152,
         "employmentRate": 89.5,
@@ -8637,19 +9962,28 @@
         "lsat25": 155,
         "lsat50": 157,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 89.66,
+        "statePassRate": 79.97,
+        "diff": 9.69,
+        "takers": 145
       }
     },
     {
       "state": "Pennsylvania",
       "name": "Widener University Commonwealth Law School",
+      "usnewsName": "Widener University--Pennsylvania (Commonwealth)",
       "city": "Harrisburg",
+      "website": "https://commonwealthlaw.widener.edu/",
       "medianGPA": 3.33,
       "medianLSAT": 150,
       "tuitionInState": 56250,
       "tuitionOutState": 56250,
       "rank": null,
-      "tier": "Regional",
-      "writeup": "Regional school in Harrisburg, admitting 60% of applicants at a 150/3.33 median. Where it falls short: graduates trail their states' average bar pass rate by 26 points.",
+      "tier": "Unranked",
+      "writeup": "Regional school in Harrisburg, admitting 60% of applicants at a 150/3.33 median. Where it falls short: graduates trail their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 105,
         "employmentRate": 83.8,
@@ -8693,19 +10027,28 @@
         "lsat25": 147,
         "lsat50": 150,
         "lsat75": 153
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 68.93,
+        "statePassRate": 78.99,
+        "diff": -10.06,
+        "takers": 103
       }
     },
     {
       "state": "Rhode Island",
       "name": "Roger Williams University School of Law",
+      "usnewsName": "Roger Williams University",
       "city": "Bristol",
+      "website": "https://law.rwu.edu/",
       "medianGPA": 3.43,
       "medianLSAT": 150,
       "tuitionInState": 47400,
       "tuitionOutState": 47400,
-      "rank": 169,
+      "rank": 171,
       "tier": "Regional",
-      "writeup": "Regional school in Bristol, admitting 61% of applicants at a 150/3.43 median. Where it falls short: just 69% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 19 points.",
+      "writeup": "Regional school in Bristol, admitting 61% of applicants at a 150/3.43 median. Where it falls short: just 69% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 12 points.",
       "outcomes": {
         "graduates": 169,
         "employmentRate": 76.3,
@@ -8749,17 +10092,26 @@
         "lsat25": 147,
         "lsat50": 150,
         "lsat75": 154
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 65.19,
+        "statePassRate": 77.46,
+        "diff": -12.27,
+        "takers": 158
       }
     },
     {
       "state": "South Carolina",
       "name": "University of South Carolina School of Law",
+      "usnewsName": "University of South Carolina",
       "city": "Columbia",
+      "website": "https://sc.edu/study/colleges_schools/law/",
       "medianGPA": 3.67,
       "medianLSAT": 162,
       "tuitionInState": 20322,
       "tuitionOutState": 38100,
-      "rank": 63,
+      "rank": 62,
       "tier": "T70",
       "writeup": "The dominant school in the SC legal market — deep ties to state courts, firms, and government, at a low in-state cost. Reach is almost entirely in-state; nonresident tuition erodes the value.",
       "outcomes": {
@@ -8805,17 +10157,25 @@
         "lsat25": 160,
         "lsat50": 162,
         "lsat75": 164
+      },
+      "bar": {
+        "passRate": 90.05,
+        "statePassRate": 81.14,
+        "diff": 8.91,
+        "takers": 191
       }
     },
     {
       "state": "South Carolina",
       "name": "Charleston School of Law",
+      "usnewsName": "Charleston School of Law",
       "city": "Charleston",
+      "website": "https://charlestonlaw.edu/",
       "medianGPA": 3.51,
       "medianLSAT": 154,
       "tuitionInState": 48600,
       "tuitionOutState": 48600,
-      "rank": 178,
+      "rank": 171,
       "tier": "Regional",
       "writeup": "Charleston location and local network for the Lowcountry market. For-profit history, higher cost, and weaker outcomes than USC.",
       "outcomes": {
@@ -8861,19 +10221,27 @@
         "lsat25": 152,
         "lsat50": 154,
         "lsat75": 157
+      },
+      "bar": {
+        "passRate": 77.38,
+        "statePassRate": 80.58,
+        "diff": -3.2,
+        "takers": 221
       }
     },
     {
       "state": "South Dakota",
-      "name": "University of South Dakota Law School",
+      "name": "University of South Dakota Knudson School of Law",
+      "usnewsName": "University of South Dakota (Knudson)",
       "city": "Vermillion",
+      "website": "https://www.usd.edu/Academics/Colleges%20and%20Schools/knudson-school-of-law",
       "medianGPA": 3.47,
       "medianLSAT": 152,
       "tuitionInState": 12076,
       "tuitionOutState": 32184,
-      "rank": 127,
+      "rank": 122,
       "tier": "Regional",
-      "writeup": "Regional school in Vermillion, admitting 62% of applicants at a 152/3.47 median. Where it excels: the sticker price is low at $32,184 out-of-state, and residency saves $20,108 a year. Where it falls short: graduates trail their states' average bar pass rate by 6 points.",
+      "writeup": "Regional school in Vermillion, admitting 62% of applicants at a 152/3.47 median. Where it excels: the sticker price is low at $32,184 out-of-state, and residency saves $20,108 a year. Where it falls short: graduates trail their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 82,
         "employmentRate": 84.1,
@@ -8917,19 +10285,31 @@
         "lsat25": 149,
         "lsat50": 152,
         "lsat75": 156
+      },
+      "writeupAuto": true,
+      "formerNames": [
+        "University of South Dakota Law School"
+      ],
+      "bar": {
+        "passRate": 69.23,
+        "statePassRate": 79.48,
+        "diff": -10.25,
+        "takers": 78
       }
     },
     {
       "state": "Tennessee",
       "name": "Vanderbilt Law School",
+      "usnewsName": "Vanderbilt University",
       "city": "Nashville",
+      "website": "https://law.vanderbilt.edu/",
       "medianGPA": 3.91,
       "medianLSAT": 170,
       "tuitionInState": 76440,
       "tuitionOutState": 76440,
-      "rank": 14,
+      "rank": 12,
       "tier": "T14",
-      "writeup": "The South's premier national school — Big Law and clerkship placement across the country, plus a great Nashville quality of life. Full private sticker is the main tradeoff.",
+      "writeup": "One of the South's premier national schools — Big Law and clerkship placement across the country, plus a great Nashville quality of life. Full private sticker is the main tradeoff.",
       "outcomes": {
         "graduates": 167,
         "employmentRate": 98.2,
@@ -8973,17 +10353,25 @@
         "lsat25": 167,
         "lsat50": 170,
         "lsat75": 171
+      },
+      "bar": {
+        "passRate": 94.64,
+        "statePassRate": 81.93,
+        "diff": 12.71,
+        "takers": 168
       }
     },
     {
       "state": "Tennessee",
       "name": "University of Tennessee College of Law",
+      "usnewsName": "University of Tennessee--Knoxville",
       "city": "Knoxville",
+      "website": "https://winston.utk.edu/",
       "medianGPA": 3.89,
       "medianLSAT": 164,
       "tuitionInState": 16696,
       "tuitionOutState": 35140,
-      "rank": 55,
+      "rank": 57,
       "tier": "T60",
       "writeup": "Excellent in-state value with strong Tennessee and regional placement and good bar passage. Limited national reach outside the Southeast.",
       "outcomes": {
@@ -9029,17 +10417,25 @@
         "lsat25": 160,
         "lsat50": 164,
         "lsat75": 166
+      },
+      "bar": {
+        "passRate": 85.6,
+        "statePassRate": 80.01,
+        "diff": 5.59,
+        "takers": 125
       }
     },
     {
       "state": "Tennessee",
       "name": "Belmont University College of Law",
+      "usnewsName": "Belmont University",
       "city": "Nashville",
+      "website": "https://www.belmont.edu/law/",
       "medianGPA": 3.84,
       "medianLSAT": 161,
       "tuitionInState": 55500,
       "tuitionOutState": 55500,
-      "rank": 84,
+      "rank": 85,
       "tier": "T90",
       "writeup": "Newer Nashville school with modern facilities and solid early bar numbers. Private cost and a still-developing alumni network.",
       "outcomes": {
@@ -9085,17 +10481,25 @@
         "lsat25": 158,
         "lsat50": 161,
         "lsat75": 163
+      },
+      "bar": {
+        "passRate": 96.49,
+        "statePassRate": 79.87,
+        "diff": 16.62,
+        "takers": 114
       }
     },
     {
       "state": "Tennessee",
       "name": "University of Memphis Cecil C. Humphreys",
+      "usnewsName": "University of Memphis (Humphreys)",
       "city": "Memphis",
+      "website": "https://www.memphis.edu/law/",
       "medianGPA": 3.53,
       "medianLSAT": 155,
       "tuitionInState": 18634,
       "tuitionOutState": 24354,
-      "rank": 146,
+      "rank": 140,
       "tier": "Regional",
       "writeup": "Affordable public school anchoring the Memphis/Mid-South market. Outcomes are regional and the ranking sits well below UT.",
       "outcomes": {
@@ -9141,18 +10545,26 @@
         "lsat25": 152,
         "lsat50": 155,
         "lsat75": 159
+      },
+      "bar": {
+        "passRate": 72.63,
+        "statePassRate": 79.75,
+        "diff": -7.12,
+        "takers": 95
       }
     },
     {
       "state": "Tennessee",
       "name": "Lincoln Memorial University Duncan School of Law",
+      "usnewsName": "Lincoln Memorial University (Duncan)",
       "city": "Knoxville",
+      "website": "https://www.lmunet.edu/duncan-school-of-law/",
       "medianGPA": 3.44,
       "medianLSAT": 153,
       "tuitionInState": 44700,
       "tuitionOutState": 44700,
-      "rank": 169,
-      "tier": "Regional",
+      "rank": null,
+      "tier": "Unranked",
       "writeup": "Access-oriented Knoxville school serving Appalachia. Lower entrance profile and outcomes; watch the debt-to-outcome ratio.",
       "outcomes": {
         "graduates": 110,
@@ -9197,18 +10609,26 @@
         "lsat25": 150,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 78.7,
+        "statePassRate": 79.92,
+        "diff": -1.22,
+        "takers": 108
       }
     },
     {
       "state": "Texas",
       "name": "University of Texas School of Law",
+      "usnewsName": "University of Texas--Austin",
       "city": "Austin",
+      "website": "https://law.utexas.edu/",
       "medianGPA": 3.89,
       "medianLSAT": 172,
       "tuitionInState": 38236,
       "tuitionOutState": 56822,
-      "rank": 14,
-      "tier": "T14",
+      "rank": 16,
+      "tier": "T20",
       "writeup": "The dominant firm-placement school in Texas and a national T20, with a huge Big Law pipeline into Houston/Dallas/Austin. In-state tuition makes it one of the best value-to-prestige plays in the country.",
       "outcomes": {
         "graduates": 308,
@@ -9253,12 +10673,20 @@
         "lsat25": 166,
         "lsat50": 172,
         "lsat75": 173
+      },
+      "bar": {
+        "passRate": 96.39,
+        "statePassRate": 83.01,
+        "diff": 13.38,
+        "takers": 305
       }
     },
     {
       "state": "Texas",
       "name": "Texas A&M School of Law",
+      "usnewsName": "Texas A&M University",
       "city": "Fort Worth",
+      "website": "https://www.law.tamu.edu/",
       "medianGPA": 4.0,
       "medianLSAT": 169,
       "tuitionInState": 32634,
@@ -9309,19 +10737,27 @@
         "lsat25": 161,
         "lsat50": 169,
         "lsat75": 170
+      },
+      "bar": {
+        "passRate": 95.28,
+        "statePassRate": 82.34,
+        "diff": 12.94,
+        "takers": 127
       }
     },
     {
       "state": "Texas",
       "name": "Baylor Law School",
+      "usnewsName": "Baylor University",
       "city": "Waco",
+      "website": "https://law.baylor.edu/",
       "medianGPA": 3.77,
       "medianLSAT": 164,
       "tuitionInState": 67450,
       "tuitionOutState": 67450,
-      "rank": 43,
+      "rank": 34,
       "tier": "T50",
-      "writeup": "Famous for producing trial-ready litigators and top-in-state bar passage. Grueling 'quarter' system and a small-town location aren't for everyone.",
+      "writeup": "Famous for producing trial-ready litigators, with bar passage well above the Texas average. Grueling 'quarter' system and a small-town location aren't for everyone.",
       "outcomes": {
         "graduates": 110,
         "employmentRate": 96.4,
@@ -9365,17 +10801,25 @@
         "lsat25": 159,
         "lsat50": 164,
         "lsat75": 165
+      },
+      "bar": {
+        "passRate": 93.69,
+        "statePassRate": 82.65,
+        "diff": 11.04,
+        "takers": 111
       }
     },
     {
       "state": "Texas",
       "name": "SMU Dedman School of Law",
+      "usnewsName": "Southern Methodist University (Dedman)",
       "city": "Dallas",
+      "website": "https://www.smu.edu/law",
       "medianGPA": 3.81,
       "medianLSAT": 167,
       "tuitionInState": 60844,
       "tuitionOutState": 60844,
-      "rank": 43,
+      "rank": 42,
       "tier": "T50",
       "writeup": "Best-connected school in the Dallas Big Law market with a strong local alumni base. Private cost and a regional (DFW) footprint are the tradeoffs.",
       "outcomes": {
@@ -9421,18 +10865,26 @@
         "lsat25": 163,
         "lsat50": 167,
         "lsat75": 168
+      },
+      "bar": {
+        "passRate": 97.75,
+        "statePassRate": 82.53,
+        "diff": 15.22,
+        "takers": 222
       }
     },
     {
       "state": "Texas",
       "name": "University of Houston Law Center",
+      "usnewsName": "University of Houston Law Center",
       "city": "Houston",
+      "website": "https://www.law.uh.edu/",
       "medianGPA": 3.79,
       "medianLSAT": 163,
       "tuitionInState": 31326,
       "tuitionOutState": 46051,
-      "rank": 63,
-      "tier": "T70",
+      "rank": 54,
+      "tier": "T60",
       "writeup": "Strong, affordable in-state option feeding the huge Houston energy/corporate market. Outcomes are solid regionally but limited nationally.",
       "outcomes": {
         "graduates": 238,
@@ -9477,17 +10929,25 @@
         "lsat25": 160,
         "lsat50": 163,
         "lsat75": 165
+      },
+      "bar": {
+        "passRate": 84.45,
+        "statePassRate": 82.55,
+        "diff": 1.9,
+        "takers": 238
       }
     },
     {
       "state": "Texas",
       "name": "Texas Tech University School of Law",
+      "usnewsName": "Texas Tech University",
       "city": "Lubbock",
+      "website": "https://www.depts.ttu.edu/law/",
       "medianGPA": 3.69,
       "medianLSAT": 159,
       "tuitionInState": 22590,
       "tuitionOutState": 33840,
-      "rank": 88,
+      "rank": 85,
       "tier": "T90",
       "writeup": "Very affordable with reliable Texas bar passage and West Texas/regional placement. Isolated location and limited big-firm reach.",
       "outcomes": {
@@ -9533,17 +10993,25 @@
         "lsat25": 157,
         "lsat50": 159,
         "lsat75": 160
+      },
+      "bar": {
+        "passRate": 95.52,
+        "statePassRate": 82.71,
+        "diff": 12.81,
+        "takers": 134
       }
     },
     {
       "state": "Texas",
       "name": "South Texas College of Law Houston",
+      "usnewsName": "South Texas College of Law Houston",
       "city": "Houston",
+      "website": "https://www.stcl.edu/",
       "medianGPA": 3.41,
       "medianLSAT": 155,
       "tuitionInState": 42960,
       "tuitionOutState": 42960,
-      "rank": 138,
+      "rank": 128,
       "tier": "Regional",
       "writeup": "Nationally known advocacy/moot-court program and Houston access. Otherwise regional with middling outcomes at a private price.",
       "outcomes": {
@@ -9589,19 +11057,27 @@
         "lsat25": 153,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "bar": {
+        "passRate": 85.56,
+        "statePassRate": 82.69,
+        "diff": 2.87,
+        "takers": 284
       }
     },
     {
       "state": "Texas",
       "name": "St. Mary's University School of Law",
+      "usnewsName": "St. Mary's University",
       "city": "San Antonio",
+      "website": "https://law.stmarytx.edu/",
       "medianGPA": 3.49,
       "medianLSAT": 153,
       "tuitionInState": 44910,
       "tuitionOutState": 44910,
-      "rank": 148,
+      "rank": 150,
       "tier": "Regional",
-      "writeup": "Anchors the San Antonio legal market with a strong local network. Bar and employment outcomes trail the state's public schools.",
+      "writeup": "Anchors the San Antonio legal market with a strong local network. Bar passage sits a little above the Texas average, behind UT, Texas A&M, and Texas Tech.",
       "outcomes": {
         "graduates": 232,
         "employmentRate": 84.9,
@@ -9645,17 +11121,25 @@
         "lsat25": 151,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 84.62,
+        "statePassRate": 82.58,
+        "diff": 2.04,
+        "takers": 234
       }
     },
     {
       "state": "Texas",
       "name": "UNT Dallas College of Law",
+      "usnewsName": "University of North Texas--Dallas",
       "city": "Dallas",
+      "website": "https://www.untdallas.edu/lawschool/index.php",
       "medianGPA": 3.41,
       "medianLSAT": 153,
       "tuitionInState": 16860,
       "tuitionOutState": 29310,
-      "rank": 163,
+      "rank": 159,
       "tier": "Regional",
       "writeup": "The cheapest path to a Texas JD, built for access with a downtown Dallas location. Newer school still establishing its bar-passage track record.",
       "outcomes": {
@@ -9701,19 +11185,27 @@
         "lsat25": 151,
         "lsat50": 153,
         "lsat75": 156
+      },
+      "bar": {
+        "passRate": 79.67,
+        "statePassRate": 82.52,
+        "diff": -2.85,
+        "takers": 123
       }
     },
     {
       "state": "Texas",
       "name": "Texas Southern University Thurgood Marshall",
+      "usnewsName": "Texas Southern University (Marshall)",
       "city": "Houston",
+      "website": "https://tsu.edu/academics/colleges-and-schools/tsulaw/index.php",
       "medianGPA": 3.33,
       "medianLSAT": 150,
       "tuitionInState": 19202,
       "tuitionOutState": 26331,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "HBCU with a strong public-interest and diversity mission and low in-state cost. Bar passage volatility is the main risk.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "HBCU with a strong public-interest and diversity mission and low in-state cost. Bar passage well below the state average is the main risk.",
       "outcomes": {
         "graduates": 164,
         "employmentRate": 56.1,
@@ -9757,19 +11249,27 @@
         "lsat25": 148,
         "lsat50": 150,
         "lsat75": 152
+      },
+      "bar": {
+        "passRate": 62.89,
+        "statePassRate": 82.61,
+        "diff": -19.72,
+        "takers": 159
       }
     },
     {
       "state": "Utah",
       "name": "BYU J. Reuben Clark Law School",
+      "usnewsName": "Brigham Young University (Clark)",
       "city": "Provo",
+      "website": "https://law.byu.edu/",
       "medianGPA": 3.95,
       "medianLSAT": 170,
       "tuitionInState": 15992,
       "tuitionOutState": 31984,
-      "rank": 28,
+      "rank": 24,
       "tier": "T30",
-      "writeup": "Strong national school in Provo, admitting 23% of applicants at a 170/3.95 median. Where it excels: the federal clerkship pipeline is unusually strong at 7% of the class, and graduates beat their states' average bar pass rate by 7 points.",
+      "writeup": "Strong national school in Provo, admitting 23% of applicants at a 170/3.95 median. Where it excels: the federal clerkship pipeline is unusually strong at 7% of the class, and graduates beat their states' average bar pass rate by 12 points.",
       "outcomes": {
         "graduates": 127,
         "employmentRate": 94.5,
@@ -9813,17 +11313,26 @@
         "lsat25": 168,
         "lsat50": 170,
         "lsat75": 172
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 96.85,
+        "statePassRate": 84.77,
+        "diff": 12.08,
+        "takers": 127
       }
     },
     {
       "state": "Utah",
       "name": "University of Utah Law School",
+      "usnewsName": "University of Utah (Quinney)",
       "city": "Salt Lake City",
+      "website": "https://www.law.utah.edu/",
       "medianGPA": 3.87,
       "medianLSAT": 166,
       "tuitionInState": 34721,
       "tuitionOutState": 45382,
-      "rank": 31,
+      "rank": 44,
       "tier": "T50",
       "writeup": "Solid national school in Salt Lake City, admitting 25% of applicants at a 166/3.87 median. Where it excels: 92% of the class lands full-time bar-required work, among the best placement rates in the country, and graduates beat their states' average bar pass rate by 10 points.",
       "outcomes": {
@@ -9869,19 +11378,28 @@
         "lsat25": 162,
         "lsat50": 166,
         "lsat75": 168
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 94.57,
+        "statePassRate": 85.05,
+        "diff": 9.52,
+        "takers": 92
       }
     },
     {
       "state": "Vermont",
       "name": "Vermont Law and Graduate School",
+      "usnewsName": "Vermont Law School",
       "city": "South Royalton",
+      "website": "https://www.vermontlaw.edu/",
       "medianGPA": 3.25,
       "medianLSAT": 152,
       "tuitionInState": 55382,
-      "tuitionOutState": 55940,
-      "rank": 163,
+      "tuitionOutState": 55382,
+      "rank": 154,
       "tier": "Regional",
-      "writeup": "Regional school in South Royalton, admitting 59% of applicants at a 152/3.25 median. Where it falls short: just 69% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 12 points.",
+      "writeup": "Regional school in South Royalton, admitting 59% of applicants at a 152/3.25 median. Where it falls short: just 69% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 8 points.",
       "outcomes": {
         "graduates": 130,
         "employmentRate": 76.2,
@@ -9925,12 +11443,21 @@
         "lsat25": 148,
         "lsat50": 152,
         "lsat75": 157
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 67.91,
+        "statePassRate": 75.46,
+        "diff": -7.55,
+        "takers": 134
       }
     },
     {
       "state": "Virginia",
       "name": "University of Virginia School of Law",
+      "usnewsName": "University of Virginia",
       "city": "Charlottesville",
+      "website": "https://www.law.virginia.edu/",
       "medianGPA": 3.99,
       "medianLSAT": 173,
       "tuitionInState": 74078,
@@ -9981,19 +11508,28 @@
         "lsat25": 168,
         "lsat50": 173,
         "lsat75": 175
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 95.11,
+        "statePassRate": 84.85,
+        "diff": 10.26,
+        "takers": 307
       }
     },
     {
       "state": "Virginia",
       "name": "Antonin Scalia Law School, George Mason University",
-      "city": "Fairfax",
+      "usnewsName": "George Mason University (Scalia)",
+      "city": "Arlington",
+      "website": "https://www.law.gmu.edu/",
       "medianGPA": 3.93,
       "medianLSAT": 169,
       "tuitionInState": 24864,
       "tuitionOutState": 40978,
-      "rank": 31,
+      "rank": 32,
       "tier": "T50",
-      "writeup": "Solid national school in Fairfax, admitting 16% of applicants at a 169/3.93 median. Where it excels: the federal clerkship pipeline is unusually strong at 8% of the class, and it pulls hard toward government and public interest (31% of graduates).",
+      "writeup": "Solid national school in Arlington, admitting 16% of applicants at a 169/3.93 median. Where it excels: the federal clerkship pipeline is unusually strong at 8% of the class, and it pulls hard toward government and public interest (31% of graduates).",
       "outcomes": {
         "graduates": 167,
         "employmentRate": 97.6,
@@ -10037,19 +11573,28 @@
         "lsat25": 162,
         "lsat50": 169,
         "lsat75": 171
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 86.34,
+        "statePassRate": 83.39,
+        "diff": 2.95,
+        "takers": 161
       }
     },
     {
       "state": "Virginia",
       "name": "William & Mary Law School",
+      "usnewsName": "William & Mary Law School",
       "city": "Williamsburg",
+      "website": "https://law.wm.edu/",
       "medianGPA": 3.82,
       "medianLSAT": 166,
       "tuitionInState": 38734,
       "tuitionOutState": 62900,
-      "rank": 31,
+      "rank": 34,
       "tier": "T50",
-      "writeup": "Solid national school in Williamsburg, admitting 22% of applicants at a 166/3.82 median. Where it excels: residency saves $24,166 a year.",
+      "writeup": "Solid national school in Williamsburg, admitting 22% of applicants at a 166/3.82 median. Where it excels: graduates beat their states' average bar pass rate by 10 points, and residency saves $24,166 a year.",
       "outcomes": {
         "graduates": 199,
         "employmentRate": 93.5,
@@ -10093,17 +11638,26 @@
         "lsat25": 161,
         "lsat50": 166,
         "lsat75": 167
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 92.78,
+        "statePassRate": 82.62,
+        "diff": 10.16,
+        "takers": 194
       }
     },
     {
       "state": "Virginia",
       "name": "Washington and Lee University School of Law",
+      "usnewsName": "Washington and Lee University",
       "city": "Lexington",
+      "website": "https://law.wlu.edu/",
       "medianGPA": 3.75,
       "medianLSAT": 167,
       "tuitionInState": 57450,
       "tuitionOutState": 57450,
-      "rank": 36,
+      "rank": 34,
       "tier": "T50",
       "writeup": "Solid national school in Lexington, admitting 23% of applicants at a 167/3.75 median. Where it excels: BigLaw is a live option, with 32% going to firms of 500+ lawyers, and the federal clerkship pipeline is unusually strong at 9% of the class.",
       "outcomes": {
@@ -10149,19 +11703,28 @@
         "lsat25": 161,
         "lsat50": 167,
         "lsat75": 168
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 93.46,
+        "statePassRate": 82.75,
+        "diff": 10.71,
+        "takers": 107
       }
     },
     {
       "state": "Virginia",
       "name": "University of Richmond School of Law",
+      "usnewsName": "University of Richmond",
       "city": "Richmond",
+      "website": "https://law.richmond.edu/",
       "medianGPA": 3.81,
       "medianLSAT": 164,
       "tuitionInState": 57700,
       "tuitionOutState": 57700,
-      "rank": 71,
-      "tier": "T80",
-      "writeup": "Regional school in Richmond, admitting 40% of applicants at a 164/3.81 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
+      "rank": 62,
+      "tier": "T70",
+      "writeup": "Regional-plus school in Richmond, admitting 40% of applicants at a 164/3.81 median. Where it excels: graduates beat their states' average bar pass rate by 9 points.",
       "outcomes": {
         "graduates": 117,
         "employmentRate": 91.5,
@@ -10205,19 +11768,28 @@
         "lsat25": 159,
         "lsat50": 164,
         "lsat75": 167
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 91.3,
+        "statePassRate": 82.27,
+        "diff": 9.03,
+        "takers": 115
       }
     },
     {
       "state": "Virginia",
       "name": "Regent University School of Law",
+      "usnewsName": "Regent University",
       "city": "Virginia Beach",
+      "website": "https://www.regent.edu/school-of-law/",
       "medianGPA": 3.68,
       "medianLSAT": 158,
       "tuitionInState": 42000,
       "tuitionOutState": 42000,
-      "rank": 94,
+      "rank": 91,
       "tier": "T100",
-      "writeup": "Regional school in Virginia Beach, admitting 44% of applicants at a 158/3.68 median. Where it excels: 93% of the class lands full-time bar-required work, among the best placement rates in the country, and graduates beat their states' average bar pass rate by 11 points. Where it falls short: BigLaw is thin for the tier at 1% into 500+ lawyer firms.",
+      "writeup": "Regional school in Virginia Beach, admitting 44% of applicants at a 158/3.68 median. Where it excels: 93% of the class lands full-time bar-required work, among the best placement rates in the country, and graduates beat their states' average bar pass rate by 10 points. Where it falls short: BigLaw is thin for the tier at 1% into 500+ lawyer firms.",
       "outcomes": {
         "graduates": 103,
         "employmentRate": 96.1,
@@ -10261,19 +11833,28 @@
         "lsat25": 153,
         "lsat50": 158,
         "lsat75": 161
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 91.26,
+        "statePassRate": 81.62,
+        "diff": 9.64,
+        "takers": 103
       }
     },
     {
       "state": "Virginia",
       "name": "Liberty University School of Law",
+      "usnewsName": "Liberty University",
       "city": "Lynchburg",
+      "website": "https://www.liberty.edu/law/",
       "medianGPA": 3.54,
       "medianLSAT": 154,
       "tuitionInState": 43150,
       "tuitionOutState": 43150,
-      "rank": 141,
+      "rank": 144,
       "tier": "Regional",
-      "writeup": "Regional school in Lynchburg, admitting 59% of applicants at a 154/3.54 median. Where it excels: it pulls hard toward government and public interest (46% of graduates), and graduates beat their states' average bar pass rate by 7 points.",
+      "writeup": "Regional school in Lynchburg, admitting 59% of applicants at a 154/3.54 median. Where it excels: it pulls hard toward government and public interest (46% of graduates).",
       "outcomes": {
         "graduates": 100,
         "employmentRate": 92.0,
@@ -10317,19 +11898,28 @@
         "lsat25": 151,
         "lsat50": 154,
         "lsat75": 158
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 85.29,
+        "statePassRate": 80.14,
+        "diff": 5.15,
+        "takers": 102
       }
     },
     {
       "state": "Virginia",
       "name": "Appalachian School of Law",
+      "usnewsName": "Appalachian School of Law",
       "city": "Grundy",
+      "website": "https://www.asl.edu/",
       "medianGPA": 3.2,
       "medianLSAT": 146,
       "tuitionInState": 41000,
       "tuitionOutState": 41000,
-      "rank": 178,
-      "tier": "Regional",
-      "writeup": "Regional school in Grundy, admitting 61% of applicants at a 146/3.20 median. Where it excels: it pulls hard toward government and public interest (28% of graduates). Where it falls short: just 53% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 14 points.",
+      "rank": null,
+      "tier": "Unranked",
+      "writeup": "Regional school in Grundy, admitting 61% of applicants at a 146/3.20 median. Where it excels: it pulls hard toward government and public interest (28% of graduates). Where it falls short: just 53% of graduates land full-time bar-required work, and graduates trail their states' average bar pass rate by 26 points.",
       "outcomes": {
         "graduates": 43,
         "employmentRate": 62.8,
@@ -10373,19 +11963,28 @@
         "lsat25": 145,
         "lsat50": 146,
         "lsat75": 151
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 54.76,
+        "statePassRate": 80.69,
+        "diff": -25.93,
+        "takers": 42
       }
     },
     {
       "state": "Washington",
       "name": "University of Washington School of Law",
+      "usnewsName": "University of Washington",
       "city": "Seattle",
+      "website": "https://www.law.uw.edu/",
       "medianGPA": 3.76,
       "medianLSAT": 165,
       "tuitionInState": 45927,
       "tuitionOutState": 57810,
-      "rank": 50,
-      "tier": "T50",
-      "writeup": "Solid national school in Seattle, admitting 20% of applicants at a 165/3.76 median. Where it excels: it pulls hard toward government and public interest (31% of graduates), and graduates beat their states' average bar pass rate by 10 points.",
+      "rank": 52,
+      "tier": "T60",
+      "writeup": "Regional-plus school in Seattle, admitting 20% of applicants at a 165/3.76 median. Where it excels: it pulls hard toward government and public interest (31% of graduates), and graduates beat their states' average bar pass rate by 10 points.",
       "outcomes": {
         "graduates": 177,
         "employmentRate": 87.6,
@@ -10429,17 +12028,26 @@
         "lsat25": 162,
         "lsat50": 165,
         "lsat75": 167
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 92.61,
+        "statePassRate": 82.93,
+        "diff": 9.68,
+        "takers": 176
       }
     },
     {
       "state": "Washington",
       "name": "Seattle University School of Law",
+      "usnewsName": "Seattle University",
       "city": "Seattle",
+      "website": "https://law.seattleu.edu/",
       "medianGPA": 3.6,
       "medianLSAT": 159,
       "tuitionInState": 61830,
       "tuitionOutState": 61830,
-      "rank": 127,
+      "rank": 128,
       "tier": "Regional",
       "writeup": "Regional school in Seattle, admitting 39% of applicants at a 159/3.60 median. Where it excels: it pulls hard toward government and public interest (29% of graduates).",
       "outcomes": {
@@ -10485,17 +12093,26 @@
         "lsat25": 155,
         "lsat50": 159,
         "lsat75": 162
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 79.51,
+        "statePassRate": 82.95,
+        "diff": -3.44,
+        "takers": 205
       }
     },
     {
       "state": "Washington",
       "name": "Gonzaga University School of Law",
+      "usnewsName": "Gonzaga University",
       "city": "Spokane",
+      "website": "https://www.gonzaga.edu/school-of-law",
       "medianGPA": 3.55,
       "medianLSAT": 155,
       "tuitionInState": 57962,
       "tuitionOutState": 57962,
-      "rank": 141,
+      "rank": 144,
       "tier": "Regional",
       "writeup": "Regional school in Spokane, admitting 51% of applicants at a 155/3.55 median. Where it excels: it pulls hard toward government and public interest (29% of graduates).",
       "outcomes": {
@@ -10541,17 +12158,26 @@
         "lsat25": 153,
         "lsat50": 155,
         "lsat75": 158
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 85.85,
+        "statePassRate": 81.96,
+        "diff": 3.89,
+        "takers": 205
       }
     },
     {
       "state": "West Virginia",
       "name": "West Virginia University College of Law",
+      "usnewsName": "West Virginia University",
       "city": "Morgantown",
+      "website": "https://www.law.wvu.edu/",
       "medianGPA": 3.65,
       "medianLSAT": 155,
       "tuitionInState": 26370,
       "tuitionOutState": 45666,
-      "rank": 117,
+      "rank": 124,
       "tier": "Regional",
       "writeup": "Regional school in Morgantown, admitting 40% of applicants at a 155/3.65 median. Where it excels: residency saves $19,296 a year.",
       "outcomes": {
@@ -10597,19 +12223,28 @@
         "lsat25": 151,
         "lsat50": 155,
         "lsat75": 159
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 78.72,
+        "statePassRate": 79.81,
+        "diff": -1.09,
+        "takers": 94
       }
     },
     {
       "state": "Wisconsin",
       "name": "University of Wisconsin Law School",
+      "usnewsName": "University of Wisconsin--Madison",
       "city": "Madison",
+      "website": "https://law.wisc.edu/",
       "medianGPA": 3.81,
       "medianLSAT": 167,
       "tuitionInState": 36526,
       "tuitionOutState": 53640,
-      "rank": 28,
+      "rank": 26,
       "tier": "T30",
-      "writeup": "Strong national school in Madison, admitting 19% of applicants at a 167/3.81 median. Where it excels: residency saves $17,114 a year.",
+      "writeup": "Strong national school in Madison, admitting 19% of applicants at a 167/3.81 median. Where it excels: residency saves $17,114 a year. Where it falls short: graduates trail their states' average bar pass rate by 6 points.",
       "outcomes": {
         "graduates": 255,
         "employmentRate": 94.9,
@@ -10653,19 +12288,28 @@
         "lsat25": 161,
         "lsat50": 167,
         "lsat75": 169
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 75.0,
+        "statePassRate": 81.35,
+        "diff": -6.35,
+        "takers": 8
       }
     },
     {
       "state": "Wisconsin",
       "name": "Marquette University Law School",
+      "usnewsName": "Marquette University",
       "city": "Milwaukee",
+      "website": "https://law.marquette.edu/",
       "medianGPA": 3.7,
       "medianLSAT": 158,
       "tuitionInState": 51970,
       "tuitionOutState": 51970,
       "rank": 59,
       "tier": "T60",
-      "writeup": "Regional-plus school in Milwaukee, admitting 22% of applicants at a 158/3.70 median. Where it falls short: graduates trail their states' average bar pass rate by 21 points.",
+      "writeup": "Regional-plus school in Milwaukee, admitting 22% of applicants at a 158/3.70 median. Middle of the pack on cost, placement, and bar passage — no standout strength or weakness in the 509 data.",
       "outcomes": {
         "graduates": 175,
         "employmentRate": 94.9,
@@ -10709,19 +12353,22 @@
         "lsat25": 156,
         "lsat50": 158,
         "lsat75": 160
-      }
+      },
+      "writeupAuto": true
     },
     {
       "state": "Wyoming",
       "name": "University of Wyoming Law School",
+      "usnewsName": "University of Wyoming",
       "city": "Laramie",
+      "website": "https://www.uwyo.edu/law/",
       "medianGPA": 3.55,
       "medianLSAT": 156,
       "tuitionInState": 17280,
       "tuitionOutState": 36870,
-      "rank": 117,
+      "rank": 112,
       "tier": "Regional",
-      "writeup": "Regional school in Laramie, admitting 36% of applicants at a 156/3.55 median. Where it excels: it pulls hard toward government and public interest (38% of graduates), and residency saves $19,590 a year.",
+      "writeup": "Regional school in Laramie, admitting 36% of applicants at a 156/3.55 median. Where it excels: it pulls hard toward government and public interest (38% of graduates), and graduates beat their states' average bar pass rate by 7 points.",
       "outcomes": {
         "graduates": 64,
         "employmentRate": 85.9,
@@ -10765,7 +12412,22 @@
         "lsat25": 153,
         "lsat50": 156,
         "lsat75": 160
+      },
+      "writeupAuto": true,
+      "bar": {
+        "passRate": 83.05,
+        "statePassRate": 76.01,
+        "diff": 7.04,
+        "takers": 59
       }
     }
-  ]
+  ],
+  "_vintage": {
+    "admissions": "Fall 2025 entering class",
+    "tuition": "2025–26 academic year",
+    "outcomes": "Class of 2025",
+    "bar": "Class of 2025, first attempt",
+    "source": "ABA Standard 509 compilation reports, via tools/fetch_aba.py",
+    "rank": "U.S. News Best Law Schools, 2026 edition (April 2026)"
+  }
 }

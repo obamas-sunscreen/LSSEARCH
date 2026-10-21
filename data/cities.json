@@ -1,5 +1,5 @@
 {
-  "_note": "City-level youthful-active-lifestyle scores, one per law-school city. This replaces the old state-level 'community' score because lifestyle varies enormously within a state (Austin vs. Lubbock). Sub-signals are 1-5: social = nightlife/dining/music/young-professional density (weighted heaviest); outdoors = active outdoor recreation; walkability = walkable/transit vs. car-dependent. lifestyleScore = 0.5*social + 0.25*outdoors + 0.25*walkability, rounded to the nearest 0.5. Editable estimates, not survey data. lat/lon: US Census 2024 Gazetteer place interior points, with a few hand-placed where the city isn't a Census place (NYC boroughs, New England towns) or its interior point misleads (San Francisco, Portland ME, Orlando, New York).",
+  "_note": "City-level youthful-active-lifestyle scores, one per law-school city. This replaces the old state-level 'community' score because lifestyle varies enormously within a state (Austin vs. Lubbock). Sub-signals are 1-5: social = nightlife/dining/music/young-professional density (weighted heaviest); outdoors = active outdoor recreation; walkability = walkable/transit vs. car-dependent. lifestyleScore = 0.5*social + 0.25*outdoors + 0.25*walkability, rounded to the nearest 0.5. Editable estimates, not survey data. lat/lon: US Census 2024 Gazetteer place interior points, with a few hand-placed where the city isn't a Census place (NYC boroughs, New England towns) or its interior point misleads (San Francisco, Portland ME, Orlando, New York, Phoenix).",
   "cities": [
     {
       "city": "Ada",
@@ -57,6 +57,17 @@
       "lon": -83.7309
     },
     {
+      "city": "Arlington",
+      "state": "Virginia",
+      "social": 4,
+      "outdoors": 3,
+      "walkability": 5,
+      "lifestyleScore": 4.0,
+      "blurb": "Dense, young Orange Line corridor (Clarendon, Ballston) with DC a few Metro stops away. Expensive; the Potomac trails are close.",
+      "lat": 38.8783,
+      "lon": -77.1007
+    },
+    {
       "city": "Athens",
       "state": "Georgia",
       "social": 4,
@@ -88,17 +99,6 @@
       "blurb": "The poster child for youthful and active \u2014 live music, lakes and greenbelts, food trucks, and a young, growing crowd. Traffic and rising costs are the downside.",
       "lat": 30.2986,
       "lon": -97.7541
-    },
-    {
-      "city": "Ave Maria",
-      "state": "Florida",
-      "social": 1,
-      "outdoors": 3,
-      "walkability": 2,
-      "lifestyleScore": 2.0,
-      "blurb": "A purpose-built town of a few thousand in the Southwest Florida farmland. Nearly no independent social scene; Naples is 30 minutes away.",
-      "lat": 26.3228,
-      "lon": -81.4394
     },
     {
       "city": "Baltimore",
@@ -220,17 +220,6 @@
       "blurb": "Harvard/MIT energy: cafes, bookstores, and a young academic crowd on foot and transit. Pricey and small.",
       "lat": 42.376,
       "lon": -71.1187
-    },
-    {
-      "city": "Camden",
-      "state": "New Jersey",
-      "social": 2,
-      "outdoors": 2,
-      "walkability": 3,
-      "lifestyleScore": 2.0,
-      "blurb": "Working waterfront city directly across from Philadelphia, which is where the social life is \u2014 PATCO gets you there in minutes.",
-      "lat": 39.9368,
-      "lon": -75.1066
     },
     {
       "city": "Carbondale",
@@ -437,7 +426,7 @@
       "outdoors": 4,
       "walkability": 4,
       "lifestyleScore": 3.0,
-      "blurb": "Flat, bike-obsessed college town \u2014 great for an active outdoor routine, but a quiet nightlife scene and isolated from a big city.",
+      "blurb": "Flat, bike-obsessed college town \u2014 great for an active outdoor routine, but a quiet nightlife scene; Sacramento is 20 minutes away for more.",
       "lat": 38.5561,
       "lon": -121.7378
     },
@@ -470,7 +459,7 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 4.0,
-      "blurb": "Young, active, and beer-soaked, with the Front Range an hour west. Downtown walks well; the rest sprawls. No longer cheap.",
+      "blurb": "Young, active, and beer-soaked, with the foothills 30 minutes west and the high peaks about an hour out. Downtown walks well; the rest sprawls. No longer cheap.",
       "lat": 39.7619,
       "lon": -104.8811
     },
@@ -528,17 +517,6 @@
       "blurb": "Track Town \u2014 running, cycling, and river trails everywhere, with the Cascades and coast both an hour out. Small, wet, and cheap for Oregon.",
       "lat": 44.0568,
       "lon": -123.119
-    },
-    {
-      "city": "Fairfax",
-      "state": "Virginia",
-      "social": 3,
-      "outdoors": 3,
-      "walkability": 3,
-      "lifestyleScore": 3.0,
-      "blurb": "Northern Virginia suburb with Metro access into DC, which supplies the actual social life. Expensive for what it is.",
-      "lat": 38.8532,
-      "lon": -77.299
     },
     {
       "city": "Fayetteville",
@@ -635,7 +613,7 @@
       "outdoors": 3,
       "walkability": 3,
       "lifestyleScore": 2.5,
-      "blurb": "Insurance-industry capital that empties out on weekends. Cheap for the Northeast, with easy rail to Boston and New York when you need more.",
+      "blurb": "Insurance-industry capital that empties out on weekends. Cheap for the Northeast, with rail to New York via New Haven and Boston about two hours by car.",
       "lat": 41.7659,
       "lon": -72.6816
     },
@@ -789,7 +767,7 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.0,
-      "blurb": "High-plains town at 7,200 feet with the Snowy Range and Vedauwoo minutes away. Tiny, windy, cheap, and cold.",
+      "blurb": "High-plains town at 7,200 feet with Vedauwoo 20 minutes away and the Snowy Range within an hour. Tiny, windy, cheap, and cold.",
       "lat": 41.306,
       "lon": -105.6086
     },
@@ -1036,6 +1014,17 @@
       "lon": -116.9989
     },
     {
+      "city": "Naples",
+      "state": "Florida",
+      "social": 2,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 2.5,
+      "blurb": "Affluent, retiree-heavy Gulf Coast city. The law school is in car-dependent North Naples; the beaches are the draw, not the nightlife.",
+      "lat": 26.1505,
+      "lon": -81.7953
+    },
+    {
       "city": "Nashville",
       "state": "Tennessee",
       "social": 5,
@@ -1130,7 +1119,7 @@
       "outdoors": 3,
       "walkability": 2,
       "lifestyleScore": 3.0,
-      "blurb": "Cheap and rapidly redeveloping, with Bricktown and the Scissortail Park boathouse district. Sprawling and car-first.",
+      "blurb": "Cheap and rapidly redeveloping, with Bricktown, Scissortail Park, and the Boathouse District. Sprawling and car-first.",
       "lat": 35.4671,
       "lon": -97.5137
     },
@@ -1188,6 +1177,17 @@
       "blurb": "Dense, walkable, transit-rich, and much cheaper than New York or Boston \u2014 one of the strongest big-city values on this list.",
       "lat": 40.0094,
       "lon": -75.1333
+    },
+    {
+      "city": "Phoenix",
+      "state": "Arizona",
+      "social": 4,
+      "outdoors": 4,
+      "walkability": 2,
+      "lifestyleScore": 3.5,
+      "blurb": "The country's fifth-largest city. ASU Law sits downtown on the light rail, with Tempe's student scene a short ride east. Camelback and South Mountain hiking are close; summers are brutal.",
+      "lat": 33.4484,
+      "lon": -112.074
     },
     {
       "city": "Pittsburgh",
@@ -1454,17 +1454,6 @@
       "lon": -84.2523
     },
     {
-      "city": "Tempe",
-      "state": "Arizona",
-      "social": 4,
-      "outdoors": 4,
-      "walkability": 3,
-      "lifestyleScore": 4.0,
-      "blurb": "Dense, young ASU energy on Mill Avenue with light rail into Phoenix. Desert hiking is minutes away; summers are brutal.",
-      "lat": 33.3884,
-      "lon": -111.9318
-    },
-    {
       "city": "Toledo",
       "state": "Ohio",
       "social": 2,
@@ -1493,7 +1482,7 @@
       "outdoors": 5,
       "walkability": 3,
       "lifestyleScore": 3.5,
-      "blurb": "Cheap desert college town ringed by four mountain ranges \u2014 exceptional hiking and cycling. Social scene is modest and student-driven.",
+      "blurb": "Cheap desert college town ringed by five mountain ranges \u2014 exceptional hiking and cycling. Social scene is modest and student-driven.",
       "lat": 32.153,
       "lon": -110.8708
     },
