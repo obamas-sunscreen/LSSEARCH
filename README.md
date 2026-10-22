@@ -2,6 +2,8 @@
 
 A personal tool for building a shortlist of law schools, organized by state.
 
+**Live site: https://obamas-sunscreen.github.io/LSSEARCH/**
+
 **Flow:** you land on **Find your fit**: enter your GPA, LSAT, career goals, and where you want to practice. You then get every ABA school sorted into Reach / Target / Safety / Far reach; a search box above the list filters it by name, city, or state, and you click one for its full page. Add schools to **My saved list**: each one becomes a folder, filed by admission band, that opens to the site's read of the school beside your own notes and attached files. Everything stays in the browser (notes in localStorage, files in IndexedDB); **Back up** / **Restore** move it all as one JSON file, and the list still exports to Markdown or CSV. **Explore by state** (in the menu) is the whiteboard map of every state: hover one for its real strengths and weaknesses, click it and the map zooms in, dots every city with a law school, and lists those schools beside it (with your band for each once you've entered a GPA and LSAT). Pick a school and a pin drops on it, with a link through to its page. Back, Esc, or a click on open water zooms out. **About** (also in the menu) sets out where each figure comes from, the year it describes, and how far to trust the admission odds.
 
 ### State strengths and weaknesses
@@ -43,7 +45,9 @@ Two further assumptions worth knowing:
 
 What the model knows nothing about: your essays, letters, work history, résumé, softs, whether you applied in September or March, scholarship negotiation, or any school's institutional priorities in a given cycle. Those decide a great deal of what actually happens. Treat 60% as "worth an application," never as a coin flip you've already half-won.
 
-## Running it
+## Running it locally
+
+You only need this to work on the site; to use it, open the live link above.
 
 The app loads its data from local JSON files, so it needs a tiny local web server (opening `index.html` directly with `file://` will fail on most browsers because of how they block local file reads).
 
