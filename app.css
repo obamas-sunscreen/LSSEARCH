@@ -100,22 +100,32 @@ b, strong { font-weight: 640; }
 .errbox code { background: rgba(var(--ink-rgb), .07); padding: 1px 5px; border-radius: 4px; }
 
 /* --- chrome: menu ------------------------------------------------------- */
+/* Written big over the landing page's blanks. The padding sits the closed
+   form, logo included (about 340px tall), in the middle of the screen, and
+   opening "add more" grows downward instead of shoving it up. 62px is main's
+   top padding. */
 .logo {
-  position: fixed; top: 8px; left: 14px; z-index: 50;
+  display: block; width: max-content; margin: 0 auto 20px;
+  margin-top: max(24px, calc(50svh - 170px - 62px));
   padding: 4px 8px;
   color: var(--ink); line-height: 0; transform: rotate(-2deg);
 }
 .logo svg {
-  width: 140px; height: 40px; overflow: visible;
+  width: 300px; height: 86px; overflow: visible;
   fill: none; stroke: currentColor; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round;
 }
-.menu { position: fixed; top: 12px; right: 16px; z-index: 50; }
+/* Stays at the top of the page and scrolls away with it, so an open menu
+   never lands on top of the schools. */
+.menu { position: absolute; top: 12px; right: 16px; z-index: 50; }
+/* Open, the menu washes the page out behind it so it's written on a clean
+   board, whatever is under it. Clicking the wash closes it (app.js). */
+.menu::before {
+  content: ""; position: fixed; inset: 0; z-index: -1;
+  background: var(--board); opacity: 0; pointer-events: none;
+  transition: opacity var(--fast) var(--ease);
+}
+.menu.on::before { opacity: .9; pointer-events: auto; }
 .confetti { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none; }
-/* The logo belongs to the landing page only. */
-body:not([data-view="fit"]) .logo { display: none; }
-/* The saved list is a long page of folders: let the menu scroll away with it
-   rather than sit on top of the folders. */
-body[data-view="list"] .menu { position: absolute; }
 .menu-btn {
   display: flex; align-items: center; gap: 4px;
   padding: 8px 10px; background: none; border: none;
@@ -180,10 +190,6 @@ main.roomy .od, main.roomy .omodel { max-width: 780px; }   /* small print stays 
   font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
   color: var(--ink-faint); margin: 0 0 12px;
 }
-.footnote {
-  font-size: 12.5px; line-height: 1.62; color: var(--ink-faint);
-  max-width: 680px; margin-top: 28px;
-}
 
 /* --- shared: tracks ------------------------------------------------------- */
 /* app.js draws every bar as SVG at its real size (see sketch()): an ink outline
@@ -242,10 +248,7 @@ svg.hd {
   /* The same marker line, long enough to run under a whole row without stretching flat. */
   --scrawl-long: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C20 1.6 36 4.8 55 3.1S84 2.2 100 3.9S131 4.6 150 2.9S183 1.8 200 3.5S232 4.9 250 3.2S284 1.9 300 3.6S333 4.5 350 3S383 2.1 399 3.7' fill='none' stroke='%231d2230' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
-/* Sits the closed form (blanks, "add more", button: about 230px tall) in the middle of
-   the screen. Padding rather than flex centring, so opening "add more" grows downward
-   instead of shoving the blanks up. 62px is main's top padding. */
-.fit-hero { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px 48px; padding-top: max(24px, calc(50svh - 127px - 62px)); }
+.fit-hero { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px 48px; }
 .fit-hero .blank { width: 4.4ch; font-size: 52px; background-size: 100% 9px; }
 
 .more { margin: 30px auto 0; }
@@ -585,6 +588,16 @@ svg.usmap g.callout text {
 .bandjump:hover { text-decoration: underline 2px; text-underline-offset: 4px; }
 .bandjump:active { transform: translateY(1px); }
 .bandjump em { font-style: normal; color: var(--ink-faint); font-weight: 550; font-variant-numeric: tabular-nums; }
+.bandjump[hidden] { display: none; }
+/* Search, pushed to the right end of the band row: a blank in green marker. */
+.res-search {
+  margin-left: auto; width: 15ch; padding: 0 4px 3px;
+  font-family: var(--marker); font-size: 18px; color: var(--safety);
+  background: var(--scrawl-green) left bottom / 100% 7px no-repeat;
+  border: none; outline: none; appearance: none;
+}
+.res-search::placeholder { color: var(--safety); opacity: .7; }
+.res-search::-webkit-search-cancel-button { display: none; }
 
 .band { margin-bottom: 28px; scroll-margin-top: calc(var(--topbar-h) + 60px); }
 .band-h { display: flex; align-items: baseline; gap: 10px; margin: 0 0 3px; }
@@ -593,11 +606,11 @@ svg.usmap g.callout text {
 .band-sub { margin: 0 0 12px; font-size: 12.5px; color: var(--ink-faint); }
 .band-more {
   margin-top: 8px; width: 100%; padding: 9px 14px;
-  background: none; border: 1.5px dashed var(--line-strong); border-radius: var(--r-sm);
+  background: none; border: none;
   font-family: var(--hand); font-size: 16px; color: var(--ink-soft); cursor: pointer;
-  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+  transition: color var(--fast) var(--ease);
 }
-.band-more:hover { border-color: var(--accent); color: var(--accent); }
+.band-more:hover { color: var(--accent); }
 
 /* No box: each school is just written on the board, and hovering one picks
    its name out in blue marker. */
@@ -607,7 +620,8 @@ svg.usmap g.callout text {
   animation: rowIn var(--mid) var(--ease-out) both;
 }
 /* The same marker line as under the GPA and LSAT blanks, between schools. */
-.rrow + .rrow::before {
+.rrow[hidden], .band[hidden] { display: none; }
+.rrow:not([hidden]) ~ .rrow::before {
   content: ""; position: absolute; left: 0; right: 0; top: -6px; height: 7px;
   background: var(--scrawl-long) center / 100% 7px no-repeat;
 }
@@ -686,10 +700,11 @@ svg.usmap g.callout text {
 .srow .stats b { color: var(--ink); font-weight: 640; }
 
 /* --- school view ---------------------------------------------------------- */
-.h-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+/* Name, then the actions under it on the left, clear of where the menu drops down. */
+.h-top { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
 .h-top h2 { margin: 0 0 4px; font-size: 32px; }
 .h-top .loc { color: var(--ink-soft); font-size: 13.5px; }
-.h-side { display: flex; align-items: center; gap: 28px; flex: none; }
+.h-side { display: flex; align-items: center; gap: 10px 28px; flex-wrap: wrap; }
 
 .statblock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 24px; margin: 26px 0; }
 .stat .lbl { font-family: var(--hand); font-size: 15px; color: var(--ink-faint); }
@@ -758,7 +773,7 @@ svg.usmap g.callout text {
 .ghostbtn:disabled { opacity: .45; cursor: not-allowed; }
 /* School-page actions: words on the board in blue marker, no box. */
 .markbtn {
-  flex: none; padding: 2px 2px 7px; font-family: var(--hand); font-size: 19px;
+  flex: none; padding: 2px 2px 7px; font-family: var(--hand); font-size: 19px; text-decoration: none;
   color: var(--accent); border: none; cursor: pointer;
   background: var(--scrawl-blue) left bottom / 100% 7px no-repeat;
 }
@@ -770,7 +785,10 @@ svg.usmap g.callout text {
 .markbtn.mk-add { color: var(--safety); background-image: var(--scrawl-green); }
 .markbtn.mk-add.is-on { background-image: none; }
 .markbtn.mk-back:hover, .markbtn.mk-add:hover { color: var(--ink); }
-.view-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+/* The back button's own ← spun round to point up and out (a plain → or ↗
+   draws stubbier in this font), lifted back onto the middle of the line. */
+.mk-ext { display: inline-block; transform: translateY(-.15em) rotate(155deg); }
+.view-top { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
 .view-top .crumb { margin-bottom: 0; }
 
 /* --- my saved list: folders --------------------------------------------- */
@@ -956,6 +974,7 @@ svg.usmap g.callout text {
   .ofolder-body { padding: 16px 14px 18px; }
   .ofolder-top h2 { font-size: 26px; }
   .page { padding: 14px 14px 18px; }
+  .logo svg { width: 230px; height: 66px; }
   .fit-hero { gap: 16px 28px; }
   .fit-hero .blank { font-size: 42px; }
   .mad { font-size: 20px; }
@@ -971,3 +990,16 @@ svg.usmap g.callout text {
     transition-duration: .001ms !important;
   }
 }
+
+/* --- view: about ---------------------------------------------------------- */
+.about { max-width: 720px; line-height: 1.65; color: var(--ink-soft); }
+.about h2 { margin: 0 0 4px; font-size: 30px; color: var(--ink); }
+.about h3 { margin: 32px 0 8px; font-size: 21px; color: var(--ink); }
+.about-lede { margin: 0 0 8px; font-family: var(--hand); font-size: 18px; color: var(--ink-faint); }
+.about a { color: var(--accent); overflow-wrap: anywhere; }
+.about-src { width: 100%; border-collapse: collapse; font-size: 14px; margin: 4px 0 14px; }
+.about-src th, .about-src td { text-align: left; vertical-align: top; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); }
+.about-src th { font-family: var(--hand); font-weight: 700; color: var(--ink); border-bottom-color: var(--line-strong); }
+.about-bands { padding-left: 20px; margin: 0; }
+.about-bands li { margin: 3px 0; }
+@media (max-width: 560px) { .about-src { font-size: 13px; } }

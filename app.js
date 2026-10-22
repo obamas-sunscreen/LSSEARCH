@@ -1141,6 +1141,7 @@
   // Only the results list remembers its scroll offset. You bounce in and out of
   // it while opening schools, and losing your place there is the whole problem.
   let resultsScroll = 0;
+  let resultsQuery = "";
 
   const RENDERERS = {
     // Moving between states (or back out) on a map that's already up zooms it
@@ -1151,6 +1152,7 @@
     state: (v) => renderState(v.name),
     school: (v) => renderSchool(current(v.name)),
     list: (v) => renderList(v),
+    about: () => renderAbout(),
   };
 
   function go(view, replace) {
@@ -1224,6 +1226,14 @@
 
 
   const ARROW = `<span class="heard-arrow" aria-hidden="true">→</span>`;
+  // States offered under a blank as you type it.
+  const offerWords = (names) => names.map((s) =>
+    `<button type="button" class="word" data-pick="${esc(s)}">${esc(s)}</button>`).join("");
+  // Pressing an offered state would take focus off the blank first, and the
+  // blank's change handler would act on the half-typed word before the click lands.
+  const keepFocus = (hint) => hint.addEventListener("mousedown", (e) => {
+    if (e.target.closest("[data-pick]")) e.preventDefault();
+  });
   const pickWord = (label, attr, value, on) => `<button type="button" class="word${on ? " on" : ""}" ${attr}="${esc(value)}"
     aria-pressed="${on}">${esc(label)}</button>`;
   const regionOn = (r) => {
@@ -1319,6 +1329,11 @@
 
   function wireFit() {
     const form = document.getElementById("fitForm");
+    form.prepend(document.getElementById("logoTpl").content.cloneNode(true));
+    form.querySelector(".logo").addEventListener("click", (e) => {
+      e.preventDefault();
+      confetti();
+    });
 
     const numField = (id, key, parse, lo, hi) => {
       const el = document.getElementById(id);
@@ -1343,18 +1358,33 @@
     }));
     document.getElementById("pfMore").addEventListener("toggle", (e) => { moreOpen = e.target.open; });
 
-    // Residency is typed. While typing, show which state it's being read as;
-    // on leaving the field, swap in the proper spelling.
+    // Residency is typed, with the states that fit offered as you go (tap one,
+    // or Enter for the first). On leaving the field, swap in the proper spelling.
     const resIn = document.getElementById("pfResidency");
     const resHint = document.getElementById("pfResHint");
+    let resOffered = [];
+    const setResidency = (name) => {
+      profile.residency = name;
+      resIn.value = name; resHint.innerHTML = ""; resOffered = [];
+      resIn.classList.remove("bad");
+      persistProfile(); updateFitControls();
+    };
     resIn.addEventListener("input", () => {
       const typed = resIn.value.trim();
       profile.residency = resolveState(typed);
-      resIn.classList.toggle("bad", !!typed && !profile.residency);
-      resHint.innerHTML = !typed || profile.residency.toLowerCase() === typed.toLowerCase() ? ""
-        : profile.residency ? `${ARROW}<span class="heard-miss">${esc(profile.residency)}</span>`
-        : `<span class="heard-miss">That isn't a state I recognise.</span>`;
+      resOffered = suggestStates(typed).filter((s) => s.toLowerCase() !== typed.toLowerCase());
+      resIn.classList.toggle("bad", !!typed && !suggestStates(typed).length);
+      resHint.innerHTML = resOffered.length ? ARROW + offerWords(resOffered)
+        : typed && !profile.residency ? `<span class="heard-miss">That isn't a state I recognise.</span>` : "";
       persistProfile(); updateFitControls();
+    });
+    keepFocus(resHint);
+    resHint.addEventListener("click", (e) => {
+      const el = e.target.closest("[data-pick]");
+      if (el) setResidency(el.getAttribute("data-pick"));
+    });
+    resIn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && resOffered.length) { e.preventDefault(); setResidency(resOffered[0]); }
     });
     resIn.addEventListener("change", () => {
       if (profile.residency) { resIn.value = profile.residency; resHint.innerHTML = ""; }
@@ -1412,15 +1442,12 @@
       const typed = addIn.value.trim();
       offered = suggestStates(typed).filter((s) => profile.states.indexOf(s) === -1);
       addIn.classList.toggle("bad", !!typed && !suggestStates(typed).length);   // red only if it fits no state at all
-      addHint.innerHTML = offered.length ? ARROW + offered.map((s) =>
-        `<button type="button" class="word" data-addstate="${esc(s)}">${esc(s)}</button>`).join("") : "";
+      addHint.innerHTML = offered.length ? ARROW + offerWords(offered) : "";
     });
-    // mousedown would take focus off the blank first, and its change handler would
-    // add whatever half-word is typed before the click lands.
-    addHint.addEventListener("mousedown", (e) => { if (e.target.closest("[data-addstate]")) e.preventDefault(); });
+    keepFocus(addHint);
     addHint.addEventListener("click", (e) => {
-      const el = e.target.closest("[data-addstate]");
-      if (el) { addState(el.getAttribute("data-addstate")); addIn.focus(); }
+      const el = e.target.closest("[data-pick]");
+      if (el) { addState(el.getAttribute("data-pick")); addIn.focus(); }
     });
     addIn.addEventListener("change", () => addState(resolveState(addIn.value)));
     addIn.addEventListener("keydown", (e) => {
@@ -1458,7 +1485,7 @@
   // right; the fit trail sits up top, the map trail below it, the list off left.
   function spot(v) {
     if (v.kind === "school") return [2, v.fit ? 1 : 3];
-    return { fit: [0, 0], results: [1, 1], map: [0, 2], state: [1, 3], list: [-1, 1] }[v.kind];
+    return { fit: [0, 0], results: [1, 1], map: [0, 2], state: [1, 3], list: [-1, 1], about: [-1, 3] }[v.kind];
   }
   // Set by the arrow keys for the next pan: the board still decides up or down,
   // but the camera always heads the way the key points.
@@ -1881,7 +1908,7 @@
       ${insGroup("up", ins.strengths.slice(0, 3), true)}
       ${insGroup("dn", ins.weaknesses.slice(0, 3), true)}
       ${flat}
-      <p class="card-hint">Click to see its schools</p>`;
+      <p class="card-hint">Click to see schools</p>`;
   }
 
   // The zoomed-in panel: the state's numbers, then every school in it, each
@@ -1934,10 +1961,10 @@
 
   // ---------- results ----------
   const BANDS = [
-    { label: "Safety",    sub: "Modelled at better than a 70% chance of admission." },
-    { label: "Target",    sub: "Modelled between 35% and 70% — the range worth spending applications on." },
-    { label: "Reach",     sub: "Modelled between 12% and 35%: possible, and not something to count on." },
-    { label: "Far reach", sub: "Modelled under 12%. Your numbers alone won't carry these." },
+    { label: "Safety",    sub: "Modelled chance above 70%." },
+    { label: "Target",    sub: "Modelled chance between 35% and 70%." },
+    { label: "Reach",     sub: "Modelled chance between 12% and 35%." },
+    { label: "Far reach", sub: "Modelled chance under 12%." },
   ];
   const BAND_CLS = ["band-safety", "band-target", "band-reach", "band-far"];
   const SHOW_PER_BAND = 8;
@@ -1980,13 +2007,14 @@
       </div>`;
   }
 
-  function resultRow(r) {
+  // `extra` rows sit past the band's "Show all" fold: rendered hidden so a search can still find them.
+  function resultRow(r, extra) {
     const s = r.school;
     const a = s.admissions || {};
     const lsatMed = a.lsat50 != null ? a.lsat50 : s.medianLSAT;
     const gpaMed = a.gpa50 != null ? a.gpa50 : s.medianGPA;
     return `
-      <div class="rrow" data-school="${esc(s.name)}" role="button" tabindex="0">
+      <div class="rrow" data-school="${esc(s.name)}" data-find="${esc(`${s.name} ${s.city} ${s.state}`.toLowerCase())}"${extra ? " data-extra hidden" : ""} role="button" tabindex="0">
         <div class="rmain">
           <div class="rname">${esc(s.name)}${isSaved(s.name) ? ' <span class="saved-flag">✓ on list</span>' : ""}</div>
           <div class="rloc">${esc(s.city)}, ${esc(s.state)} · ${esc(s.tier || "—")}${s.rank == null ? "" : " · #" + s.rank}</div>
@@ -2015,7 +2043,7 @@
     order.forEach((bi) => {
       const list = groups[bi];
       if (!list.length) return;
-      jumps += `<button class="bandjump ${BAND_CLS[bi]}" type="button" data-jump="${bi}">
+      jumps += `<button class="bandjump ${BAND_CLS[bi]}" type="button" data-jump="${bi}" id="jump-${bi}">
           ${BANDS[bi].label} <em>${list.length}</em></button>`;
       const limit = expandedBands[bi] ? list.length : SHOW_PER_BAND;
       body += `
@@ -2025,7 +2053,7 @@
             <span class="n">${plural(list.length, "school")}</span>
           </div>
           <p class="band-sub">${BANDS[bi].sub}</p>
-          ${list.slice(0, limit).map(resultRow).join("")}
+          ${list.map((r, i) => resultRow(r, i >= limit)).join("")}
           ${list.length > limit
             ? `<button class="band-more" type="button" data-expand="${bi}">Show all ${list.length}</button>`
             : ""}
@@ -2046,23 +2074,11 @@
         <h2>Your schools</h2>
         <p>${esc(bits.join("  ·  "))} · <button class="linkbtn" id="editProfile" type="button">edit</button></p>
       </div>
-      <div class="bandnav">${jumps}</div>
+      <div class="bandnav">${jumps}
+        <input class="res-search" id="resSearch" type="search" placeholder="Search" aria-label="Search your schools" autocomplete="off">
+      </div>
       ${body}
-      <p class="footnote">
-        The LSAT and GPA figures are each school's own reported medians, with the tick
-        marking where your number falls inside their 25th–75th percentile spread. The
-        percentage is a modelled chance of admission on your two numbers alone, built
-        from each school's acceptance rate, its reported spread, and its yield — it has
-        no knowledge of your essays, work history, or softs, and nothing in it is fitted
-        to real admission results, because no school publishes them. The band label is
-        just a name for that percentage. Waitlist is the softest figure on the page: the
-        ABA collects no waitlist data at all, so that share is a modelled band around the
-        decision boundary rather than anything reported. Ranking within a band uses your
-        stated goals and geography — the line under each school names the outcomes doing
-        the work. Every school figure is from the ABA's own 509 reports: admissions describe
-        the ${esc((VINTAGE.admissions || "latest entering class").toLowerCase())}, and employment
-        the ${esc((VINTAGE.outcomes || "latest class").toLowerCase())}.
-      </p>`, true);
+      <div class="empty" id="resNone" hidden>No school here matches that.</div>`, true);
     window.scrollTo({ top: resultsScroll, behavior: "auto" });
 
     app.querySelectorAll("[data-school]").forEach((el) => {
@@ -2083,6 +2099,31 @@
         if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
       }));
     document.getElementById("editProfile").addEventListener("click", () => go({ kind: "fit" }));
+
+    // Search by name, city or state. A query looks past the "Show all" fold;
+    // bands (and their jump links) with nothing left drop out.
+    const search = document.getElementById("resSearch");
+    const filter = () => {
+      resultsQuery = search.value;
+      const q = search.value.trim().toLowerCase();
+      let any = false;
+      app.querySelectorAll(".band").forEach((band) => {
+        let shown = 0;
+        band.querySelectorAll(".rrow").forEach((row) => {
+          row.hidden = q ? !row.dataset.find.includes(q) : row.hasAttribute("data-extra");
+          if (!row.hidden) shown++;
+        });
+        band.hidden = !shown;
+        const more = band.querySelector(".band-more");
+        if (more) more.hidden = !!q;
+        document.getElementById("jump-" + band.id.slice(5)).hidden = !shown;
+        any = any || shown > 0;
+      });
+      document.getElementById("resNone").hidden = any || !q;
+    };
+    search.value = resultsQuery;
+    search.addEventListener("input", filter);
+    filter();
   }
 
   // ---------- state view ----------
@@ -2233,8 +2274,7 @@
         <div class="od">Shaded band is their 25th–75th percentile:
           LSAT <b>${a.lsat25}–${a.lsat75}</b>, GPA <b>${a.gpa25}–${a.gpa75}</b>.
           They admit <b>${a.acceptanceRate}%</b> of ${a.applications.toLocaleString("en-US")} applicants.
-          The split above comes from those figures and your two numbers alone —
-          it knows nothing about your essays, work history, or softs.</div>
+          The split above comes from those figures and your two numbers alone.</div>
       </div>`;
     })() : "";
 
@@ -2300,6 +2340,7 @@
           </div>
           <div class="h-side">
             ${tierBadge(sc.tier)}
+            ${sc.website ? `<a class="markbtn" href="${esc(sc.website)}" target="_blank" rel="noopener">School website <span class="mk-ext" aria-hidden="true">←</span></a>` : ""}
             <button class="markbtn mk-add${added ? " is-on" : ""}" id="toggleBtn" type="button">
               ${added ? "✓ On my list" : "Add to my list"}
             </button>
@@ -2900,6 +2941,82 @@
     }
   }
 
+  // ---------- about ----------
+  // Reached from the menu only: it's reference, not a stop on the ←/→ tour.
+  // Report years come from _vintage, so this page stays right after a refresh.
+  function renderAbout() {
+    const yr = (k) => esc(VINTAGE[k] || "latest report");
+    const bands = BANDS.map((b, i) =>
+      `<li><b class="${BAND_CLS[i]}">${b.label}</b> ${b.sub.replace(/^Modelled chance/, "means a modelled chance")}</li>`).join("");
+    setView(`
+      <article class="about">
+        <h2>About</h2>
+        <p class="about-lede">Where every number on this site comes from, what it measures, and how far to trust it.</p>
+
+        <h3>Where the numbers come from</h3>
+        <p>Each kind of figure comes from a single source. School numbers aren't mixed in from schools'
+          own websites or marketing. Every school figure is from the ABA's Standard 509 disclosures,
+          the reports each accredited law school has to file every year.</p>
+        <table class="about-src">
+          <thead><tr><th>Figure</th><th>Source</th><th>Describes</th></tr></thead>
+          <tbody>
+            <tr><td>LSAT and GPA (25th, median, 75th), applications, offers, acceptance rate</td><td>ABA 509 First Year Class</td><td>${yr("admissions")}</td></tr>
+            <tr><td>Tuition</td><td>ABA 509 Tuitions and Fees</td><td>${yr("tuition")}</td></tr>
+            <tr><td>Employment rate, BigLaw, clerkships, government and other outcomes; states graduates work in</td><td>ABA Employment Summary</td><td>${yr("outcomes")}</td></tr>
+            <tr><td>First-time bar passage</td><td>ABA First-Time Bar Admission</td><td>${yr("bar")}</td></tr>
+            <tr><td>Rank and tier</td><td colspan="2">${yr("rank")}</td></tr>
+          </tbody>
+        </table>
+        <p>State figures are cost of living and housing (C2ER index via MERIC), lawyer jobs and average
+          legal pay (Bureau of Labor Statistics), violent crime (FBI) and life expectancy (CDC). Livability
+          and each city's lifestyle score are our own editorial estimates, not survey data.</p>
+
+        <h3>What the admission percentage is</h3>
+        <p>It's a modelled chance of admission based on your LSAT and GPA alone, with LSAT counting for 60%
+          and GPA for 40%. Three figures each school reports shape it: the acceptance rate sets where the curve
+          sits, the 25th–75th spread sets how steep it is, and yield nudges it, because the reported scores
+          describe the students who enrolled, not everyone who was admitted.</p>
+        <p><b>Nothing in it is fitted to real admission decisions.</b> No school publishes who it admitted
+          at which numbers. The model knows nothing about your essays, letters, work history, timing or
+          scholarship offers, and those decide a lot. At the most selective schools a ceiling keeps numbers
+          alone from ever reading as a sure thing. If your LSAT and GPA point in very different directions,
+          the school's page flags it, since that's where a single blended number is least reliable.</p>
+        <p>The hatched waitlist slice is the softest figure on the site. The ABA collects no waitlist data
+          at all, so that slice is a modelled zone around the decision line, not anything reported.</p>
+
+        <h3>What the bands mean</h3>
+        <p>Each band is just a name for the percentage, so the label and the number can't disagree:</p>
+        <ul class="about-bands">${bands}</ul>
+
+        <h3>What the ranges show</h3>
+        <p>Under each school's median LSAT and GPA, a short track shows where you'd sit in its entering class.
+          The middle of the track is the school's median, and the quarter marks either side are its 25th and
+          75th percentiles, so the middle half of the track is the middle half of the class. The tick is your
+          number. Landing below the 25th mark doesn't rule a school out; it means you'd be in the bottom quarter
+          on that number.</p>
+
+        <h3>Career fit and place fit</h3>
+        <p>Inside each band, schools are ranked on two scores, and admission odds don't count again here.
+          <b>Career fit</b> percentile-ranks a school against every other ABA school on the outcomes you said
+          you care about, plus a little weight for overall employment. Percentiles are used because 12% going to
+          federal clerkships is extraordinary while 12% going to BigLaw is ordinary. <b>Place fit</b> credits
+          schools in, or sending graduates to, the states you named, blended with your cost, lifestyle and
+          legal-market preferences.</p>
+
+        <h3>State strengths and weaknesses</h3>
+        <p>Each state is percentile-ranked against the others on ten measures. A measure only shows as a strength
+          above the 62nd percentile or a weakness below the 38th, with at most three of each, so a state
+          that's mid-pack on everything says so instead of getting a made-up strength.</p>
+
+        <h3>Before you rely on a number</h3>
+        <p>Employment data looks backward: the newest class graduated about four years before you would.
+          Some schools charge tuition per credit, and those are annualized from the credit hours they report,
+          so they're approximate. Everything here is a point-in-time snapshot. Check a school's own 509 report at
+          <a href="https://www.abarequireddisclosures.org/" target="_blank" rel="noopener">abarequireddisclosures.org</a>
+          before you make a real decision.</p>
+      </article>`);
+  }
+
   // ---------- persistent wiring ----------
   const menu = document.getElementById("menu");
   const menuBtn = document.getElementById("menuBtn");
@@ -2912,7 +3029,8 @@
     res.title = profileReady() ? "" : "Enter a GPA and LSAT on Find your fit first";
   }
   menuBtn.addEventListener("click", (e) => { e.stopPropagation(); menuToggle(!menu.classList.contains("on")); });
-  document.addEventListener("click", (e) => { if (!menu.contains(e.target)) menuToggle(false); });
+  // The wash behind the open menu is the menu's own ::before, so a click on it lands on the menu itself.
+  document.addEventListener("click", (e) => { if (!menu.contains(e.target) || e.target === menu) menuToggle(false); });
   menu.querySelectorAll("[data-nav]").forEach((el) =>
     el.addEventListener("click", () => {
       menuToggle(false);
@@ -2937,7 +3055,7 @@
       n.replaceWith(word);
     }));
 
-  // The logo only shows on the landing page, so a click has nowhere to go:
+  // The logo lives on the landing page, so a click has nowhere to go:
   // it throws marker-coloured confetti in from every edge of the screen.
   function confetti() {
     if (REDUCED.matches) return;
@@ -2991,10 +3109,6 @@
       if (live && t - start < 6000) requestAnimationFrame(frame); else cv.remove();
     })(start);
   }
-  document.getElementById("logo").addEventListener("click", (e) => {
-    e.preventDefault();
-    confetti();
-  });
 
   // ← and → step through the menu's pages in order, skipping Your schools
   // until there are numbers to rank on. A state page counts as the map; a

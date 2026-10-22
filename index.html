@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="app.css" />
 </head>
 <body>
-  <a class="logo" id="logo" href="./" aria-label="Lssearch, home"><svg viewBox="0 0 140 40" aria-hidden="true">
+  <!-- Cloned into the top of the landing page. -->
+  <template id="logoTpl"><a class="logo" href="./" aria-label="Lssearch, home"><svg viewBox="0 0 140 40" aria-hidden="true">
     <path d="M7 5.5c-1 9-.8 18.5 0 28.5 4-.8 8-.6 12.2.6"/>
     <path d="M20.8 30.8c5.2 5.2 14 2.6 13.4-5C33.6 19 23.6 18 23.4 12 23.2 7 27.6 4.6 33 4.6c26 0 62-.8 91-.9 4 0 7-.6 9.5-2.2"/>
     <path d="M50.5 19.5c-4-3-10.5-1.5-9.5 2.8s9.6 3.2 9.4 8.2c-.2 4.6-7 5-10.4 1.6"/>
@@ -19,7 +20,7 @@
     <path d="M89 17.5c.4 6 .2 11.2-.4 16.5M88.8 24.5c2-5.4 5.4-7 9.6-5.6"/>
     <path d="M112.5 19.8c-4.4-3.4-11.6-.8-11.4 6.2.2 7.4 6.8 9 12.4 4.6"/>
     <path d="M118.6 9.5c-.4 8.4-.2 16.4.2 25M118.6 25.5c2.4-6.4 10.4-7.4 10.2-1.2 0 4 .2 7.2 1 10.4"/>
-  </svg></a>
+  </svg></a></template>
 
   <div class="menu" id="menu">
     <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="menuList">
@@ -33,6 +34,7 @@
       <button type="button" role="menuitem" data-nav="results" id="menuResults">Your schools</button>
       <button type="button" role="menuitem" data-nav="map">Explore by state</button>
       <button type="button" role="menuitem" data-nav="list">My saved list</button>
+      <button type="button" role="menuitem" data-nav="about">About</button>
     </div>
   </div>
 
